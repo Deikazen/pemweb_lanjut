@@ -4,7 +4,7 @@ import { supabase } from "../../config/supabaseClient.js";
 const getUser = async (req, res) => {
     const { data, error } = await supabase.from('users').select('*');
     if (error) return res.status(400).json({ error: error.message });
-    res.status(200).json({ message: "Berhasil mengambl data user", data });
+    res.status(200).json({ message: "Berhasil mengambil data user", data });
 }
 
 const createUser = async (req, res) => {
@@ -19,7 +19,7 @@ const editUser = async (req, res) => {
     const { name, email } = req.body;
     const { data, error } = await supabase.from('users').update({ name, email }).eq('id', id).select();
     if (error) return res.status(400).json({ error: error.message });
-    res.status(200).json({ messgae: "Berhasil mengedit user", data });
+    res.status(200).json({ message: "Berhasil mengedit user", data });
 }
 
 const deleteUser = async (req, res) => {
