@@ -1,13 +1,18 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import router from "./routes/userRoute.js";
+import router from "./routes/index.js";
+dotenv.config();
+
 
 const PORT = process.env.PORT || 5000;
 
-dotenv.config();
+
 
 const app = express();
+app.use(express.json());
+
+
 app.use(cors());
 
 app.get('/', (req, res) => {
@@ -15,7 +20,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(router);
-app.use(express.json());
 
 
 

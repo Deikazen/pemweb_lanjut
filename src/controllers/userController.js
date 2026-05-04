@@ -24,7 +24,7 @@ const editUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const { id } = req.params;
-    const { error } = supabase.from('users').delete().eq("id", id);
+    const { error } = await supabase.from('users').delete().eq("id", id);
     if (error) return res.status(400).json({ error: error.message });
     res.status(200).json({ message: "Berhasil delete User" });
 
