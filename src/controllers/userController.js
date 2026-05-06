@@ -30,4 +30,22 @@ const deleteUser = async (req, res) => {
 
 }
 
-export { getUser, createUser, editUser, deleteUser };
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+    })
+
+    if (error) return res.status(401).json({ error: error.message });
+
+    const token = data.session.access_token;
+
+    res.status(200).json({
+        message: "Login Berhasil!",
+        token: token
+    })
+}
+
+export { getUser, createUser, editUser, deleteUser, loginUser };
