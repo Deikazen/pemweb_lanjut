@@ -5,7 +5,7 @@ import itemRoute from "./itemRoute.js";
 
 const router = express.Router();
 
-// Gabungkan semua route di sini
+
 router.use(userRoute);
 router.use(itemRoute);
 

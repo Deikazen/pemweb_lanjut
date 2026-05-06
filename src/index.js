@@ -13,7 +13,12 @@ const app = express();
 app.use(express.json());
 
 
-app.use(cors());
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:3000', process.env.FRONTEND_URL],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+};
+
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
     res.send('App berjalan');
@@ -26,3 +31,5 @@ app.use(router);
 app.listen(PORT, () => {
     console.log(`Server berjalan di http://localhost:${PORT}`)
 });
+
+export default app;
