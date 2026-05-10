@@ -7,16 +7,16 @@ const getItem = async (req, res) => {
 }
 
 const createItem = async (req, res) => {
-    const { name } = req.body;
-    const { data, error } = await supabase.from('items').insert([{ name }]).select();
+    const { name, media_url } = req.body;
+    const { data, error } = await supabase.from('items').insert([{ name, media_url }]).select();
     if (error) return res.status(400).json({ error: error.message });
     res.status(201).json({ message: "Berhasil membuat item", data });
 }
 
 const editItem = async (req, res) => {
     const { id } = req.params;
-    const { name } = req.body;
-    const { data, error } = await supabase.from('items').update({ name }).eq('id', id).select();
+    const { name, media_url } = req.body;
+    const { data, error } = await supabase.from('items').update({ name, media_url }).eq('id', id).select();
     if (error) return res.status(400).json({ error: error.message });
     res.status(200).json({ message: "Berhasil mengedit item", data });
 }
