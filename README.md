@@ -75,35 +75,6 @@ Berikut adalah daftar endpoint yang bisa dipanggil oleh tim Frontend.
   }
   ```
 
-#### Ambil Semua User
-- **URL:** `GET /api/user`
-- **Response Sukses:** Array of users.
-
-#### Buat User Baru
-- **URL:** `POST /api/user`
-- **Body Request (JSON):**
-  ```json
-  {
-    "name": "Budi",
-    "email": "budi@example.com"
-  }
-  ```
-
-#### Edit User
-- **URL:** `PUT /api/user/:id` (Ganti `:id` dengan ID user)
-- **Body Request (JSON):**
-  ```json
-  {
-    "name": "Budi Update",
-    "email": "budi.update@example.com"
-  }
-  ```
-
-#### Hapus User
-- **URL:** `DELETE /api/user/:id` (Ganti `:id` dengan ID user)
-
----
-
 ### 3. Items (Membutuhkan Akses Admin)
 
 > ⚠️ **PENTING:** Semua endpoint `/api/item` wajib menyertakan token di bagian **Headers** request.
