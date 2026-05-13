@@ -347,6 +347,8 @@ function AdminPage() {
     if (token) {
       getItems();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   if (!token) {
