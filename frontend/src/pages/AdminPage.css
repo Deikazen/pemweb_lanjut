@@ -1,0 +1,409 @@
+/* ============================================
+   AdminPage.css
+   → Style halaman admin (login + dashboard)
+   → Sections: Login Card, Admin Navbar, Form, Data List
+   ============================================ */
+
+/* ── LOGIN PAGE ───────────────────────────── */
+.admin-login-page {
+  min-height: 100vh;
+  background-color: var(--espresso);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(192,125,62,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(74,44,26,0.4) 0%, transparent 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--dark-roast);
+  border: 1px solid rgba(192,125,62,0.25);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--latte);
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+  margin-bottom: 28px;
+  display: block;
+}
+
+.back-btn:hover {
+  opacity: 1;
+}
+
+.admin-login-card h1 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.admin-login-card > p {
+  font-size: 14px;
+  color: rgba(245,234,216,0.5);
+  margin-bottom: 28px;
+}
+
+/* Form fields (shared login + admin form) */
+.field-group {
+  margin-bottom: 18px;
+}
+
+.field-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgba(245,234,216,0.7);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.field-group input {
+  width: 100%;
+  background-color: rgba(255,255,255,0.06);
+  border: 1px solid rgba(192,125,62,0.25);
+  color: var(--cream);
+  padding: 13px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.field-group input:focus {
+  outline: none;
+  border-color: var(--caramel);
+  background-color: rgba(255,255,255,0.09);
+}
+
+.field-group input::placeholder {
+  color: rgba(245,234,216,0.3);
+}
+
+/* Submit button (login) */
+.btn-submit {
+  width: 100%;
+  background-color: var(--caramel);
+  color: var(--espresso);
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 8px;
+  transition: background-color 0.25s, transform 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--latte);
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Alert message */
+.alert {
+  background-color: rgba(192,125,62,0.15);
+  border: 1px solid rgba(192,125,62,0.4);
+  color: var(--latte);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.alert.alert-success {
+  background-color: rgba(39,174,96,0.15);
+  border-color: rgba(39,174,96,0.4);
+  color: #6fcf97;
+}
+
+/* ── ADMIN NAVBAR ─────────────────────────── */
+.admin-navbar {
+  height: var(--nav-height);
+  background-color: var(--espresso);
+  border-bottom: 1px solid rgba(192,125,62,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-navbar-brand h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--latte);
+}
+
+.admin-navbar-brand span {
+  font-size: 13px;
+  color: rgba(245,234,216,0.45);
+  display: block;
+}
+
+.admin-navbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-dark {
+  background-color: rgba(255,255,255,0.08);
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-dark:hover {
+  background-color: rgba(255,255,255,0.14);
+}
+
+.btn-danger {
+  background-color: rgba(192, 57, 43, 0.8);
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+/* ── ADMIN CONTAINER ──────────────────────── */
+.admin-container {
+  padding: 40px 60px;
+  background-color: var(--dark-roast);
+  min-height: calc(100vh - var(--nav-height));
+}
+
+/* Alert di dalam dashboard */
+.admin-container .alert {
+  margin-bottom: 24px;
+}
+
+/* ── FORM SECTION ─────────────────────────── */
+.admin-form-section,
+.admin-list-section {
+  background-color: rgba(255,255,255,0.04);
+  border: 1px solid rgba(192,125,62,0.18);
+  border-radius: var(--card-radius);
+  padding: 32px;
+  margin-bottom: 28px;
+}
+
+.admin-form-section h2,
+.admin-list-section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--latte);
+  margin-bottom: 24px;
+}
+
+/* Form grid: 2 kolom */
+.admin-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save {
+  background-color: var(--caramel);
+  color: var(--espresso);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: var(--latte);
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: rgba(255,255,255,0.08);
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── LIST SECTION ─────────────────────────── */
+.section-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.loading-text {
+  color: rgba(245,234,216,0.5);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* ── ADMIN ITEM GRID ──────────────────────── */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.admin-item-card {
+  background-color: rgba(255,255,255,0.04);
+  border: 1px solid rgba(192,125,62,0.18);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.admin-item-card:hover {
+  border-color: rgba(192,125,62,0.45);
+}
+
+.admin-item-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.admin-item-content {
+  padding: 18px;
+}
+
+.admin-item-content h3 {
+  font-family: var(--font-display);
+  color: var(--latte);
+  margin-bottom: 6px;
+}
+
+.admin-item-content p {
+  font-size: 13px;
+  color: rgba(245,234,216,0.4);
+  margin-bottom: 14px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit {
+  flex: 1;
+  background-color: rgba(192,125,62,0.2);
+  color: var(--latte);
+  border: 1px solid rgba(192,125,62,0.3);
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-edit:hover {
+  background-color: rgba(192,125,62,0.35);
+}
+
+.btn-delete {
+  flex: 1;
+  background-color: rgba(192,57,43,0.2);
+  color: #e07070;
+  border: 1px solid rgba(192,57,43,0.3);
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: rgba(192,57,43,0.4);
+}
+
+/* Empty state */
+.empty-card {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 24px;
+  border: 1px dashed rgba(192,125,62,0.3);
+  border-radius: 16px;
+  color: rgba(245,234,216,0.4);
+}
+
+.empty-card h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: rgba(245,234,216,0.5);
+  margin-bottom: 8px;
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 900px) {
+  .admin-navbar {
+    padding: 16px 24px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .admin-container {
+    padding: 24px;
+  }
+
+  .admin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    grid-column: span 1;
+    flex-direction: column;
+  }
+
+  .section-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

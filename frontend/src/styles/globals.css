@@ -1,0 +1,86 @@
+/* ============================================
+   globals.css
+   → Reset, CSS variables, base typography
+   → Tema: Cafe Kopi Modern & Cozy
+   → Dipakai di: semua komponen & halaman
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  /* ── Palet warna utama (Cafe Kopi) ── */
+  --espresso:    #1a0e08;      /* background gelap utama */
+  --dark-roast:  #2c1a0e;      /* section gelap */
+  --medium-roast:#4a2c1a;      /* elemen medium */
+  --caramel:     #c07d3e;      /* aksen utama (orange hangat) */
+  --latte:       #d4a96a;      /* aksen terang */
+  --cream:       #f5ead8;      /* teks di atas gelap */
+  --milk-foam:   #fdf6ec;      /* background section terang */
+  --chalk:       #f0e8d6;      /* background section abu-krem */
+
+  /* ── Warna pendukung ── */
+  --sage:        #7a9e7e;      /* aksen hijau natural */
+  --blush:       #d4856a;      /* aksen hangat sekunder */
+  --error:       #c0392b;      /* pesan error */
+  --success:     #27ae60;      /* pesan sukses */
+
+  /* ── Tipografi ── */
+  --font-display: 'Cormorant Garamond', Georgia, serif; /* judul elegan */
+  --font-body:    'Outfit', system-ui, sans-serif;       /* teks biasa */
+
+  /* ── Spacing & Layout ── */
+  --section-pad: 80px 60px;   /* padding tiap section */
+  --card-radius:  20px;        /* border-radius kartu */
+  --nav-height:   72px;        /* tinggi navbar */
+}
+
+/* ── Base styles ── */
+body {
+  font-family: var(--font-body);
+  background-color: var(--milk-foam);
+  color: var(--espresso);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+input, textarea {
+  font-family: var(--font-body);
+}
+
+/* ── Utility class ── */
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 12px;
+}
