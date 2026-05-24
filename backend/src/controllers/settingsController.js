@@ -32,68 +32,33 @@ const defaultSettings = {
 };
 
 const getSettings = async (req, res) => {
-  if (!supabase) {
-    return res.status(200).json({ settings: defaultSettings, error: "Supabase client not initialized" });
-  }
-
   try {
-    const { data, error } = await supabase.from('settings').select('*');
-    
-    if (error) {
-      console.warn("Supabase settings error (likely table doesn't exist yet):", error.message);
-      return res.status(200).json({ 
-        settings: defaultSettings, 
-        warning: "Tabel 'settings' belum ada di Supabase. Menampilkan nilai bawaan.",
-        sql_hint: "Silakan jalankan SQL berikut di Dashboard Supabase Anda: CREATE TABLE settings (key VARCHAR(255) PRIMARY KEY, value TEXT NOT NULL);"
-      });
+    // Ambil data dengan id = 1
+    const { data, error } = await supabase.from('settings').select('*').eq('id', 1).single();
+
+    if (error || !data) {
+      return res.status(200).json({ settings: defaultSettings });
     }
 
-    const mergedSettings = { ...defaultSettings };
-    if (data && data.length > 0) {
-      data.forEach(item => {
-        mergedSettings[item.key] = item.value;
-      });
-    }
-
-    return res.status(200).json({ settings: mergedSettings });
+    return res.status(200).json({ settings: data });
   } catch (err) {
-    console.error("getSettings critical error:", err);
-    return res.status(200).json({ settings: defaultSettings, error: err.message });
+    return res.status(200).json({ settings: defaultSettings });
   }
 };
 
 const updateSettings = async (req, res) => {
-  if (!supabase) {
-    return res.status(500).json({ error: "Supabase client is not initialized" });
-  }
-
   try {
     const { settings } = req.body;
-    if (!settings) {
-      return res.status(400).json({ error: "Data settings tidak ditemukan di request body" });
-    }
 
-    const upsertData = Object.keys(settings).map(key => ({
-      key: key,
-      value: String(settings[key])
-    }));
+    // Paksa id: 1 agar selalu mengupdate baris yang sama
+    const { error } = await supabase
+      .from('settings')
+      .upsert({ id: 1, ...settings });
 
-    const { error } = await supabase.from('settings').upsert(upsertData);
+    if (error) return res.status(400).json({ error: error.message });
 
-    if (error) {
-      console.error("Supabase settings upsert error:", error);
-      if (error.message.includes('relation "settings" does not exist')) {
-        return res.status(400).json({ 
-          error: "Tabel 'settings' belum dibuat di Supabase.",
-          sql_hint: "Silakan buat tabel 'settings' terlebih dahulu di SQL Editor Supabase Anda dengan query: CREATE TABLE settings (key VARCHAR(255) PRIMARY KEY, value TEXT NOT NULL);"
-        });
-      }
-      return res.status(400).json({ error: error.message });
-    }
-
-    return res.status(200).json({ message: "Settings landing page berhasil diperbarui!" });
+    return res.status(200).json({ message: "Settings berhasil diperbarui!" });
   } catch (err) {
-    console.error("updateSettings critical error:", err);
     return res.status(500).json({ error: err.message });
   }
 };
