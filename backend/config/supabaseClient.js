@@ -11,15 +11,24 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false
-    }
-});
+if (!supabaseUrl || !supabaseKey) {
+    console.error("CRITICAL ERROR: SUPABASE_URL or SUPABASE_KEY is missing in process.env!");
+}
+
+export const supabase = (supabaseUrl && supabaseKey)
+    ? createClient(supabaseUrl, supabaseKey, {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false
+        }
+      })
+    : null;
 
 export const createStatelessClient = () => {
+    if (!supabaseUrl || !supabaseKey) {
+        throw new Error("SUPABASE_URL or SUPABASE_KEY is not defined in Vercel environment variables.");
+    }
     return createClient(supabaseUrl, supabaseKey, {
         auth: {
             persistSession: false,

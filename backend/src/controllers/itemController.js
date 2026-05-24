@@ -1,6 +1,9 @@
 import { supabase } from "../../config/supabaseClient.js";
 
 const getItem = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
+    }
     console.log("getItem Supabase Config:", { 
         SUPABASE_URL: process.env.SUPABASE_URL, 
         SUPABASE_KEY_START: process.env.SUPABASE_KEY ? process.env.SUPABASE_KEY.substring(0, 15) + "..." : "MISSING",
@@ -20,6 +23,9 @@ const getItem = async (req, res) => {
 }
 
 const createItem = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
+    }
     const { name, media_url } = req.body;
     const { data, error } = await supabase.from('items').insert([{ name, media_url }]).select();
     if (error) {
@@ -30,6 +36,9 @@ const createItem = async (req, res) => {
 }
 
 const editItem = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
+    }
     const { id } = req.params;
     const { name, media_url } = req.body;
     const { data, error } = await supabase.from('items').update({ name, media_url }).eq('id', id).select();
@@ -41,6 +50,9 @@ const editItem = async (req, res) => {
 }
 
 const deleteItem = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
+    }
     const { id } = req.params;
     const { error } = await supabase.from('items').delete().eq("id", id);
     if (error) {
