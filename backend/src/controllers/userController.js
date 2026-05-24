@@ -1,4 +1,4 @@
-import { supabase } from "../../config/supabaseClient.js";
+import { supabase, createStatelessClient } from "../../config/supabaseClient.js";
 
 
 const getUser = async (req, res) => {
@@ -33,7 +33,8 @@ const deleteUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const statelessClient = createStatelessClient();
+    const { data, error } = await statelessClient.auth.signInWithPassword({
         email: email,
         password: password,
     })

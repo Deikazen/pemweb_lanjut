@@ -19,14 +19,20 @@ function useApi() {
     try {
       setLoading(true);
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      console.log(`[useApi] GET /api/item | Target: ${API_URL}/api/item | Token:`, token ? "Ada" : "Tidak Ada");
       const res = await fetch(`${API_URL}/api/item`, { headers });
+      console.log(`[useApi] GET /api/item Status: ${res.status}`);
       const result = await res.json();
+      console.log("[useApi] GET /api/item Result:", result);
       if (res.ok) {
         setItems(result.data || []);
       } else {
-        setError(result.message || result.error || "Gagal mengambil data");
+        const errorMsg = result.message || result.error || "Gagal mengambil data";
+        console.error("[useApi] GET /api/item Error:", errorMsg);
+        setError(errorMsg);
       }
-    } catch {
+    } catch (err) {
+      console.error("[useApi] GET /api/item Exception:", err);
       setError("Backend belum jalan atau API error");
     } finally {
       setLoading(false);
@@ -37,6 +43,7 @@ function useApi() {
   const saveItem = useCallback(async ({ token, name, mediaUrl, editId }) => {
     const url = editId ? `${API_URL}/api/item/${editId}` : `${API_URL}/api/item`;
     const method = editId ? "PUT" : "POST";
+    console.log(`[useApi] ${method} ${url} | Name: ${name} | mediaUrl: ${mediaUrl}`);
 
     try {
       setLoading(true);
@@ -48,10 +55,13 @@ function useApi() {
         },
         body: JSON.stringify({ name, media_url: [mediaUrl] }),
       });
+      console.log(`[useApi] ${method} Response Status: ${res.status}`);
       const result = await res.json();
+      console.log(`[useApi] ${method} Result:`, result);
       if (!res.ok) throw new Error(result.message || result.error || "Gagal menyimpan");
       return { success: true };
     } catch (err) {
+      console.error(`[useApi] ${method} Exception:`, err);
       setError(err.message || "Gagal konek ke backend");
       return { success: false };
     } finally {
@@ -61,16 +71,20 @@ function useApi() {
 
   // ── DELETE item ──────────────────────────
   const deleteItem = useCallback(async ({ token, id }) => {
+    console.log(`[useApi] DELETE ${API_URL}/api/item/${id}`);
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/api/item/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(`[useApi] DELETE Response Status: ${res.status}`);
       const result = await res.json();
+      console.log("[useApi] DELETE Result:", result);
       if (!res.ok) throw new Error(result.message || result.error || "Gagal hapus");
       return { success: true };
     } catch (err) {
+      console.error("[useApi] DELETE Exception:", err);
       setError(err.message || "Gagal konek ke backend");
       return { success: false };
     } finally {
@@ -80,6 +94,7 @@ function useApi() {
 
   // ── POST login admin ──────────────────────
   const loginAdmin = useCallback(async ({ email, password }) => {
+    console.log(`[useApi] POST /api/login | Target: ${API_URL}/api/login | Email: ${email}`);
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/api/login`, {
@@ -87,10 +102,13 @@ function useApi() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+      console.log(`[useApi] POST /api/login Status: ${res.status}`);
       const result = await res.json();
+      console.log("[useApi] POST /api/login Result:", result);
       if (!res.ok) throw new Error(result.message || result.error || "Login gagal");
       return { success: true, token: result.token };
     } catch (err) {
+      console.error("[useApi] POST /api/login Exception:", err);
       setError(err.message || "Gagal konek ke backend");
       return { success: false };
     } finally {

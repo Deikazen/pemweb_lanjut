@@ -238,6 +238,7 @@ function AdminPage() {
           </div>
 
           {loading && <p className="loading-text">Memuat data...</p>}
+          {error && <p className="error-text" style={{ color: "#ff4a4a", textAlign: "center", margin: "10px 0" }}>⚠️ Error: {error}</p>}
 
           <div className="admin-grid">
             {items.length === 0 && !loading ? (

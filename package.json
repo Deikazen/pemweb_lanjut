@@ -1,0 +1,22 @@
+{
+  "name": "pemwebjut-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run start --workspace=frontend",
+    "dev": "concurrently --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:backend": "npm run build --workspace=backend --if-present",
+    "build:frontend": "npm run build --workspace=frontend --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "ws": "^8.21.0"
+  }
+}
