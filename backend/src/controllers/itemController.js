@@ -1,4 +1,5 @@
 import { supabase } from "../../config/supabaseClient.js";
+import { uploadBase64ToSupabase } from "../utils/uploadImage.js";
 
 const getItem = async (req, res) => {
     if (!supabase) {
@@ -26,27 +27,47 @@ const createItem = async (req, res) => {
     if (!supabase) {
         return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
     }
-    const { name, media_url } = req.body;
-    const { data, error } = await supabase.from('items').insert([{ name, media_url }]).select();
-    if (error) {
-        console.error("Supabase INSERT items error:", error);
-        return res.status(400).json({ error: error.message });
+    try {
+        const { name, media_url } = req.body;
+        let finalMediaUrl = Array.isArray(media_url) ? media_url[0] : media_url;
+        
+        if (finalMediaUrl && finalMediaUrl.startsWith('data:image')) {
+            finalMediaUrl = await uploadBase64ToSupabase(finalMediaUrl, 'item');
+        }
+
+        const { data, error } = await supabase.from('items').insert([{ name, media_url: [finalMediaUrl] }]).select();
+        if (error) {
+            console.error("Supabase INSERT items error:", error);
+            return res.status(400).json({ error: error.message });
+        }
+        res.status(201).json({ message: "Berhasil membuat item", data });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-    res.status(201).json({ message: "Berhasil membuat item", data });
 }
 
 const editItem = async (req, res) => {
     if (!supabase) {
         return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
     }
-    const { id } = req.params;
-    const { name, media_url } = req.body;
-    const { data, error } = await supabase.from('items').update({ name, media_url }).eq('id', id).select();
-    if (error) {
-        console.error("Supabase UPDATE items error:", error);
-        return res.status(400).json({ error: error.message });
+    try {
+        const { id } = req.params;
+        const { name, media_url } = req.body;
+        let finalMediaUrl = Array.isArray(media_url) ? media_url[0] : media_url;
+        
+        if (finalMediaUrl && finalMediaUrl.startsWith('data:image')) {
+            finalMediaUrl = await uploadBase64ToSupabase(finalMediaUrl, 'item');
+        }
+
+        const { data, error } = await supabase.from('items').update({ name, media_url: [finalMediaUrl] }).eq('id', id).select();
+        if (error) {
+            console.error("Supabase UPDATE items error:", error);
+            return res.status(400).json({ error: error.message });
+        }
+        res.status(200).json({ message: "Berhasil mengedit item", data });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-    res.status(200).json({ message: "Berhasil mengedit item", data });
 }
 
 const deleteItem = async (req, res) => {

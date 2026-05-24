@@ -1,4 +1,5 @@
 import { supabase } from "../../config/supabaseClient.js";
+import { uploadBase64ToSupabase } from "../utils/uploadImage.js";
 
 const defaultSettings = {
   hero_badge: "☕ Artisan · Cozy · Soulful",
@@ -50,6 +51,15 @@ const updateSettings = async (req, res) => {
   try {
     const { settings } = req.body;
 
+    // Upload images to Supabase bucket if they are Base64
+    if (settings.hero_image && settings.hero_image.startsWith('data:image')) {
+      settings.hero_image = await uploadBase64ToSupabase(settings.hero_image, 'hero');
+    }
+    
+    if (settings.about_image && settings.about_image.startsWith('data:image')) {
+      settings.about_image = await uploadBase64ToSupabase(settings.about_image, 'about');
+    }
+
     // Paksa id: 1 agar selalu mengupdate baris yang sama
     const { error } = await supabase
       .from('settings')
@@ -59,6 +69,7 @@ const updateSettings = async (req, res) => {
 
     return res.status(200).json({ message: "Settings berhasil diperbarui!" });
   } catch (err) {
+    console.error("Error updating settings:", err);
     return res.status(500).json({ error: err.message });
   }
 };
