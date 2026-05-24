@@ -2,12 +2,13 @@
 // AdminPage.jsx  (Halaman Admin / /admin)
 // → Login: form email + password → dapat JWT token
 // → Dashboard: CRUD item menu (tambah, edit, hapus)
-// → Semua API call via useApi custom hook
+// → Upload Gambar: Langsung ke Supabase Storage (bucket: media-produk)
 // ============================================
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/useApi";
+import { supabase } from "../utils/supabase"; // Pastikan file ini sudah dibuat
 import "./AdminPage.css";
 
 function AdminPage() {
@@ -21,8 +22,10 @@ function AdminPage() {
 
   // Form state (tambah / edit item)
   const [name, setName] = useState("");
-  const [mediaUrl, setMediaUrl] = useState("");
+  const [mediaFile, setMediaFile] = useState(null); // File yang akan diupload
+  const [previewUrl, setPreviewUrl] = useState(""); // URL gambar (untuk preview / data lama)
   const [editId, setEditId] = useState(null);
+  const [isUploading, setIsUploading] = useState(false); // State loading saat upload ke Supabase
 
   // Toast message
   const [message, setMessage] = useState("");
@@ -51,14 +54,58 @@ function AdminPage() {
   // ── SAVE ITEM (tambah / edit) ────────────
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!name || !mediaUrl) {
-      showMessage("Nama item dan URL gambar wajib diisi");
+
+    if (!name) {
+      showMessage("Nama item wajib diisi");
       return;
     }
-    const result = await saveItem({ token, name, mediaUrl, editId });
+    // Jika buat item baru, wajib ada file. Jika edit, boleh tidak ada file (pakai gambar lama)
+    if (!mediaFile && !editId) {
+      showMessage("Gambar wajib diupload untuk item baru");
+      return;
+    }
+
+    let finalMediaUrl = previewUrl;
+
+    // 1. Jika ada file gambar baru yang dipilih, upload ke Supabase
+    if (mediaFile) {
+      try {
+        setIsUploading(true);
+        showMessage("Mengunggah gambar...", "success");
+
+        // Generate nama unik
+        const fileExt = mediaFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+        // Upload ke Supabase
+        const { error: uploadError } = await supabase.storage
+          .from('media-produk')
+          .upload(fileName, mediaFile);
+
+        if (uploadError) throw uploadError;
+
+        // Ambil Public URL
+        const { data: publicUrlData } = supabase.storage
+          .from('media-produk')
+          .getPublicUrl(fileName);
+
+        finalMediaUrl = publicUrlData.publicUrl;
+      } catch (err) {
+        showMessage("Gagal mengunggah gambar ke Supabase");
+        setIsUploading(false);
+        return;
+      } finally {
+        setIsUploading(false);
+      }
+    }
+
+    // 2. Simpan URL ke database via backend
+    const result = await saveItem({ token, name, mediaUrl: finalMediaUrl, editId });
+
     if (result.success) {
       setName("");
-      setMediaUrl("");
+      setMediaFile(null);
+      setPreviewUrl("");
       setEditId(null);
       showMessage(editId ? "Item berhasil diupdate!" : "Item berhasil ditambahkan!", "success");
       getItems(token);
@@ -72,7 +119,9 @@ function AdminPage() {
   const handleStartEdit = (item) => {
     setEditId(item.id);
     setName(item.name);
-    setMediaUrl(Array.isArray(item.media_url) ? item.media_url[0] : item.media_url);
+    const currentUrl = Array.isArray(item.media_url) ? item.media_url[0] : item.media_url;
+    setPreviewUrl(currentUrl);
+    setMediaFile(null); // Reset file yang baru dipilih
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -201,25 +250,48 @@ function AdminPage() {
             </div>
 
             <div className="field-group">
-              <label>URL Gambar</label>
+              <label>Upload Gambar Produk</label>
               <input
-                type="text"
-                placeholder="https://..."
-                value={mediaUrl}
-                onChange={(e) => setMediaUrl(e.target.value)}
+                type="file"
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setMediaFile(file);
+                  if (file) {
+                    setPreviewUrl(URL.createObjectURL(file)); // Buat URL sementara untuk preview
+                  } else if (!editId) {
+                    setPreviewUrl(""); // Reset jika file di-cancel saat tambah baru
+                  }
+                }}
               />
+
+              {/* Tampilkan preview gambar kecil jika ada URL */}
+              {previewUrl && (
+                <div style={{ marginTop: "12px", border: "1px dashed #ccc", padding: "8px", display: "inline-block", borderRadius: "8px" }}>
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    style={{ height: "120px", objectFit: "cover", borderRadius: "4px" }}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="form-actions">
-              <button type="submit" className="btn-save" disabled={loading}>
-                {loading ? "Menyimpan..." : editId ? "Update Item" : "Tambah Item"}
+              <button type="submit" className="btn-save" disabled={loading || isUploading}>
+                {loading || isUploading ? "Menyimpan..." : editId ? "Update Item" : "Tambah Item"}
               </button>
 
               {editId && (
                 <button
                   type="button"
                   className="btn-cancel"
-                  onClick={() => { setEditId(null); setName(""); setMediaUrl(""); }}
+                  onClick={() => {
+                    setEditId(null);
+                    setName("");
+                    setMediaFile(null);
+                    setPreviewUrl("");
+                  }}
                 >
                   Batal Edit
                 </button>
