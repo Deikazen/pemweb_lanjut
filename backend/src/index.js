@@ -40,11 +40,17 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get('/', (req, res) => {
-  res.send('App berjalan');
-});
-
+// Mount API router
 app.use(router);
+
+// Serve static files from the React frontend app
+const frontendBuildPath = path.resolve(__dirname, "../../frontend/build");
+app.use(express.static(frontendBuildPath));
+
+// All remaining GET requests that don't match our API routes should be served by the React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendBuildPath, "index.html"));
+});
 
 
 
