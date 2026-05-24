@@ -34,14 +34,18 @@ const defaultSettings = {
 
 const getSettings = async (req, res) => {
   try {
-    // Ambil data dengan id = 1
-    const { data, error } = await supabase.from('settings').select('*').eq('id', 1).single();
+    const { data, error } = await supabase.from('settings').select('*');
 
-    if (error || !data) {
+    if (error || !data || data.length === 0) {
       return res.status(200).json({ settings: defaultSettings });
     }
 
-    return res.status(200).json({ settings: data });
+    const mergedSettings = { ...defaultSettings };
+    data.forEach(item => {
+      mergedSettings[item.key] = item.value;
+    });
+
+    return res.status(200).json({ settings: mergedSettings });
   } catch (err) {
     return res.status(200).json({ settings: defaultSettings });
   }
@@ -60,10 +64,15 @@ const updateSettings = async (req, res) => {
       settings.about_image = await uploadBase64ToSupabase(settings.about_image, 'about');
     }
 
-    // Paksa id: 1 agar selalu mengupdate baris yang sama
+    // Convert object to array of { key, value } to match the SQL schema
+    const upsertData = Object.keys(settings).map(key => ({
+      key: key,
+      value: String(settings[key])
+    }));
+
     const { error } = await supabase
       .from('settings')
-      .upsert({ id: 1, ...settings });
+      .upsert(upsertData);
 
     if (error) return res.status(400).json({ error: error.message });
 
