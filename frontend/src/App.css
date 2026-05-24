@@ -1,0 +1,13 @@
+/* ============================================
+   App.css
+   → Animasi global untuk transisi halaman
+   ============================================ */
+
+.app {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.app.fade-in {
+  opacity: 1;
+}
