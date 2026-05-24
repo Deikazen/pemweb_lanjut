@@ -21,6 +21,7 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://pemweb-lanjut-frontend.vercel.app",
   process.env.FRONTEND_URL
 ];
 
