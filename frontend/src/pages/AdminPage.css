@@ -407,3 +407,102 @@
     gap: 12px;
   }
 }
+
+/* ── NEW TABS & SETTINGS STYLES ───────────── */
+.admin-tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background-color: var(--espresso);
+  padding: 15px 60px;
+  border-bottom: 1px solid rgba(192,125,62,0.15);
+}
+
+.admin-tab {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: rgba(245, 234, 216, 0.6);
+  border: 1px solid rgba(192, 125, 62, 0.15);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.admin-tab:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: var(--cream);
+  border-color: rgba(192, 125, 62, 0.4);
+}
+
+.admin-tab--active {
+  background-color: var(--caramel);
+  color: var(--espresso);
+  border-color: var(--caramel);
+  box-shadow: 0 4px 15px rgba(192, 125, 62, 0.35);
+}
+
+.admin-file-input {
+  width: 100%;
+  color: var(--cream);
+  padding: 10px 14px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(192, 125, 62, 0.35);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-file-input:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: var(--caramel);
+}
+
+.settings-fieldset {
+  border: 1px solid rgba(192, 125, 62, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.settings-fieldset legend {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--latte);
+  padding: 0 12px;
+  font-weight: 600;
+}
+
+.admin-settings-form textarea {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(192, 125, 62, 0.25);
+  color: var(--cream);
+  padding: 13px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s, background-color 0.2s;
+  resize: vertical;
+}
+
+.admin-settings-form textarea:focus {
+  outline: none;
+  border-color: var(--caramel);
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+@media (max-width: 900px) {
+  .admin-tabs-container {
+    padding: 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .admin-tab {
+    width: 100%;
+    text-align: center;
+  }
+}
+

@@ -13,6 +13,7 @@ const API_URL = process.env.NODE_ENV === "production"
 
 function useApi() {
   const [items, setItems] = useState([]);
+  const [landingSettings, setLandingSettings] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -36,6 +37,61 @@ function useApi() {
     } catch (err) {
       console.error("[useApi] GET /api/item Exception:", err);
       setError("Backend belum jalan atau API error");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── GET settings landing page ────────────
+  const getLandingSettings = useCallback(async () => {
+    try {
+      setLoading(true);
+      console.log(`[useApi] GET /api/settings | Target: ${API_URL}/api/settings`);
+      const res = await fetch(`${API_URL}/api/settings`);
+      console.log(`[useApi] GET /api/settings Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] GET /api/settings Result:", result);
+      if (res.ok) {
+        setLandingSettings(result.settings);
+        return { success: true, settings: result.settings };
+      } else {
+        const errorMsg = result.message || result.error || "Gagal mengambil settings";
+        console.error("[useApi] GET /api/settings Error:", errorMsg);
+        setError(errorMsg);
+        return { success: false };
+      }
+    } catch (err) {
+      console.error("[useApi] GET /api/settings Exception:", err);
+      setError("Gagal mengambil settings dari backend");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── POST settings landing page (update) ──
+  const saveLandingSettings = useCallback(async ({ token, settings }) => {
+    console.log(`[useApi] POST /api/settings | Target: ${API_URL}/api/settings`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/settings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ settings }),
+      });
+      console.log(`[useApi] POST /api/settings Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] POST /api/settings Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal menyimpan settings");
+      setLandingSettings(settings);
+      return { success: true };
+    } catch (err) {
+      console.error("[useApi] POST /api/settings Exception:", err);
+      setError(err.message || "Gagal menyimpan settings ke backend");
+      return { success: false };
     } finally {
       setLoading(false);
     }
@@ -120,7 +176,19 @@ function useApi() {
 
   const clearError = () => setError("");
 
-  return { items, loading, error, clearError, getItems, saveItem, deleteItem, loginAdmin };
+  return { 
+    items, 
+    landingSettings,
+    loading, 
+    error, 
+    clearError, 
+    getItems, 
+    getLandingSettings,
+    saveLandingSettings,
+    saveItem, 
+    deleteItem, 
+    loginAdmin 
+  };
 }
 
 export default useApi;
