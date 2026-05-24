@@ -49,7 +49,7 @@ const frontendBuildPath = path.resolve(__dirname, "../../frontend/build");
 app.use(express.static(frontendBuildPath));
 
 // All remaining GET requests that don't match our API routes should be served by the React app
-app.get("*", (req, res) => {
+app.get("/{*splat}", (req, res) => {
   res.sendFile(path.join(frontendBuildPath, "index.html"));
 });
 
