@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import WebSocket from 'ws';
 import dotenv from 'dotenv';
 import { fileURLToPath } from "url";
 import path from "path";
@@ -17,9 +16,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
         persistSession: false,
         autoRefreshToken: false,
         detectSessionInUrl: false
-    },
-    global: {
-        WebSocket: WebSocket
     }
 });
 
@@ -29,9 +25,6 @@ export const createStatelessClient = () => {
             persistSession: false,
             autoRefreshToken: false,
             detectSessionInUrl: false
-        },
-        global: {
-            WebSocket: WebSocket
         }
     });
 };
