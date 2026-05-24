@@ -53,7 +53,15 @@ app.get("/{*splat}", (req, res) => {
   res.sendFile(path.join(frontendBuildPath, "index.html"));
 });
 
-
+// Express Error Handler
+app.use((err, req, res, next) => {
+  console.error("EXPRESS UNCAUGHT ERROR:", err);
+  res.status(500).json({ 
+    error: "Terjadi kesalahan internal pada server Express.",
+    message: err.message,
+    stack: err.stack 
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`)
