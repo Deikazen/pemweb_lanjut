@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+const supabaseKey = process.env.SUPABASE_SECRET_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
     console.error("CRITICAL ERROR: SUPABASE_URL or SUPABASE_KEY is missing in process.env!");
@@ -22,7 +22,7 @@ export const supabase = (supabaseUrl && supabaseKey)
             autoRefreshToken: false,
             detectSessionInUrl: false
         }
-      })
+    })
     : null;
 
 export const createStatelessClient = () => {
