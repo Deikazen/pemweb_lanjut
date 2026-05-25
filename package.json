@@ -7,16 +7,18 @@
     "frontend"
   ],
   "scripts": {
-    "dev:backend": "npm run dev --workspace=backend",
-    "dev:frontend": "npm run start --workspace=frontend",
-    "dev": "concurrently --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "build:backend": "npm run build --workspace=backend --if-present",
-    "build:frontend": "npm run build --workspace=frontend --if-present"
-  },
+  "dev:backend": "env-cmd -f backend/.env.development npm run dev --workspace=backend",
+  "dev:frontend": "env-cmd -f frontend/.env.development npm run start --workspace=frontend",
+  "dev": "concurrently --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
+  
+  "build:backend": "env-cmd -f backend/.env.production npm run build --workspace=backend --if-present",
+  "build:frontend": "env-cmd -f frontend/.env.production npm run build --workspace=frontend --if-present"
+},
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
   "dependencies": {
+    "env-cmd": "^11.0.0",
     "ws": "^8.21.0"
   }
 }

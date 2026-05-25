@@ -6,7 +6,7 @@ import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env.pemweb") });
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -22,7 +22,7 @@ export const supabase = (supabaseUrl && supabaseKey)
             autoRefreshToken: false,
             detectSessionInUrl: false
         }
-      })
+    })
     : null;
 
 export const createStatelessClient = () => {
