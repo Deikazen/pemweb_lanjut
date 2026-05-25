@@ -27,7 +27,7 @@ export const supabase = (supabaseUrl && supabaseKey)
 
 export const createStatelessClient = () => {
     if (!supabaseUrl || !supabaseKey) {
-        throw new Error("SUPABASE_URL or SUPABASE_KEY is not defined in Vercel environment variables.");
+        throw new Error("SUPABASE_URL or SUPABASE_ROLE_KEY is not defined in Vercel environment variables.");
     }
     return createClient(supabaseUrl, supabaseKey, {
         auth: {
