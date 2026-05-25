@@ -37,6 +37,7 @@ function AdminPage() {
 
   // Form state (tambah / edit item)
   const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
   const [editId, setEditId] = useState(null);
 
@@ -126,13 +127,14 @@ function AdminPage() {
   // ── SAVE ITEM (tambah / edit) ────────────
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!name || !mediaUrl) {
-      showMessage("Nama item dan gambar wajib diisi/diupload");
+    if (!name || !mediaUrl || !price) {
+      showMessage("Nama, harga dan gambar wajib diisi/diupload");
       return;
     }
     const result = await saveItem({ token, name, mediaUrl, editId });
     if (result.success) {
       setName("");
+      setPrice("");
       setMediaUrl("");
       setEditId(null);
       showMessage(editId ? "Item berhasil diupdate!" : "Item berhasil ditambahkan!", "success");
@@ -147,6 +149,7 @@ function AdminPage() {
   const handleStartEdit = (item) => {
     setEditId(item.id);
     setName(item.name);
+    setPrice(item.price || "");
     setMediaUrl(Array.isArray(item.media_url) ? item.media_url[0] : item.media_url);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -328,6 +331,16 @@ function AdminPage() {
                 </div>
 
                 <div className="field-group">
+                  <label>Harga Item (Rp)</label>
+                  <input
+                    type="number"
+                    placeholder="Contoh: 25000"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+
+                <div className="field-group">
                   <label>Gambar Item (File Upload / Choose File)</label>
                   <input
                     type="file"
@@ -356,7 +369,7 @@ function AdminPage() {
                     <button
                       type="button"
                       className="btn-cancel"
-                      onClick={() => { setEditId(null); setName(""); setMediaUrl(""); }}
+                      onClick={() => { setEditId(null); setName(""); setMediaUrl(""); setPrice(""); }}
                     >
                       Batal Edit
                     </button>

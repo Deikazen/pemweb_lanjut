@@ -34,6 +34,9 @@ function MenuCard({ item }) {
       {/* ── Info menu ── */}
       <div className="menu-card-body">
         <h3>{item.name}</h3>
+        <h4 style={{ color: "#d2691e", marginTop: "5px" }}>
+          {item.price ? `Rp ${Number(item.price).toLocaleString('id-ID')}` : 'Harga tidak tersedia'}
+        </h4>
         <p>Diseduh dengan cinta dari biji pilihan — nikmat di setiap tegukan.</p>
         <div className="menu-card-footer">
           <span className="menu-tag">☕ Signature</span>

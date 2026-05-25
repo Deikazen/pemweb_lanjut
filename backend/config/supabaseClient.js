@@ -9,10 +9,10 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env.kopi") });
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY;
+const supabaseKey = process.env.SUPABASE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-    console.error("CRITICAL ERROR: SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY is missing in process.env!");
+    console.error("CRITICAL ERROR: SUPABASE_URL or SUPABASE_ROLE_KEY is missing in process.env!");
 }
 
 export const supabase = (supabaseUrl && supabaseKey)

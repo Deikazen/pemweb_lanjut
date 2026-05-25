@@ -4,6 +4,7 @@ node_modules/
 # Environment variables (Sangat penting agar API key/password tidak bocor)
 .env
 .env.local
+.env*
 
 # Logs
 npm-debug.log*
