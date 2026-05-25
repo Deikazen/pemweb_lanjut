@@ -13,30 +13,31 @@ import "./AdminPage.css";
 
 function AdminPage() {
   const navigate = useNavigate();
-  const { 
-    items, 
+  const {
+    items,
     landingSettings,
-    loading, 
-    error, 
-    clearError, 
-    getItems, 
+    loading,
+    error,
+    clearError,
+    getItems,
     getLandingSettings,
     saveLandingSettings,
-    saveItem, 
-    deleteItem, 
-    loginAdmin 
+    saveItem,
+    deleteItem,
+    loginAdmin
   } = useApi();
 
   // Auth state
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admkopibekmer@gmail.com");
+  const [password, setPassword] = useState("admin123");
 
   // Navigation tab: "menu" | "landing"
   const [activeTab, setActiveTab] = useState("menu");
 
   // Form state (tambah / edit item)
   const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
   const [editId, setEditId] = useState(null);
 
@@ -126,13 +127,14 @@ function AdminPage() {
   // ── SAVE ITEM (tambah / edit) ────────────
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!name || !mediaUrl) {
-      showMessage("Nama item dan gambar wajib diisi/diupload");
+    if (!name || !mediaUrl || !price) {
+      showMessage("Nama, harga dan gambar wajib diisi/diupload");
       return;
     }
     const result = await saveItem({ token, name, mediaUrl, editId });
     if (result.success) {
       setName("");
+      setPrice("");
       setMediaUrl("");
       setEditId(null);
       showMessage(editId ? "Item berhasil diupdate!" : "Item berhasil ditambahkan!", "success");
@@ -147,6 +149,7 @@ function AdminPage() {
   const handleStartEdit = (item) => {
     setEditId(item.id);
     setName(item.name);
+    setPrice(item.price || "");
     setMediaUrl(Array.isArray(item.media_url) ? item.media_url[0] : item.media_url);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -234,6 +237,7 @@ function AdminPage() {
               <input
                 type="email"
                 placeholder="admin@gmail.com"
+                defaultValue={"admkopibekmer@gmail.com"}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -283,13 +287,13 @@ function AdminPage() {
 
       {/* ── TAB SELECTOR ──────────────────── */}
       <div className="admin-tabs-container">
-        <button 
+        <button
           className={`admin-tab ${activeTab === "menu" ? "admin-tab--active" : ""}`}
           onClick={() => setActiveTab("menu")}
         >
           📋 Kelola Menu (CRUD Menu)
         </button>
-        <button 
+        <button
           className={`admin-tab ${activeTab === "landing" ? "admin-tab--active" : ""}`}
           onClick={() => setActiveTab("landing")}
         >
@@ -327,6 +331,16 @@ function AdminPage() {
                 </div>
 
                 <div className="field-group">
+                  <label>Harga Item (Rp)</label>
+                  <input
+                    type="number"
+                    placeholder="Contoh: 25000"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+
+                <div className="field-group">
                   <label>Gambar Item (File Upload / Choose File)</label>
                   <input
                     type="file"
@@ -355,7 +369,7 @@ function AdminPage() {
                     <button
                       type="button"
                       className="btn-cancel"
-                      onClick={() => { setEditId(null); setName(""); setMediaUrl(""); }}
+                      onClick={() => { setEditId(null); setName(""); setMediaUrl(""); setPrice(""); }}
                     >
                       Batal Edit
                     </button>
@@ -424,17 +438,17 @@ function AdminPage() {
               </p>
 
               <form onSubmit={handleSaveSettings} className="admin-settings-form">
-                
+
                 {/* HERO SECTION EDITOR */}
                 <fieldset className="settings-fieldset">
                   <legend>🚀 Section 1: Hero (Tampilan Utama)</legend>
-                  
+
                   <div className="field-group">
                     <label>Badge Hero</label>
                     <input
                       type="text"
                       value={settingsForm.hero_badge}
-                      onChange={(e) => setSettingsForm({...settingsForm, hero_badge: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_badge: e.target.value })}
                     />
                   </div>
 
@@ -443,7 +457,7 @@ function AdminPage() {
                     <textarea
                       rows="3"
                       value={settingsForm.hero_title}
-                      onChange={(e) => setSettingsForm({...settingsForm, hero_title: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_title: e.target.value })}
                     />
                   </div>
 
@@ -452,7 +466,7 @@ function AdminPage() {
                     <textarea
                       rows="4"
                       value={settingsForm.hero_desc}
-                      onChange={(e) => setSettingsForm({...settingsForm, hero_desc: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_desc: e.target.value })}
                     />
                   </div>
 
@@ -469,7 +483,7 @@ function AdminPage() {
                     <input
                       type="text"
                       value={settingsForm.hero_image.startsWith("data:") ? "[Gambar Terupload (Base64)]" : settingsForm.hero_image}
-                      onChange={(e) => setSettingsForm({...settingsForm, hero_image: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_image: e.target.value })}
                     />
                   </div>
                 </fieldset>
@@ -477,14 +491,14 @@ function AdminPage() {
                 {/* STATS SECTION EDITOR */}
                 <fieldset className="settings-fieldset">
                   <legend>📊 Section 2: Angka Statistik</legend>
-                  
+
                   <div className="stats-fields-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "15px" }}>
                     <div className="field-group">
                       <label>Jumlah Varian Kopi</label>
                       <input
                         type="number"
                         value={settingsForm.stat_variankopi}
-                        onChange={(e) => setSettingsForm({...settingsForm, stat_variankopi: e.target.value})}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, stat_variankopi: e.target.value })}
                       />
                     </div>
                     <div className="field-group">
@@ -492,7 +506,7 @@ function AdminPage() {
                       <input
                         type="number"
                         value={settingsForm.stat_arabikaasli}
-                        onChange={(e) => setSettingsForm({...settingsForm, stat_arabikaasli: e.target.value})}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, stat_arabikaasli: e.target.value })}
                       />
                     </div>
                     <div className="field-group">
@@ -501,7 +515,7 @@ function AdminPage() {
                         type="number"
                         step="0.1"
                         value={settingsForm.stat_ratingtamu}
-                        onChange={(e) => setSettingsForm({...settingsForm, stat_ratingtamu: e.target.value})}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, stat_ratingtamu: e.target.value })}
                       />
                     </div>
                   </div>
@@ -510,13 +524,13 @@ function AdminPage() {
                 {/* ABOUT SECTION EDITOR */}
                 <fieldset className="settings-fieldset">
                   <legend>🌱 Section 3: Cerita & Tentang Kami</legend>
-                  
+
                   <div className="field-group">
                     <label>Judul About</label>
                     <input
                       type="text"
                       value={settingsForm.about_title}
-                      onChange={(e) => setSettingsForm({...settingsForm, about_title: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, about_title: e.target.value })}
                     />
                   </div>
 
@@ -525,7 +539,7 @@ function AdminPage() {
                     <textarea
                       rows="4"
                       value={settingsForm.about_desc}
-                      onChange={(e) => setSettingsForm({...settingsForm, about_desc: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, about_desc: e.target.value })}
                     />
                   </div>
 
@@ -534,7 +548,7 @@ function AdminPage() {
                     <input
                       type="text"
                       value={settingsForm.about_badge}
-                      onChange={(e) => setSettingsForm({...settingsForm, about_badge: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, about_badge: e.target.value })}
                     />
                   </div>
 
@@ -551,7 +565,7 @@ function AdminPage() {
                     <input
                       type="text"
                       value={settingsForm.about_image.startsWith("data:") ? "[Gambar Terupload (Base64)]" : settingsForm.about_image}
-                      onChange={(e) => setSettingsForm({...settingsForm, about_image: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, about_image: e.target.value })}
                     />
                   </div>
 
@@ -564,7 +578,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.about_card1_title}
-                          onChange={(e) => setSettingsForm({...settingsForm, about_card1_title: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, about_card1_title: e.target.value })}
                         />
                       </div>
                       <div className="field-group">
@@ -572,7 +586,7 @@ function AdminPage() {
                         <textarea
                           rows="3"
                           value={settingsForm.about_card1_desc}
-                          onChange={(e) => setSettingsForm({...settingsForm, about_card1_desc: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, about_card1_desc: e.target.value })}
                         />
                       </div>
                     </div>
@@ -584,7 +598,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.about_card2_title}
-                          onChange={(e) => setSettingsForm({...settingsForm, about_card2_title: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, about_card2_title: e.target.value })}
                         />
                       </div>
                       <div className="field-group">
@@ -592,7 +606,7 @@ function AdminPage() {
                         <textarea
                           rows="3"
                           value={settingsForm.about_card2_desc}
-                          onChange={(e) => setSettingsForm({...settingsForm, about_card2_desc: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, about_card2_desc: e.target.value })}
                         />
                       </div>
                     </div>
@@ -602,7 +616,7 @@ function AdminPage() {
                 {/* FEATURES SECTION EDITOR */}
                 <fieldset className="settings-fieldset">
                   <legend>🛋️ Section 4: Keunggulan (3 Poin Utama)</legend>
-                  
+
                   {/* FEATURE 1 */}
                   <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "15px", marginBottom: "15px" }}>
                     <h4>Keunggulan 1</h4>
@@ -612,7 +626,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.feature1_icon}
-                          onChange={(e) => setSettingsForm({...settingsForm, feature1_icon: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, feature1_icon: e.target.value })}
                         />
                       </div>
                       <div className="field-group">
@@ -620,7 +634,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.feature1_title}
-                          onChange={(e) => setSettingsForm({...settingsForm, feature1_title: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, feature1_title: e.target.value })}
                         />
                       </div>
                     </div>
@@ -629,7 +643,7 @@ function AdminPage() {
                       <textarea
                         rows="2"
                         value={settingsForm.feature1_desc}
-                        onChange={(e) => setSettingsForm({...settingsForm, feature1_desc: e.target.value})}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, feature1_desc: e.target.value })}
                       />
                     </div>
                   </div>
@@ -643,7 +657,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.feature2_icon}
-                          onChange={(e) => setSettingsForm({...settingsForm, feature2_icon: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, feature2_icon: e.target.value })}
                         />
                       </div>
                       <div className="field-group">
@@ -651,7 +665,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.feature2_title}
-                          onChange={(e) => setSettingsForm({...settingsForm, feature2_title: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, feature2_title: e.target.value })}
                         />
                       </div>
                     </div>
@@ -660,7 +674,7 @@ function AdminPage() {
                       <textarea
                         rows="2"
                         value={settingsForm.feature2_desc}
-                        onChange={(e) => setSettingsForm({...settingsForm, feature2_desc: e.target.value})}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, feature2_desc: e.target.value })}
                       />
                     </div>
                   </div>
@@ -674,7 +688,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.feature3_icon}
-                          onChange={(e) => setSettingsForm({...settingsForm, feature3_icon: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, feature3_icon: e.target.value })}
                         />
                       </div>
                       <div className="field-group">
@@ -682,7 +696,7 @@ function AdminPage() {
                         <input
                           type="text"
                           value={settingsForm.feature3_title}
-                          onChange={(e) => setSettingsForm({...settingsForm, feature3_title: e.target.value})}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, feature3_title: e.target.value })}
                         />
                       </div>
                     </div>
@@ -691,7 +705,7 @@ function AdminPage() {
                       <textarea
                         rows="2"
                         value={settingsForm.feature3_desc}
-                        onChange={(e) => setSettingsForm({...settingsForm, feature3_desc: e.target.value})}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, feature3_desc: e.target.value })}
                       />
                     </div>
                   </div>
@@ -700,13 +714,13 @@ function AdminPage() {
                 {/* CONTACT & FOOTER EDITOR */}
                 <fieldset className="settings-fieldset">
                   <legend>✉️ Section 5: Hubungi Kami & Footer</legend>
-                  
+
                   <div className="field-group">
                     <label>Email Kontak</label>
                     <input
                       type="text"
                       value={settingsForm.contact_email}
-                      onChange={(e) => setSettingsForm({...settingsForm, contact_email: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, contact_email: e.target.value })}
                     />
                   </div>
 
@@ -715,7 +729,7 @@ function AdminPage() {
                     <input
                       type="text"
                       value={settingsForm.contact_instagram}
-                      onChange={(e) => setSettingsForm({...settingsForm, contact_instagram: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, contact_instagram: e.target.value })}
                     />
                   </div>
 
@@ -724,7 +738,7 @@ function AdminPage() {
                     <input
                       type="text"
                       value={settingsForm.contact_location}
-                      onChange={(e) => setSettingsForm({...settingsForm, contact_location: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, contact_location: e.target.value })}
                     />
                   </div>
 
@@ -733,7 +747,7 @@ function AdminPage() {
                     <input
                       type="text"
                       value={settingsForm.footer_text}
-                      onChange={(e) => setSettingsForm({...settingsForm, footer_text: e.target.value})}
+                      onChange={(e) => setSettingsForm({ ...settingsForm, footer_text: e.target.value })}
                     />
                   </div>
                 </fieldset>
