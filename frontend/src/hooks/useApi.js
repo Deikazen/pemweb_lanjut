@@ -8,8 +8,8 @@
 import { useState, useCallback } from "react";
 
 const API_URL = process.env.NODE_ENV === "production"
-  ? "" 
-  : (process.env.REACT_APP_API_URL || "http://localhost:5000");
+  ? ""
+  : "http://localhost:5000";
 
 function useApi() {
   const [items, setItems] = useState([]);
@@ -176,18 +176,18 @@ function useApi() {
 
   const clearError = () => setError("");
 
-  return { 
-    items, 
+  return {
+    items,
     landingSettings,
-    loading, 
-    error, 
-    clearError, 
-    getItems, 
+    loading,
+    error,
+    clearError,
+    getItems,
     getLandingSettings,
     saveLandingSettings,
-    saveItem, 
-    deleteItem, 
-    loginAdmin 
+    saveItem,
+    deleteItem,
+    loginAdmin
   };
 }
 
