@@ -11,8 +11,8 @@
   "dev:frontend": "env-cmd -f frontend/.env.development npm run start --workspace=frontend",
   "dev": "concurrently --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
   
-  "build:backend": "env-cmd -f backend/.env.production npm run build --workspace=backend --if-present",
-  "build:frontend": "env-cmd -f frontend/.env.production npm run build --workspace=frontend --if-present"
+  "build:backend": "env-cmd -f backend/.env.kopi npm run build --workspace=backend --if-present",
+  "build:frontend": "env-cmd -f frontend/.env.pemweb npm run build --workspace=frontend --if-present"
 },
   "devDependencies": {
     "concurrently": "^8.2.2"
