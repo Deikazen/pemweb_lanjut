@@ -2,11 +2,30 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { fileURLToPath } from "url";
 import path from "path";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, "../.env.kopi") });
+// Load local .env files for development only.
+// On Vercel, environment variables are injected via the dashboard, 
+// so dotenv is not needed. The .env files are gitignored and don't exist on Vercel.
+const envFiles = [
+    path.resolve(__dirname, "../.env.kopi"),
+    path.resolve(__dirname, "../.env"),
+];
+
+for (const envFile of envFiles) {
+    if (fs.existsSync(envFile)) {
+        dotenv.config({ path: envFile });
+        console.log(`[supabaseClient] Loaded env from: ${envFile}`);
+        break;
+    }
+}
+
+if (!process.env.SUPABASE_URL) {
+    console.log("[supabaseClient] No local .env file found. Using process.env (Vercel dashboard variables).");
+}
 
 const cleanEnvVar = (val) => {
     if (!val) return val;
