@@ -9,10 +9,10 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env.kopi") });
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ROLE_KEY;
+const supabaseKey = process.env.SUPABASE_ROLE_KEY || process.env.SUPABASE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-    console.error("CRITICAL ERROR: SUPABASE_URL or SUPABASE_ROLE_KEY is missing in process.env!");
+    console.error("CRITICAL ERROR: SUPABASE_URL and either SUPABASE_ROLE_KEY or SUPABASE_KEY are missing in process.env!");
 }
 
 export const supabase = (supabaseUrl && supabaseKey)
@@ -27,7 +27,7 @@ export const supabase = (supabaseUrl && supabaseKey)
 
 export const createStatelessClient = () => {
     if (!supabaseUrl || !supabaseKey) {
-        throw new Error("SUPABASE_URL or SUPABASE_ROLE_KEY is not defined in Vercel environment variables.");
+        throw new Error("SUPABASE_URL and either SUPABASE_ROLE_KEY or SUPABASE_KEY must be defined in environment variables.");
     }
     return createClient(supabaseUrl, supabaseKey, {
         auth: {
