@@ -52,7 +52,16 @@ const loginUser = async (req, res) => {
             password: password,
         })
 
-        if (error) return res.status(401).json({ error: error.message });
+        if (error) {
+            console.error("loginUser Supabase auth error:", error);
+            const isInvalidKey = error.message && error.message.toLowerCase().includes("api key");
+            return res.status(401).json({ 
+                error: error.message,
+                hint: isInvalidKey 
+                    ? "Supabase API key is rejected. Check Vercel Environment Variables for SUPABASE_KEY / SUPABASE_ROLE_KEY. Make sure they match the correct Anon/Service-Role JWT key starting with 'eyJ' and have no surrounding quotes or spaces."
+                    : undefined
+            });
+        }
 
         const token = data.session.access_token;
 
@@ -62,7 +71,10 @@ const loginUser = async (req, res) => {
         })
     } catch (err) {
         console.error("loginUser critical error:", err);
-        res.status(500).json({ error: err.message || "Terjadi kesalahan internal pada proses login." });
+        res.status(500).json({ 
+            error: err.message || "Terjadi kesalahan internal pada proses login.",
+            hint: "Check server logs for SUPABASE DIAGNOSTIC INITIALIZATION to inspect env variables loaded by Vercel."
+        });
     }
 }
 
