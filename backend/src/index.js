@@ -18,6 +18,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:5000",
   "http://localhost:5173",
   "https://pemweb-lanjut-frontend.vercel.app",
   "https://pemweb-lanjut-six.vercel.app",
@@ -55,10 +56,10 @@ app.get("/{*splat}", (req, res) => {
 // Express Error Handler
 app.use((err, req, res, next) => {
   console.error("EXPRESS UNCAUGHT ERROR:", err);
-  res.status(500).json({ 
+  res.status(500).json({
     error: "Terjadi kesalahan internal pada server Express.",
     message: err.message,
-    stack: err.stack 
+    stack: err.stack
   });
 });
 
