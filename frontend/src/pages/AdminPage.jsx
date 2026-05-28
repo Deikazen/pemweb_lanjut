@@ -131,7 +131,7 @@ function AdminPage() {
       showMessage("Nama, harga dan gambar wajib diisi/diupload");
       return;
     }
-    const result = await saveItem({ token, name, mediaUrl, editId });
+    const result = await saveItem({ token, name, price, mediaUrl, editId });
     if (result.success) {
       setName("");
       setPrice("");
@@ -341,21 +341,33 @@ function AdminPage() {
                 </div>
 
                 <div className="field-group">
-                  <label>Gambar Item (File Upload / Choose File)</label>
+                  <label>Gambar Item</label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleItemFileChange}
-                    className="admin-file-input"
-                    style={{ marginBottom: "8px" }}
+                    className="admin-file-input-hidden"
+                    id="item-file-upload"
                   />
-                  <span style={{ fontSize: "12px", opacity: 0.6, display: "block" }}>
-                    Atau masukkan URL gambar manual:
-                  </span>
+                  <label
+                    htmlFor="item-file-upload"
+                    className={`upload-zone ${mediaUrl.startsWith("data:") ? "upload-zone--filled" : ""}`}
+                  >
+                    <span className="upload-zone__icon">
+                      {mediaUrl.startsWith("data:") ? "✅" : "📂"}
+                    </span>
+                    <span className="upload-zone__text">
+                      {mediaUrl.startsWith("data:") ? "Gambar berhasil dipilih" : "Klik untuk pilih gambar"}
+                    </span>
+                    <span className="upload-zone__hint">
+                      {mediaUrl.startsWith("data:") ? "Klik untuk ganti gambar" : "JPG, PNG, WebP"}
+                    </span>
+                  </label>
+                  <span className="url-or-divider">atau masukkan URL gambar manual</span>
                   <input
                     type="text"
                     placeholder="https://..."
-                    value={mediaUrl.startsWith("data:") ? "[Gambar Terupload (Base64)]" : mediaUrl}
+                    value={mediaUrl.startsWith("data:") ? "" : mediaUrl}
                     onChange={(e) => setMediaUrl(e.target.value)}
                   />
                 </div>
@@ -408,6 +420,9 @@ function AdminPage() {
                       />
                       <div className="admin-item-content">
                         <h3>{item.name}</h3>
+                        <p style={{ color: "#d2691e", fontWeight: "600" }}>
+                          {item.price ? `Rp ${Number(item.price).toLocaleString('id-ID')}` : 'Harga belum diisi'}
+                        </p>
                         <p>ID: {item.id}</p>
                         <div className="card-actions">
                           <button className="btn-edit" onClick={() => handleStartEdit(item)}>
@@ -431,148 +446,264 @@ function AdminPage() {
            ───────────────────────────────────────── */}
         {activeTab === "landing" && (
           <div className="tab-panel">
-            <section className="admin-form-section" style={{ maxWidth: "100%" }}>
-              <h2>✨ Edit Komponen Landing Page</h2>
-              <p style={{ opacity: 0.7, marginBottom: "25px", fontSize: "14px" }}>
-                Kelola tulisan, gambar, angka statistik, dan seluruh komponen landing page Anda langsung dari database.
-              </p>
 
+            <div className="landing-editor-header">
+              <h2>✨ Edit Komponen Landing Page</h2>
+              <p>Kelola tulisan, gambar, angka statistik, dan seluruh komponen landing page langsung dari database.</p>
+            </div>
+
+            <div className="landing-editor-layout">
+
+              {/* SIDEBAR NAVIGASI CEPAT */}
+              <aside className="landing-section-nav">
+                <p className="section-nav-title">Navigasi Cepat</p>
+                <a href="#section-hero" className="section-nav-link">
+                  <span className="section-nav-num">1</span>
+                  <span>🚀 Hero</span>
+                </a>
+                <a href="#section-stats" className="section-nav-link">
+                  <span className="section-nav-num">2</span>
+                  <span>📊 Statistik</span>
+                </a>
+                <a href="#section-about" className="section-nav-link">
+                  <span className="section-nav-num">3</span>
+                  <span>🌱 Tentang Kami</span>
+                </a>
+                <a href="#section-features" className="section-nav-link">
+                  <span className="section-nav-num">4</span>
+                  <span>🛋️ Keunggulan</span>
+                </a>
+                <a href="#section-contact" className="section-nav-link">
+                  <span className="section-nav-num">5</span>
+                  <span>✉️ Kontak & Footer</span>
+                </a>
+              </aside>
+
+              {/* FORM UTAMA */}
               <form onSubmit={handleSaveSettings} className="admin-settings-form">
 
-                {/* HERO SECTION EDITOR */}
-                <fieldset className="settings-fieldset">
-                  <legend>🚀 Section 1: Hero (Tampilan Utama)</legend>
+                {/* ═══ SECTION 1: HERO ═══ */}
+                <fieldset className="settings-fieldset" id="section-hero">
+                  <legend><span className="fieldset-num">1</span>🚀 Section Hero (Tampilan Utama)</legend>
 
-                  <div className="field-group">
-                    <label>Badge Hero</label>
-                    <input
-                      type="text"
-                      value={settingsForm.hero_badge}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_badge: e.target.value })}
-                    />
+                  <div className="settings-grid-2">
+                    <div className="field-group">
+                      <label>Badge Hero</label>
+                      <input
+                        type="text"
+                        value={settingsForm.hero_badge}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, hero_badge: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="field-group field-group--span2">
+                      <label>Judul Hero (Gunakan baris baru untuk memotong teks)</label>
+                      <textarea
+                        rows="3"
+                        value={settingsForm.hero_title}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, hero_title: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="field-group field-group--span2">
+                      <label>Deskripsi Hero</label>
+                      <textarea
+                        rows="4"
+                        value={settingsForm.hero_desc}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, hero_desc: e.target.value })}
+                      />
+                    </div>
                   </div>
 
                   <div className="field-group">
-                    <label>Judul Hero (Gunakan baris baru untuk memotong teks)</label>
-                    <textarea
-                      rows="3"
-                      value={settingsForm.hero_title}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_title: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="field-group">
-                    <label>Deskripsi Hero</label>
-                    <textarea
-                      rows="4"
-                      value={settingsForm.hero_desc}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_desc: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="field-group">
-                    <label>Gambar Utama Hero (Choose File / Upload)</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleHeroImageChange}
-                      className="admin-file-input"
-                      style={{ marginBottom: "8px" }}
-                    />
-                    <span style={{ fontSize: "12px", opacity: 0.6, display: "block" }}>Atau masukkan URL Gambar manual:</span>
-                    <input
-                      type="text"
-                      value={settingsForm.hero_image.startsWith("data:") ? "[Gambar Terupload (Base64)]" : settingsForm.hero_image}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, hero_image: e.target.value })}
-                    />
+                    <label>Gambar Utama Hero</label>
+                    <div className="image-upload-container">
+                      <div className="image-upload-controls">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleHeroImageChange}
+                          className="admin-file-input-hidden"
+                          id="hero-file-upload"
+                        />
+                        <label
+                          htmlFor="hero-file-upload"
+                          className={`upload-zone ${settingsForm.hero_image.startsWith("data:") ? "upload-zone--filled" : ""}`}
+                        >
+                          <span className="upload-zone__icon">
+                            {settingsForm.hero_image.startsWith("data:") ? "✅" : "📂"}
+                          </span>
+                          <span className="upload-zone__text">
+                            {settingsForm.hero_image.startsWith("data:") ? "Gambar berhasil dipilih" : "Klik untuk pilih gambar"}
+                          </span>
+                          <span className="upload-zone__hint">
+                            {settingsForm.hero_image.startsWith("data:") ? "Klik untuk ganti gambar" : "JPG, PNG, WebP"}
+                          </span>
+                        </label>
+                        <span className="url-or-divider">atau masukkan URL gambar manual</span>
+                        <input
+                          type="text"
+                          placeholder="https://..."
+                          value={settingsForm.hero_image.startsWith("data:") ? "" : settingsForm.hero_image}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, hero_image: e.target.value })}
+                        />
+                      </div>
+                      {settingsForm.hero_image && (
+                        <div className="image-preview-panel">
+                          <span className="image-preview-label">Preview</span>
+                          <img
+                            src={settingsForm.hero_image}
+                            alt="Hero preview"
+                            className="image-preview-img"
+                            onError={(e) => { e.target.style.display = "none"; }}
+                          />
+                          <button
+                            type="button"
+                            className="btn-clear-image"
+                            onClick={() => setSettingsForm({ ...settingsForm, hero_image: "" })}
+                          >
+                            Hapus Gambar
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </fieldset>
 
-                {/* STATS SECTION EDITOR */}
-                <fieldset className="settings-fieldset">
-                  <legend>📊 Section 2: Angka Statistik</legend>
+                {/* ═══ SECTION 2: STATISTIK ═══ */}
+                <fieldset className="settings-fieldset" id="section-stats">
+                  <legend><span className="fieldset-num">2</span>📊 Angka Statistik</legend>
 
-                  <div className="stats-fields-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "15px" }}>
-                    <div className="field-group">
-                      <label>Jumlah Varian Kopi</label>
-                      <input
-                        type="number"
-                        value={settingsForm.stat_variankopi}
-                        onChange={(e) => setSettingsForm({ ...settingsForm, stat_variankopi: e.target.value })}
-                      />
+                  <div className="stats-cards-grid">
+                    <div className="stat-input-card">
+                      <span className="stat-input-card__emoji">☕</span>
+                      <div className="field-group">
+                        <label>Varian Kopi</label>
+                        <input
+                          type="number"
+                          value={settingsForm.stat_variankopi}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, stat_variankopi: e.target.value })}
+                        />
+                      </div>
                     </div>
-                    <div className="field-group">
-                      <label>Persentase Arabika (%)</label>
-                      <input
-                        type="number"
-                        value={settingsForm.stat_arabikaasli}
-                        onChange={(e) => setSettingsForm({ ...settingsForm, stat_arabikaasli: e.target.value })}
-                      />
+
+                    <div className="stat-input-card">
+                      <span className="stat-input-card__emoji">🌿</span>
+                      <div className="field-group">
+                        <label>Arabika Asli (%)</label>
+                        <input
+                          type="number"
+                          value={settingsForm.stat_arabikaasli}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, stat_arabikaasli: e.target.value })}
+                        />
+                      </div>
                     </div>
-                    <div className="field-group">
-                      <label>Rating Tamu (1 - 5)</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={settingsForm.stat_ratingtamu}
-                        onChange={(e) => setSettingsForm({ ...settingsForm, stat_ratingtamu: e.target.value })}
-                      />
+
+                    <div className="stat-input-card">
+                      <span className="stat-input-card__emoji">⭐</span>
+                      <div className="field-group">
+                        <label>Rating Tamu (1–5)</label>
+                        <input
+                          type="number"
+                          step="0.1"
+                          value={settingsForm.stat_ratingtamu}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, stat_ratingtamu: e.target.value })}
+                        />
+                      </div>
                     </div>
                   </div>
                 </fieldset>
 
-                {/* ABOUT SECTION EDITOR */}
-                <fieldset className="settings-fieldset">
-                  <legend>🌱 Section 3: Cerita & Tentang Kami</legend>
+                {/* ═══ SECTION 3: ABOUT ═══ */}
+                <fieldset className="settings-fieldset" id="section-about">
+                  <legend><span className="fieldset-num">3</span>🌱 Cerita & Tentang Kami</legend>
 
-                  <div className="field-group">
-                    <label>Judul About</label>
-                    <input
-                      type="text"
-                      value={settingsForm.about_title}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, about_title: e.target.value })}
-                    />
+                  <div className="settings-grid-2">
+                    <div className="field-group">
+                      <label>Badge (Tahun Berdiri)</label>
+                      <input
+                        type="text"
+                        value={settingsForm.about_badge}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, about_badge: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="field-group">
+                      <label>Judul About</label>
+                      <input
+                        type="text"
+                        value={settingsForm.about_title}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, about_title: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="field-group field-group--span2">
+                      <label>Deskripsi About</label>
+                      <textarea
+                        rows="4"
+                        value={settingsForm.about_desc}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, about_desc: e.target.value })}
+                      />
+                    </div>
                   </div>
 
                   <div className="field-group">
-                    <label>Deskripsi About</label>
-                    <textarea
-                      rows="4"
-                      value={settingsForm.about_desc}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, about_desc: e.target.value })}
-                    />
+                    <label>Gambar Section About</label>
+                    <div className="image-upload-container">
+                      <div className="image-upload-controls">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAboutImageChange}
+                          className="admin-file-input-hidden"
+                          id="about-file-upload"
+                        />
+                        <label
+                          htmlFor="about-file-upload"
+                          className={`upload-zone ${settingsForm.about_image.startsWith("data:") ? "upload-zone--filled" : ""}`}
+                        >
+                          <span className="upload-zone__icon">
+                            {settingsForm.about_image.startsWith("data:") ? "✅" : "📂"}
+                          </span>
+                          <span className="upload-zone__text">
+                            {settingsForm.about_image.startsWith("data:") ? "Gambar berhasil dipilih" : "Klik untuk pilih gambar"}
+                          </span>
+                          <span className="upload-zone__hint">
+                            {settingsForm.about_image.startsWith("data:") ? "Klik untuk ganti gambar" : "JPG, PNG, WebP"}
+                          </span>
+                        </label>
+                        <span className="url-or-divider">atau masukkan URL gambar manual</span>
+                        <input
+                          type="text"
+                          placeholder="https://..."
+                          value={settingsForm.about_image.startsWith("data:") ? "" : settingsForm.about_image}
+                          onChange={(e) => setSettingsForm({ ...settingsForm, about_image: e.target.value })}
+                        />
+                      </div>
+                      {settingsForm.about_image && (
+                        <div className="image-preview-panel">
+                          <span className="image-preview-label">Preview</span>
+                          <img
+                            src={settingsForm.about_image}
+                            alt="About preview"
+                            className="image-preview-img"
+                            onError={(e) => { e.target.style.display = "none"; }}
+                          />
+                          <button
+                            type="button"
+                            className="btn-clear-image"
+                            onClick={() => setSettingsForm({ ...settingsForm, about_image: "" })}
+                          >
+                            Hapus Gambar
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="field-group">
-                    <label>Tahun Berdiri (Badge)</label>
-                    <input
-                      type="text"
-                      value={settingsForm.about_badge}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, about_badge: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="field-group">
-                    <label>Gambar Section About (Choose File / Upload)</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleAboutImageChange}
-                      className="admin-file-input"
-                      style={{ marginBottom: "8px" }}
-                    />
-                    <span style={{ fontSize: "12px", opacity: 0.6, display: "block" }}>Atau masukkan URL Gambar manual:</span>
-                    <input
-                      type="text"
-                      value={settingsForm.about_image.startsWith("data:") ? "[Gambar Terupload (Base64)]" : settingsForm.about_image}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, about_image: e.target.value })}
-                    />
-                  </div>
-
-                  {/* KARTU INFO ABOUT */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginTop: "15px" }}>
-                    <div className="card-sub-fieldset" style={{ border: "1px solid rgba(255,255,255,0.08)", padding: "10px", borderRadius: "6px" }}>
-                      <h4>Kartu Kiri (Kenapa Kami)</h4>
+                  <div className="about-cards-grid">
+                    <div className="about-card-editor">
+                      <h4 className="about-card-editor__title">📌 Kartu Kiri — Kenapa Kami</h4>
                       <div className="field-group">
                         <label>Judul Kartu</label>
                         <input
@@ -582,7 +713,7 @@ function AdminPage() {
                         />
                       </div>
                       <div className="field-group">
-                        <label>Deskripsi Kartu</label>
+                        <label>Deskripsi</label>
                         <textarea
                           rows="3"
                           value={settingsForm.about_card1_desc}
@@ -591,8 +722,8 @@ function AdminPage() {
                       </div>
                     </div>
 
-                    <div className="card-sub-fieldset" style={{ border: "1px solid rgba(255,255,255,0.08)", padding: "10px", borderRadius: "6px" }}>
-                      <h4>Kartu Kanan (Tujuan)</h4>
+                    <div className="about-card-editor">
+                      <h4 className="about-card-editor__title">📌 Kartu Kanan — Tujuan</h4>
                       <div className="field-group">
                         <label>Judul Kartu</label>
                         <input
@@ -602,7 +733,7 @@ function AdminPage() {
                         />
                       </div>
                       <div className="field-group">
-                        <label>Deskripsi Kartu</label>
+                        <label>Deskripsi</label>
                         <textarea
                           rows="3"
                           value={settingsForm.about_card2_desc}
@@ -613,152 +744,100 @@ function AdminPage() {
                   </div>
                 </fieldset>
 
-                {/* FEATURES SECTION EDITOR */}
-                <fieldset className="settings-fieldset">
-                  <legend>🛋️ Section 4: Keunggulan (3 Poin Utama)</legend>
+                {/* ═══ SECTION 4: FEATURES ═══ */}
+                <fieldset className="settings-fieldset" id="section-features">
+                  <legend><span className="fieldset-num">4</span>🛋️ Keunggulan (3 Poin Utama)</legend>
 
-                  {/* FEATURE 1 */}
-                  <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "15px", marginBottom: "15px" }}>
-                    <h4>Keunggulan 1</h4>
-                    <div style={{ display: "grid", gridTemplateColumns: "80px 1fr", gap: "10px" }}>
-                      <div className="field-group">
-                        <label>Icon</label>
-                        <input
-                          type="text"
-                          value={settingsForm.feature1_icon}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, feature1_icon: e.target.value })}
-                        />
+                  <div className="features-cards-grid">
+                    {[1, 2, 3].map((n) => (
+                      <div className="feature-card-editor" key={n}>
+                        <div className="feature-card-editor__header">
+                          <span className="feature-card-editor__num">Keunggulan {n}</span>
+                          <div className="field-group field-group--icon">
+                            <label>Icon</label>
+                            <input
+                              type="text"
+                              value={settingsForm[`feature${n}_icon`]}
+                              onChange={(e) => setSettingsForm({ ...settingsForm, [`feature${n}_icon`]: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                        <div className="field-group">
+                          <label>Judul</label>
+                          <input
+                            type="text"
+                            value={settingsForm[`feature${n}_title`]}
+                            onChange={(e) => setSettingsForm({ ...settingsForm, [`feature${n}_title`]: e.target.value })}
+                          />
+                        </div>
+                        <div className="field-group">
+                          <label>Deskripsi</label>
+                          <textarea
+                            rows="3"
+                            value={settingsForm[`feature${n}_desc`]}
+                            onChange={(e) => setSettingsForm({ ...settingsForm, [`feature${n}_desc`]: e.target.value })}
+                          />
+                        </div>
                       </div>
-                      <div className="field-group">
-                        <label>Judul Keunggulan 1</label>
-                        <input
-                          type="text"
-                          value={settingsForm.feature1_title}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, feature1_title: e.target.value })}
-                        />
-                      </div>
-                    </div>
+                    ))}
+                  </div>
+                </fieldset>
+
+                {/* ═══ SECTION 5: KONTAK & FOOTER ═══ */}
+                <fieldset className="settings-fieldset" id="section-contact">
+                  <legend><span className="fieldset-num">5</span>✉️ Kontak & Footer</legend>
+
+                  <div className="settings-grid-2">
                     <div className="field-group">
-                      <label>Deskripsi Keunggulan 1</label>
-                      <textarea
-                        rows="2"
-                        value={settingsForm.feature1_desc}
-                        onChange={(e) => setSettingsForm({ ...settingsForm, feature1_desc: e.target.value })}
+                      <label>📧 Email Kontak</label>
+                      <input
+                        type="text"
+                        value={settingsForm.contact_email}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, contact_email: e.target.value })}
                       />
                     </div>
-                  </div>
 
-                  {/* FEATURE 2 */}
-                  <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "15px", marginBottom: "15px" }}>
-                    <h4>Keunggulan 2</h4>
-                    <div style={{ display: "grid", gridTemplateColumns: "80px 1fr", gap: "10px" }}>
-                      <div className="field-group">
-                        <label>Icon</label>
-                        <input
-                          type="text"
-                          value={settingsForm.feature2_icon}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, feature2_icon: e.target.value })}
-                        />
-                      </div>
-                      <div className="field-group">
-                        <label>Judul Keunggulan 2</label>
-                        <input
-                          type="text"
-                          value={settingsForm.feature2_title}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, feature2_title: e.target.value })}
-                        />
-                      </div>
-                    </div>
                     <div className="field-group">
-                      <label>Deskripsi Keunggulan 2</label>
-                      <textarea
-                        rows="2"
-                        value={settingsForm.feature2_desc}
-                        onChange={(e) => setSettingsForm({ ...settingsForm, feature2_desc: e.target.value })}
+                      <label>📸 Username Instagram</label>
+                      <input
+                        type="text"
+                        value={settingsForm.contact_instagram}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, contact_instagram: e.target.value })}
                       />
                     </div>
-                  </div>
 
-                  {/* FEATURE 3 */}
-                  <div>
-                    <h4>Keunggulan 3</h4>
-                    <div style={{ display: "grid", gridTemplateColumns: "80px 1fr", gap: "10px" }}>
-                      <div className="field-group">
-                        <label>Icon</label>
-                        <input
-                          type="text"
-                          value={settingsForm.feature3_icon}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, feature3_icon: e.target.value })}
-                        />
-                      </div>
-                      <div className="field-group">
-                        <label>Judul Keunggulan 3</label>
-                        <input
-                          type="text"
-                          value={settingsForm.feature3_title}
-                          onChange={(e) => setSettingsForm({ ...settingsForm, feature3_title: e.target.value })}
-                        />
-                      </div>
-                    </div>
                     <div className="field-group">
-                      <label>Deskripsi Keunggulan 3</label>
-                      <textarea
-                        rows="2"
-                        value={settingsForm.feature3_desc}
-                        onChange={(e) => setSettingsForm({ ...settingsForm, feature3_desc: e.target.value })}
+                      <label>📍 Lokasi / Kota</label>
+                      <input
+                        type="text"
+                        value={settingsForm.contact_location}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, contact_location: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="field-group">
+                      <label>© Teks Hak Cipta Footer</label>
+                      <input
+                        type="text"
+                        value={settingsForm.footer_text}
+                        onChange={(e) => setSettingsForm({ ...settingsForm, footer_text: e.target.value })}
                       />
                     </div>
                   </div>
                 </fieldset>
 
-                {/* CONTACT & FOOTER EDITOR */}
-                <fieldset className="settings-fieldset">
-                  <legend>✉️ Section 5: Hubungi Kami & Footer</legend>
-
-                  <div className="field-group">
-                    <label>Email Kontak</label>
-                    <input
-                      type="text"
-                      value={settingsForm.contact_email}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, contact_email: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="field-group">
-                    <label>Username Instagram</label>
-                    <input
-                      type="text"
-                      value={settingsForm.contact_instagram}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, contact_instagram: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="field-group">
-                    <label>Lokasi / Kota</label>
-                    <input
-                      type="text"
-                      value={settingsForm.contact_location}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, contact_location: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="field-group">
-                    <label>Teks Hak Cipta Footer</label>
-                    <input
-                      type="text"
-                      value={settingsForm.footer_text}
-                      onChange={(e) => setSettingsForm({ ...settingsForm, footer_text: e.target.value })}
-                    />
-                  </div>
-                </fieldset>
-
-                <div className="settings-form-actions" style={{ display: "flex", gap: "10px", margin: "20px 0" }}>
-                  <button type="submit" className="btn-save" style={{ flex: 1, padding: "14px 20px", fontSize: "16px" }} disabled={loading}>
-                    {loading ? "Menyimpan Perubahan..." : "💾 Simpan Perubahan Landing Page"}
+                {/* STICKY SAVE BAR */}
+                <div className="sticky-save-bar">
+                  <span className="sticky-save-bar__info">
+                    Pastikan semua perubahan sudah benar sebelum menyimpan.
+                  </span>
+                  <button type="submit" className="btn-save btn-save--lg" disabled={loading}>
+                    {loading ? "⏳ Menyimpan Perubahan..." : "💾 Simpan Semua Perubahan"}
                   </button>
                 </div>
+
               </form>
-            </section>
+            </div>
           </div>
         )}
 

@@ -22,16 +22,19 @@ const defaultItems = [
   {
     id: 1,
     name: "Signature Espresso",
+    price: 28000,
     media_url: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=700",
   },
   {
     id: 2,
     name: "Caramel Latte",
+    price: 32000,
     media_url: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=700",
   },
   {
     id: 3,
     name: "Matcha Cold Brew",
+    price: 35000,
     media_url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=700",
   },
 ];

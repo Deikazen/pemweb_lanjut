@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import fs from "fs";
 import router from "./routes/index.js";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -8,7 +9,12 @@ import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+// Load .env only if it exists (local development).
+// On Vercel, env vars are injected via the dashboard.
+const envPath = path.resolve(__dirname, "../.env");
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+}
 
 const PORT = process.env.PORT || 5000;
 

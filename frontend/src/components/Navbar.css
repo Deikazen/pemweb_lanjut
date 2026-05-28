@@ -106,7 +106,14 @@
 
 .nav-links .nav-admin-link:hover {
   background-color: var(--latte);
+  color: var(--espresso);
   transform: translateY(-1px);
+}
+
+.nav-links .nav-admin-link:focus-visible {
+  color: var(--espresso);
+  outline: 2px solid var(--cream);
+  outline-offset: 3px;
 }
 
 @media (max-width: 900px) {
