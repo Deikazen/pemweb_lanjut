@@ -1,0 +1,143 @@
+/* ============================================
+   ImageUpload.css
+   → Style untuk komponen upload gambar
+   → Includes: upload zone, preview panel, clear button
+   ============================================ */
+
+.admin-file-input-hidden {
+  display: none !important;
+}
+
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 22px 16px;
+  background-color: rgba(255,255,255,0.03);
+  border: 2px dashed rgba(192,125,62,0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgba(245,234,216,0.85);
+  font-size: 14px;
+}
+
+.upload-zone:hover {
+  background-color: rgba(192,125,62,0.07);
+  border-color: rgba(192,125,62,0.55);
+}
+
+.upload-zone--filled {
+  background-color: rgba(39,174,96,0.07);
+  border-color: rgba(39,174,96,0.35);
+  border-style: solid;
+}
+
+.upload-zone__icon {
+  font-size: 28px;
+  display: block;
+}
+
+.upload-zone__text {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(245,234,216,0.9);
+  display: block;
+}
+
+.upload-zone--filled .upload-zone__text {
+  color: #6fcf97;
+}
+
+.upload-zone__hint {
+  font-size: 12px;
+  color: rgba(245,234,216,0.35);
+  display: block;
+}
+
+.url-or-divider {
+  display: block;
+  font-size: 12px;
+  color: rgba(245,234,216,0.4);
+  margin: 8px 0;
+  font-style: italic;
+}
+
+/* ── IMAGE UPLOAD WITH PREVIEW ────────────── */
+.image-upload-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.image-upload-container--simple {
+  display: block;
+}
+
+.image-upload-controls {
+  flex: 1;
+  min-width: 0;
+}
+
+.image-preview-panel {
+  width: 190px;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(192, 125, 62, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.image-preview-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(245, 234, 216, 0.4);
+}
+
+.image-preview-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.btn-clear-image {
+  font-size: 11px;
+  color: #e07070;
+  background: rgba(192, 57, 43, 0.12);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.btn-clear-image:hover {
+  background: rgba(192, 57, 43, 0.25);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .image-upload-container {
+    flex-direction: column;
+  }
+
+  .image-preview-panel {
+    width: 100%;
+  }
+}

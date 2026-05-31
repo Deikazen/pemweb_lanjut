@@ -1,0 +1,20 @@
+/* ============================================
+   AlertMessage.css
+   → Style untuk komponen alert / toast message
+   ============================================ */
+
+.alert {
+  background-color: rgba(192,125,62,0.15);
+  border: 1px solid rgba(192,125,62,0.4);
+  color: var(--latte);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.alert.alert-success {
+  background-color: rgba(39,174,96,0.15);
+  border-color: rgba(39,174,96,0.4);
+  color: #6fcf97;
+}

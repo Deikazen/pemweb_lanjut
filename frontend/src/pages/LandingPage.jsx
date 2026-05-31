@@ -9,11 +9,20 @@
 //     · Hover efek kartu & tombol
 //     · Navbar glassmorphism saat scroll
 // → Data menu: dari backend via useApi (fallback ke defaultItems)
+// → Sub-komponen:
+//     · FloatingParticles → dekorasi hero
+//     · RevealSection     → scroll reveal wrapper
+//     · StatCounter       → animated counter
+//     · Navbar            → navigation bar
+//     · MenuCard          → kartu produk menu
 // ============================================
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import MenuCard from "../components/MenuCard";
+import FloatingParticles from "../components/FloatingParticles";
+import RevealSection from "../components/RevealSection";
+import StatCounter from "../components/StatCounter";
 import useApi from "../hooks/useApi";
 import "./LandingPage.css";
 
@@ -38,104 +47,6 @@ const defaultItems = [
     media_url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=700",
   },
 ];
-
-// ── Custom hook: animasi angka naik dari 0 ke target ──────────────
-function useCountUp(target, duration = 1800, start = false) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-    let startTime = null;
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      // Easing ease-out
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [target, duration, start]);
-  return count;
-}
-
-// ── Partikel mengambang (dekorasi hero) ───────────────────────────
-function FloatingParticles() {
-  const particles = Array.from({ length: 18 }, (_, i) => ({
-    id: i,
-    size:  4 + Math.random() * 10,
-    left:  Math.random() * 100,
-    delay: Math.random() * 8,
-    duration: 6 + Math.random() * 10,
-    opacity: 0.08 + Math.random() * 0.18,
-  }));
-
-  return (
-    <div className="particles" aria-hidden="true">
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="particle"
-          style={{
-            width:  p.size,
-            height: p.size,
-            left:   `${p.left}%`,
-            animationDelay:    `${p.delay}s`,
-            animationDuration: `${p.duration}s`,
-            opacity: p.opacity,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// ── Komponen section yang reveal saat masuk viewport ──────────────
-function RevealSection({ children, className, id }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.12 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section
-      ref={ref}
-      className={`${className} ${visible ? "section--visible" : "section--hidden"}`}
-      id={id}
-    >
-      {children}
-    </section>
-  );
-}
-
-// ── Komponen stat dengan animated counter ─────────────────────────
-function StatCounter({ value, label, suffix = "" }) {
-  const ref = useRef(null);
-  const [started, setStarted] = useState(false);
-  const count = useCountUp(value, 1600, started);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div className="hero-stat" ref={ref}>
-      <strong>{count}{suffix}</strong>
-      <span>{label}</span>
-    </div>
-  );
-}
 
 const defaultSettings = {
   hero_badge: "☕ Artisan · Cozy · Soulful",

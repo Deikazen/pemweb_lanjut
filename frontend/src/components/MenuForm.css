@@ -1,0 +1,123 @@
+/* ============================================
+   MenuForm.css
+   → Style form tambah / edit item menu
+   ============================================ */
+
+/* Form fields (shared login + admin form) */
+.field-group {
+  margin-bottom: 18px;
+}
+
+.field-group > label:not(.upload-zone) {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgba(245,234,216,0.7);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.field-group input {
+  width: 100%;
+  background-color: rgba(255,255,255,0.06);
+  border: 1px solid rgba(192,125,62,0.25);
+  color: var(--cream);
+  padding: 13px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.field-group input:focus {
+  outline: none;
+  border-color: var(--caramel);
+  background-color: rgba(255,255,255,0.09);
+}
+
+.field-group input::placeholder {
+  color: rgba(245,234,216,0.3);
+}
+
+.field-group input[type="number"]::-webkit-inner-spin-button,
+.field-group input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.field-group input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ── FORM SECTION ─────────────────────────── */
+.admin-form-section {
+  background-color: rgba(255,255,255,0.04);
+  border: 1px solid rgba(192,125,62,0.18);
+  border-radius: var(--card-radius);
+  padding: 32px;
+  margin-bottom: 28px;
+}
+
+.admin-form-section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--latte);
+  margin-bottom: 24px;
+}
+
+/* Form grid: 2 kolom */
+.admin-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save {
+  background-color: var(--caramel);
+  color: var(--espresso);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: var(--latte);
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: rgba(255,255,255,0.08);
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .admin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    grid-column: span 1;
+    flex-direction: column;
+  }
+}

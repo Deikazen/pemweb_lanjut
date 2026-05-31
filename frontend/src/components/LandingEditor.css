@@ -1,0 +1,257 @@
+/* ============================================
+   LandingEditor.css
+   → Style editor landing page di admin dashboard
+   → Includes: header, layout, fieldsets, settings grids,
+   →           stat cards, about cards, feature cards, sticky bar
+   ============================================ */
+
+/* ── LANDING EDITOR LAYOUT ────────────────── */
+.landing-editor-header {
+  margin-bottom: 28px;
+}
+
+.landing-editor-header h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--latte);
+  margin-bottom: 6px;
+}
+
+.landing-editor-header p {
+  font-size: 14px;
+  color: rgba(245, 234, 216, 0.55);
+}
+
+.landing-editor-layout {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ── FIELDSET ─────────────────────────────── */
+.settings-fieldset {
+  border: 1px solid rgba(192, 125, 62, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  background-color: rgba(0, 0, 0, 0.15);
+  scroll-margin-top: 130px;
+}
+
+.settings-fieldset legend {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--latte);
+  padding: 0 12px;
+  font-weight: 600;
+}
+
+.fieldset-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--caramel);
+  color: var(--espresso);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ── SETTINGS FORM TEXTAREA ──────────────── */
+.admin-settings-form textarea {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(192, 125, 62, 0.25);
+  color: var(--cream);
+  padding: 13px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s, background-color 0.2s;
+  resize: vertical;
+}
+
+.admin-settings-form textarea:focus {
+  outline: none;
+  border-color: var(--caramel);
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+/* ── SETTINGS GRID 2 COL ──────────────────── */
+.settings-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.field-group--span2 {
+  grid-column: span 2;
+}
+
+/* ── STATS CARDS ──────────────────────────── */
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-input-card {
+  background: rgba(192, 125, 62, 0.06);
+  border: 1px solid rgba(192, 125, 62, 0.22);
+  border-radius: 14px;
+  padding: 22px 16px 18px;
+  text-align: center;
+}
+
+.stat-input-card__emoji {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.stat-input-card .field-group {
+  margin-bottom: 0;
+}
+
+.stat-input-card .field-group > label:not(.upload-zone) {
+  text-align: center;
+}
+
+.stat-input-card .field-group input {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--caramel);
+  padding: 12px 8px;
+}
+
+/* ── ABOUT CARDS GRID ─────────────────────── */
+.about-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.about-card-editor {
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(192, 125, 62, 0.15);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.about-card-editor__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--latte);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* ── FEATURE CARDS GRID ───────────────────── */
+.features-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.feature-card-editor {
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(192, 125, 62, 0.15);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.feature-card-editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.feature-card-editor__num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--caramel);
+  white-space: nowrap;
+}
+
+.field-group--icon {
+  width: 68px;
+  margin-bottom: 0;
+}
+
+.feature-card-editor__header .field-group {
+  margin-bottom: 0;
+}
+
+/* ── STICKY SAVE BAR ──────────────────────── */
+.sticky-save-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: var(--espresso);
+  border-top: 1px solid rgba(192, 125, 62, 0.25);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+  border-radius: 0 0 16px 16px;
+}
+
+.sticky-save-bar__info {
+  font-size: 13px;
+  color: rgba(245, 234, 216, 0.45);
+  font-style: italic;
+}
+
+.btn-save--lg {
+  padding: 14px 36px;
+  font-size: 15px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .landing-editor-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-cards-grid,
+  .features-cards-grid,
+  .about-cards-grid,
+  .settings-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .field-group--span2 {
+    grid-column: span 1;
+  }
+
+  .sticky-save-bar {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  .sticky-save-bar__info {
+    display: none;
+  }
+}

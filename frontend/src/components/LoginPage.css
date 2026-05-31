@@ -1,0 +1,83 @@
+/* ============================================
+   LoginPage.css
+   → Style halaman login admin
+   → Includes: login page background, card, back button
+   ============================================ */
+
+.admin-login-page {
+  min-height: 100vh;
+  background-color: var(--espresso);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(192,125,62,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(74,44,26,0.4) 0%, transparent 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--dark-roast);
+  border: 1px solid rgba(192,125,62,0.25);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--latte);
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+  margin-bottom: 28px;
+  display: block;
+}
+
+.back-btn:hover {
+  opacity: 1;
+}
+
+.admin-login-card h1 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.admin-login-card > p {
+  font-size: 14px;
+  color: rgba(245,234,216,0.5);
+  margin-bottom: 28px;
+}
+
+/* Submit button (login) */
+.btn-submit {
+  width: 100%;
+  background-color: var(--caramel);
+  color: var(--espresso);
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 8px;
+  transition: background-color 0.25s, transform 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--latte);
+  color: var(--espresso);
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
