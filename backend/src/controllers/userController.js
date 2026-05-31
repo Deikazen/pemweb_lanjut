@@ -15,7 +15,7 @@ const createUser = async (req, res) => {
         return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
     }
     const { name, email } = req.body;
-    const { data, error } = await supabase.from('users').insert([{ name, email }]).select();
+    const { data, error } = await supabase.from('users').insert([{ name, email, role: 'customer' }]).select();
     if (error) return res.status(400).json({ error: error.message });
     res.status(201).json({ message: "Berhasil membuat user", data });
 }
@@ -55,9 +55,9 @@ const loginUser = async (req, res) => {
         if (error) {
             console.error("loginUser Supabase auth error:", error);
             const isInvalidKey = error.message && error.message.toLowerCase().includes("api key");
-            return res.status(401).json({ 
+            return res.status(401).json({
                 error: error.message,
-                hint: isInvalidKey 
+                hint: isInvalidKey
                     ? "Supabase API key is rejected. Check Vercel Environment Variables for SUPABASE_KEY / SUPABASE_ROLE_KEY. Make sure they match the correct Anon/Service-Role JWT key starting with 'eyJ' and have no surrounding quotes or spaces."
                     : undefined
             });
@@ -71,7 +71,7 @@ const loginUser = async (req, res) => {
         })
     } catch (err) {
         console.error("loginUser critical error:", err);
-        res.status(500).json({ 
+        res.status(500).json({
             error: err.message || "Terjadi kesalahan internal pada proses login.",
             hint: "Check server logs for SUPABASE DIAGNOSTIC INITIALIZATION to inspect env variables loaded by Vercel."
         });
