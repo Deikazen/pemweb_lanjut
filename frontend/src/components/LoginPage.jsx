@@ -1,58 +1,106 @@
 // ============================================
-// LoginPage.jsx  (Halaman Auth Universal)
-// → Form Login & Register (tab-based)
-// → Bisa dipakai oleh Admin maupun Customer
-// → Register: nama, email, password → akun baru
-// → Login: email, password → dapat JWT token + role
-// → Tombol kembali ke Landing Page
-// → Dipakai di: AdminPage (saat belum login)
+// LoginPage.jsx  (Halaman Auth Universal Mandiri)
+// → Bisa diakses melalui rute /login
+// → Menangani state form dan API call sendiri
+// → Redirect cerdas berdasarkan role (Admin vs Customer)
 // ============================================
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useApi from "../hooks/useApi"; // Pastikan import custom hook kamu
 import AlertMessage from "./AlertMessage";
 import "./LoginPage.css";
 
-function LoginPage({
-  // Login props
-  email,
-  password,
-  onEmailChange,
-  onPasswordChange,
-  onLoginSubmit,
-  // Register props
-  onRegisterSubmit,
-  // Shared
-  loading,
-  message,
-  msgType,
-}) {
+function LoginPage() {
   const navigate = useNavigate();
+  // Ambil fungsi API dari hook
+  const { loginUser, registerUser, loading, error, clearError } = useApi();
+
   const [authMode, setAuthMode] = useState("login"); // "login" | "register"
 
-  // Register form state (managed locally)
+  // Login form state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Register form state
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [regConfirmPassword, setRegConfirmPassword] = useState("");
 
-  const handleRegister = (e) => {
+  // Toast message state
+  const [message, setMessage] = useState("");
+  const [msgType, setMsgType] = useState("");
+
+  const showMessage = (text, type = "") => {
+    setMessage(text);
+    setMsgType(type);
+    setTimeout(() => { setMessage(""); setMsgType(""); }, 3500);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    // Jika sudah punya token, langsung redirect tanpa perlu lihat form
+    if (token) {
+      if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [navigate]);
+
+  // ── LOGIKA LOGIN ──
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const result = await loginUser({ email, password });
+
+    if (result.success) {
+      // 1. Simpan token & role ke localStorage
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("role", result.user.role);
+
+      // 2. Redirect Universal berdasarkan Role
+      if (result.user.role === "admin") {
+        navigate("/admin"); // Admin langsung ke dashboard
+      } else {
+        navigate("/"); // Customer langsung ke landing page
+      }
+    } else {
+      showMessage(error || "Login gagal. Periksa kembali email & password Anda.");
+      clearError();
+    }
+  };
+
+  // ── LOGIKA REGISTER ──
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (regPassword !== regConfirmPassword) {
-      // Parent will handle this via showMessage, but we can pass it up
-      onRegisterSubmit(e, { name: regName, email: regEmail, password: regPassword, confirmPassword: regConfirmPassword });
+      showMessage("Password dan Konfirmasi Password tidak cocok!");
       return;
     }
-    onRegisterSubmit(e, { name: regName, email: regEmail, password: regPassword, confirmPassword: regConfirmPassword });
+    if (!regName || !regEmail || !regPassword) {
+      showMessage("Semua field wajib diisi!");
+      return;
+    }
+
+    const result = await registerUser({ name: regName, email: regEmail, password: regPassword });
+
+    if (result.success) {
+      showMessage("Registrasi berhasil! Silakan masuk.", "success");
+      setAuthMode("login"); // Otomatis pindah ke tab login
+      setEmail(regEmail); // Otomatis isi email yang baru didaftarkan
+      setRegPassword("");
+    } else {
+      showMessage(error || "Gagal mendaftarkan akun.");
+      clearError();
+    }
   };
 
-  const switchToLogin = () => {
-    setAuthMode("login");
-  };
-
-  const switchToRegister = () => {
-    setAuthMode("register");
-  };
+  const switchToLogin = () => setAuthMode("login");
+  const switchToRegister = () => setAuthMode("register");
 
   return (
     <div className="auth-page">
@@ -89,7 +137,7 @@ function LoginPage({
 
         {/* ═══ LOGIN FORM ═══ */}
         {authMode === "login" && (
-          <form onSubmit={onLoginSubmit} className="auth-form">
+          <form onSubmit={handleLogin} className="auth-form">
             <p className="auth-subtitle">Masuk ke akun Anda untuk melanjutkan.</p>
 
             <div className="field-group">
@@ -98,7 +146,7 @@ function LoginPage({
                 type="email"
                 placeholder="email@contoh.com"
                 value={email}
-                onChange={(e) => onEmailChange(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -109,7 +157,7 @@ function LoginPage({
                 type="password"
                 placeholder="Masukkan password"
                 value={password}
-                onChange={(e) => onPasswordChange(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>

@@ -1,22 +1,21 @@
 // ============================================
 // AdminPage.jsx  (Halaman Admin / /admin)
-// → Orchestrator: mengelola state & logic
+// → Orchestrator: mengelola state & logic DASHBOARD
+// → Dilengkapi Route Protection: Hanya untuk Role 'admin'
 // → Mendelegasikan tampilan ke sub-komponen:
-//     · LoginPage     → form login
 //     · AdminNavbar   → navbar dashboard
 //     · AdminTabs     → tab selector
 //     · AlertMessage  → toast/alert
 //     · MenuForm      → form CRUD item
 //     · MenuList      → daftar item
 //     · LandingEditor → editor landing page
-// → Semua API call via useApi custom hook
 // ============================================
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/useApi";
 
 // ── Sub-komponen ──
-import LoginPage from "../components/LoginPage";
 import AdminNavbar from "../components/AdminNavbar";
 import AdminTabs from "../components/AdminTabs";
 import AlertMessage from "../components/AlertMessage";
@@ -27,6 +26,7 @@ import LandingEditor from "../components/LandingEditor";
 import "./AdminPage.css";
 
 function AdminPage() {
+  const navigate = useNavigate();
   const {
     items,
     landingSettings,
@@ -38,14 +38,10 @@ function AdminPage() {
     saveLandingSettings,
     saveItem,
     deleteItem,
-    loginUser,
-    registerUser
   } = useApi();
 
   // Auth state
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [email, setEmail] = useState("admkopibekmer@gmail.com");
-  const [password, setPassword] = useState("admin123");
 
   // Navigation tab: "menu" | "landing"
   const [activeTab, setActiveTab] = useState("menu");
@@ -78,7 +74,18 @@ function AdminPage() {
     setTimeout(() => { setMessage(""); setMsgType(""); }, 3500);
   };
 
-  // Load data saat sudah login
+  // ── PROTEKSI RUTE ADMIN ──────────────────
+  useEffect(() => {
+    const currentToken = localStorage.getItem("token");
+    const currentRole = localStorage.getItem("role");
+
+    // Jika tidak ada token ATAU role bukan admin, tendang ke halaman login
+    if (!currentToken || currentRole !== "admin") {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  // ── LOAD DATA ────────────────────────────
   useEffect(() => {
     if (token) {
       getItems(token);
@@ -86,50 +93,11 @@ function AdminPage() {
     }
   }, [token, getItems, getLandingSettings]);
 
-  // Populasi form settings saat data landingSettings termuat
   useEffect(() => {
     if (landingSettings) {
       setSettingsForm(landingSettings);
     }
   }, [landingSettings]);
-
-  // ── LOGIN ────────────────────────────────
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const result = await loginUser({ email, password });
-    if (result.success) {
-      localStorage.setItem("token", result.token);
-      setToken(result.token);
-      showMessage("Login berhasil! Selamat datang.", "success");
-    } else {
-      showMessage(error || "Login gagal. Periksa kembali email & password Anda.");
-      clearError();
-    }
-  };
-
-  // - REGISTER ────────────────────────────────
-  const handleRegister = async (e, { name, email, password, confirmPassword }) => {
-    if (e) e.preventDefault();
-
-    if (password !== confirmPassword) {
-      showMessage("Password dan Konfirmasi Password tidak cocok!");
-      return;
-    }
-
-    if (!name || !email || !password) {
-      showMessage("Semua field wajib diisi!");
-      return;
-    }
-
-    const result = await registerUser({ name, email, password });
-
-    if (result.success) {
-      showMessage("Registrasi berhasil! Silakan masuk menggunakan akun baru Anda.", "success");
-    } else {
-      showMessage(error || "Gagal mendaftarkan akun. Email mungkin sudah digunakan.");
-      clearError();
-    }
-  }; // <--- SEBELUMNYA KURUNG KURAWAL INI HILANG TERHAPUS!
 
   // ── SAVE ITEM (tambah / edit) ────────────
   const handleSave = async (e) => {
@@ -191,28 +159,10 @@ function AdminPage() {
   // ── LOGOUT ───────────────────────────────
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setToken(""); setEmail(""); setPassword("");
-    showMessage("Berhasil logout");
+    localStorage.removeItem("role"); // Hapus juga role-nya
+    setToken("");
+    navigate("/login"); // Arahkan kembali ke halaman login
   };
-
-  // ─────────────────────────────────────────
-  // TAMPILAN: HALAMAN LOGIN
-  // ─────────────────────────────────────────
-  if (!token) {
-    return (
-      <LoginPage
-        email={email}
-        password={password}
-        onEmailChange={setEmail}
-        onPasswordChange={setPassword}
-        onLoginSubmit={handleLogin}
-        onRegisterSubmit={handleRegister}
-        loading={loading}
-        message={message}
-        msgType={msgType}
-      />
-    );
-  }
 
   // ─────────────────────────────────────────
   // TAMPILAN: DASHBOARD ADMIN
