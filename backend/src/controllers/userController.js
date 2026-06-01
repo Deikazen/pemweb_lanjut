@@ -70,16 +70,28 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ error: authError.message });
         }
 
-        // 2. Insert ke tabel users dengan role 'customer'
+        // AMBIL ID DARI SUPABASE AUTH
+        const userId = authData.user?.id;
+
+        if (!userId) {
+            return res.status(400).json({ error: "Gagal mendapatkan ID dari Supabase Auth." });
+        }
+
+        // 2. Insert ke tabel users dengan role 'customer' DAN ID
         const { data: userData, error: dbError } = await supabase
             .from('users')
-            .insert([{ name, email, role: 'customer' }])
+            .insert([{
+                id: userId,          // <--- TAMBAHKAN BARIS INI
+                name: name,
+                email: email,
+                role: 'customer'
+            }])
             .select();
 
         if (dbError) {
             console.error("registerUser DB insert error:", dbError);
             // Auth sudah terdaftar tapi gagal insert ke tabel users
-            return res.status(400).json({ 
+            return res.status(400).json({
                 error: dbError.message,
                 hint: "Akun auth berhasil dibuat tapi gagal menyimpan data user ke database."
             });

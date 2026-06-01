@@ -38,7 +38,8 @@ function AdminPage() {
     saveLandingSettings,
     saveItem,
     deleteItem,
-    loginAdmin
+    loginUser,
+    registerUser
   } = useApi();
 
   // Auth state
@@ -57,34 +58,14 @@ function AdminPage() {
 
   // Landing Page Settings Form state
   const [settingsForm, setSettingsForm] = useState({
-    hero_badge: "",
-    hero_title: "",
-    hero_desc: "",
-    hero_image: "",
-    stat_variankopi: "",
-    stat_arabikaasli: "",
-    stat_ratingtamu: "",
-    about_image: "",
-    about_badge: "",
-    about_title: "",
-    about_desc: "",
-    about_card1_title: "",
-    about_card1_desc: "",
-    about_card2_title: "",
-    about_card2_desc: "",
-    feature1_icon: "",
-    feature1_title: "",
-    feature1_desc: "",
-    feature2_icon: "",
-    feature2_title: "",
-    feature2_desc: "",
-    feature3_icon: "",
-    feature3_title: "",
-    feature3_desc: "",
-    contact_email: "",
-    contact_instagram: "",
-    contact_location: "",
-    footer_text: ""
+    hero_badge: "", hero_title: "", hero_desc: "", hero_image: "",
+    stat_variankopi: "", stat_arabikaasli: "", stat_ratingtamu: "",
+    about_image: "", about_badge: "", about_title: "", about_desc: "",
+    about_card1_title: "", about_card1_desc: "", about_card2_title: "", about_card2_desc: "",
+    feature1_icon: "", feature1_title: "", feature1_desc: "",
+    feature2_icon: "", feature2_title: "", feature2_desc: "",
+    feature3_icon: "", feature3_title: "", feature3_desc: "",
+    contact_email: "", contact_instagram: "", contact_location: "", footer_text: ""
   });
 
   // Toast message
@@ -115,7 +96,7 @@ function AdminPage() {
   // ── LOGIN ────────────────────────────────
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await loginAdmin({ email, password });
+    const result = await loginUser({ email, password });
     if (result.success) {
       localStorage.setItem("token", result.token);
       setToken(result.token);
@@ -126,6 +107,30 @@ function AdminPage() {
     }
   };
 
+  // - REGISTER ────────────────────────────────
+  const handleRegister = async (e, { name, email, password, confirmPassword }) => {
+    if (e) e.preventDefault();
+
+    if (password !== confirmPassword) {
+      showMessage("Password dan Konfirmasi Password tidak cocok!");
+      return;
+    }
+
+    if (!name || !email || !password) {
+      showMessage("Semua field wajib diisi!");
+      return;
+    }
+
+    const result = await registerUser({ name, email, password });
+
+    if (result.success) {
+      showMessage("Registrasi berhasil! Silakan masuk menggunakan akun baru Anda.", "success");
+    } else {
+      showMessage(error || "Gagal mendaftarkan akun. Email mungkin sudah digunakan.");
+      clearError();
+    }
+  }; // <--- SEBELUMNYA KURUNG KURAWAL INI HILANG TERHAPUS!
+
   // ── SAVE ITEM (tambah / edit) ────────────
   const handleSave = async (e) => {
     e.preventDefault();
@@ -135,10 +140,7 @@ function AdminPage() {
     }
     const result = await saveItem({ token, name, price, mediaUrl, editId });
     if (result.success) {
-      setName("");
-      setPrice("");
-      setMediaUrl("");
-      setEditId(null);
+      setName(""); setPrice(""); setMediaUrl(""); setEditId(null);
       showMessage(editId ? "Item berhasil diupdate!" : "Item berhasil ditambahkan!", "success");
       getItems(token);
     } else {
@@ -171,10 +173,7 @@ function AdminPage() {
 
   // ── CANCEL EDIT ──────────────────────────
   const handleCancelEdit = () => {
-    setEditId(null);
-    setName("");
-    setMediaUrl("");
-    setPrice("");
+    setEditId(null); setName(""); setMediaUrl(""); setPrice("");
   };
 
   // ── SAVE LANDING SETTINGS ─────────────────
@@ -192,9 +191,7 @@ function AdminPage() {
   // ── LOGOUT ───────────────────────────────
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setToken("");
-    setEmail("");
-    setPassword("");
+    setToken(""); setEmail(""); setPassword("");
     showMessage("Berhasil logout");
   };
 
@@ -208,7 +205,8 @@ function AdminPage() {
         password={password}
         onEmailChange={setEmail}
         onPasswordChange={setPassword}
-        onSubmit={handleLogin}
+        onLoginSubmit={handleLogin}
+        onRegisterSubmit={handleRegister}
         loading={loading}
         message={message}
         msgType={msgType}
@@ -221,55 +219,31 @@ function AdminPage() {
   // ─────────────────────────────────────────
   return (
     <div className="admin-page">
-
-      {/* ── NAVBAR ADMIN ── */}
       <AdminNavbar onLogout={handleLogout} />
-
-      {/* ── TAB SELECTOR ── */}
       <AdminTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
       <main className="admin-container">
-
-        {/* Alert / Toast */}
         <AlertMessage message={message} type={msgType} />
 
-        {/* TAB: KELOLA MENU */}
         {activeTab === "menu" && (
           <div className="tab-panel">
             <MenuForm
-              name={name}
-              price={price}
-              mediaUrl={mediaUrl}
-              editId={editId}
-              loading={loading}
-              onNameChange={setName}
-              onPriceChange={setPrice}
-              onMediaUrlChange={setMediaUrl}
-              onSubmit={handleSave}
-              onCancelEdit={handleCancelEdit}
+              name={name} price={price} mediaUrl={mediaUrl} editId={editId}
+              loading={loading} onNameChange={setName} onPriceChange={setPrice}
+              onMediaUrlChange={setMediaUrl} onSubmit={handleSave} onCancelEdit={handleCancelEdit}
             />
-
             <MenuList
-              items={items}
-              loading={loading}
-              error={error}
-              onRefresh={() => getItems(token)}
-              onEdit={handleStartEdit}
-              onDelete={handleDelete}
+              items={items} loading={loading} error={error}
+              onRefresh={() => getItems(token)} onEdit={handleStartEdit} onDelete={handleDelete}
             />
           </div>
         )}
 
-        {/* TAB: EDIT LANDING PAGE */}
         {activeTab === "landing" && (
           <LandingEditor
-            settingsForm={settingsForm}
-            onFieldChange={setSettingsForm}
-            onSubmit={handleSaveSettings}
-            loading={loading}
+            settingsForm={settingsForm} onFieldChange={setSettingsForm}
+            onSubmit={handleSaveSettings} loading={loading}
           />
         )}
-
       </main>
     </div>
   );
