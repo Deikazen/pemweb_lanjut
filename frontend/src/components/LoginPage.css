@@ -1,10 +1,12 @@
 /* ============================================
    LoginPage.css
-   → Style halaman login admin
-   → Includes: login page background, card, back button
+   → Style halaman auth universal (Login & Register)
+   → Includes: auth page background, card, tabs,
+   →           brand header, form, switch links
    ============================================ */
 
-.admin-login-page {
+/* ── AUTH PAGE BACKGROUND ─────────────────── */
+.auth-page {
   min-height: 100vh;
   background-color: var(--espresso);
   background-image:
@@ -16,12 +18,13 @@
   padding: 24px;
 }
 
-.admin-login-card {
+/* ── AUTH CARD ─────────────────────────────── */
+.auth-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   background-color: var(--dark-roast);
   border: 1px solid rgba(192,125,62,0.25);
-  padding: 40px;
+  padding: 36px 40px;
   border-radius: 24px;
   box-shadow: 0 24px 60px rgba(0,0,0,0.5);
 }
@@ -36,7 +39,7 @@
   cursor: pointer;
   padding: 0;
   transition: opacity 0.2s;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   display: block;
 }
 
@@ -44,20 +47,102 @@
   opacity: 1;
 }
 
-.admin-login-card h1 {
+/* ── BRAND HEADER ─────────────────────────── */
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.auth-brand-icon {
+  font-size: 32px;
+  animation: steamAuth 3s ease-in-out infinite;
+}
+
+@keyframes steamAuth {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50%       { transform: translateY(-4px) rotate(5deg); }
+}
+
+.auth-brand h1 {
   font-family: var(--font-display);
-  font-size: 34px;
-  color: var(--cream);
-  margin-bottom: 8px;
+  font-size: 32px;
+  color: var(--latte);
+  letter-spacing: 1px;
 }
 
-.admin-login-card > p {
+.auth-brand h1 span {
+  font-style: italic;
+  color: var(--caramel);
+}
+
+/* ── AUTH TABS ─────────────────────────────── */
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  background-color: rgba(255,255,255,0.04);
+  border: 1px solid rgba(192,125,62,0.18);
+  border-radius: 14px;
+  padding: 4px;
+  overflow: hidden;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 12px 16px;
   font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: none;
+  background: transparent;
   color: rgba(245,234,216,0.5);
-  margin-bottom: 28px;
+  cursor: pointer;
+  border-radius: 11px;
+  transition: all 0.25s ease;
 }
 
-/* Submit button (login) */
+.auth-tab:hover {
+  color: rgba(245,234,216,0.8);
+  background-color: rgba(255,255,255,0.04);
+}
+
+.auth-tab--active {
+  background-color: var(--caramel);
+  color: var(--espresso);
+  box-shadow: 0 2px 10px rgba(192,125,62,0.3);
+}
+
+.auth-tab--active:hover {
+  background-color: var(--caramel);
+  color: var(--espresso);
+}
+
+/* ── AUTH FORM ─────────────────────────────── */
+.auth-form {
+  animation: authFormFadeIn 0.3s ease;
+}
+
+@keyframes authFormFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: rgba(245,234,216,0.45);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.auth-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── SUBMIT BUTTON ────────────────────────── */
 .btn-submit {
   width: 100%;
   background-color: var(--caramel);
@@ -68,16 +153,67 @@
   font-weight: 700;
   font-size: 15px;
   margin-top: 8px;
-  transition: background-color 0.25s, transform 0.2s;
+  transition: background-color 0.25s, transform 0.2s, box-shadow 0.25s;
+  letter-spacing: 0.3px;
 }
 
 .btn-submit:hover:not(:disabled) {
   background-color: var(--latte);
   color: var(--espresso);
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(192,125,62,0.3);
 }
 
 .btn-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-submit--register {
+  background: linear-gradient(135deg, var(--caramel) 0%, #b06830 100%);
+}
+
+.btn-submit--register:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--latte) 0%, var(--caramel) 100%);
+}
+
+/* ── SWITCH LINK ──────────────────────────── */
+.auth-switch-text {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(245,234,216,0.45);
+  margin-top: 20px;
+}
+
+.auth-switch-link {
+  background: none;
+  border: none;
+  color: var(--caramel);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.auth-switch-link:hover {
+  color: var(--latte);
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 520px) {
+  .auth-card {
+    padding: 28px 24px;
+  }
+
+  .auth-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .auth-brand h1 {
+    font-size: 26px;
+  }
 }

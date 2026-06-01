@@ -42,6 +42,61 @@ const deleteUser = async (req, res) => {
 
 }
 
+const registerUser = async (req, res) => {
+    try {
+        if (!supabase) {
+            return res.status(500).json({ error: "Supabase client is not initialized." });
+        }
+
+        const { name, email, password } = req.body;
+
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: "Nama, email, dan password wajib diisi." });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({ error: "Password minimal 6 karakter." });
+        }
+
+        // 1. Register di Supabase Auth
+        const statelessClient = createStatelessClient();
+        const { data: authData, error: authError } = await statelessClient.auth.signUp({
+            email: email,
+            password: password,
+        });
+
+        if (authError) {
+            console.error("registerUser Supabase auth error:", authError);
+            return res.status(400).json({ error: authError.message });
+        }
+
+        // 2. Insert ke tabel users dengan role 'customer'
+        const { data: userData, error: dbError } = await supabase
+            .from('users')
+            .insert([{ name, email, role: 'customer' }])
+            .select();
+
+        if (dbError) {
+            console.error("registerUser DB insert error:", dbError);
+            // Auth sudah terdaftar tapi gagal insert ke tabel users
+            return res.status(400).json({ 
+                error: dbError.message,
+                hint: "Akun auth berhasil dibuat tapi gagal menyimpan data user ke database."
+            });
+        }
+
+        res.status(201).json({
+            message: "Registrasi berhasil! Silakan login.",
+            data: userData
+        });
+    } catch (err) {
+        console.error("registerUser critical error:", err);
+        res.status(500).json({
+            error: err.message || "Terjadi kesalahan internal pada proses registrasi."
+        });
+    }
+}
+
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -65,9 +120,21 @@ const loginUser = async (req, res) => {
 
         const token = data.session.access_token;
 
+        // Ambil role user dari tabel users
+        const { data: userData, error: dbError } = await supabase
+            .from('users')
+            .select('role, name')
+            .eq('email', email)
+            .single();
+
         res.status(200).json({
             message: "Login Berhasil!",
-            token: token
+            token: token,
+            user: {
+                email: email,
+                name: userData?.name || email,
+                role: userData?.role || 'customer'
+            }
         })
     } catch (err) {
         console.error("loginUser critical error:", err);
@@ -78,4 +145,4 @@ const loginUser = async (req, res) => {
     }
 }
 
-export { getUser, createUser, editUser, deleteUser, loginUser };
+export { getUser, createUser, editUser, deleteUser, loginUser, registerUser };

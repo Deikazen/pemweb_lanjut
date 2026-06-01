@@ -2,7 +2,7 @@
 // useApi.js  (Custom Hook)
 // → Semua pemanggilan ke backend API
 // → Dipakai di: LandingPage, AdminPage
-// → Returns: { items, loading, error, getItems, saveItem, deleteItem, loginAdmin }
+// → Returns: { items, loading, error, getItems, saveItem, deleteItem, loginUser, registerUser }
 // ============================================
 
 import { useState, useCallback } from "react";
@@ -150,23 +150,51 @@ function useApi() {
     }
   }, []);
 
-  // ── POST login admin ──────────────────────
-  const loginAdmin = useCallback(async ({ email, password }) => {
-    console.log(`[useApi] POST /api/login | Target: ${API_URL}/api/login | Email: ${email}`);
+  // ── POST login user (universal: admin & customer) ──
+  const loginUser = useCallback(async ({ email, password }) => {
+    console.log(`[useApi] POST /api/user/login | Target: ${API_URL}/api/user/login | Email: ${email}`);
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/login`, {
+      const res = await fetch(`${API_URL}/api/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      console.log(`[useApi] POST /api/login Status: ${res.status}`);
+      console.log(`[useApi] POST /api/user/login Status: ${res.status}`);
       const result = await res.json();
-      console.log("[useApi] POST /api/login Result:", result);
+      console.log("[useApi] POST /api/user/login Result:", result);
       if (!res.ok) throw new Error(result.message || result.error || "Login gagal");
-      return { success: true, token: result.token };
+      return {
+        success: true,
+        token: result.token,
+        user: result.user || { email, role: 'customer', name: email }
+      };
     } catch (err) {
-      console.error("[useApi] POST /api/login Exception:", err);
+      console.error("[useApi] POST /api/user/login Exception:", err);
+      setError(err.message || "Gagal konek ke backend");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── POST register user baru ──────────────
+  const registerUser = useCallback(async ({ name, email, password }) => {
+    console.log(`[useApi] POST /api/user/register | Target: ${API_URL}/api/user/register | Email: ${email}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/user/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      console.log(`[useApi] POST /api/user/register Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] POST /api/user/register Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Registrasi gagal");
+      return { success: true, message: result.message };
+    } catch (err) {
+      console.error("[useApi] POST /api/user/register Exception:", err);
       setError(err.message || "Gagal konek ke backend");
       return { success: false };
     } finally {
@@ -187,8 +215,10 @@ function useApi() {
     saveLandingSettings,
     saveItem,
     deleteItem,
-    loginAdmin
+    loginUser,
+    registerUser
   };
 }
 
 export default useApi;
+
