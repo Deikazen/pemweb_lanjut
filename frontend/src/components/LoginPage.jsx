@@ -58,9 +58,11 @@ function LoginPage() {
     const result = await loginUser({ email, password });
 
     if (result.success) {
-      // 1. Simpan token & role ke localStorage
+      // 1. Simpan token, role, dan user_id ke localStorage
       localStorage.setItem("token", result.token);
       localStorage.setItem("role", result.user.role);
+      localStorage.setItem("user_id", result.user.id);
+      localStorage.setItem("user_name", result.user.name);
 
       // 2. Redirect Universal berdasarkan Role
       if (result.user.role === "admin") {
