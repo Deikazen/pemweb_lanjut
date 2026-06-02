@@ -253,4 +253,59 @@ const cancelOrder = async (req, res) => {
     }
 }
 
-export { checkout, getOrders, getAllOrders, updateOrderStatus, cancelOrder };
+// 6. Konfirmasi Pesanan Selesai (Untuk Customer)
+// Hanya bisa dilakukan jika status sudah 'diproses' (sudah ditangani admin)
+const completeOrder = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized." });
+    }
+
+    try {
+        const { id } = req.params;
+        const user_id = req.user?.id;
+
+        if (!user_id) {
+            return res.status(401).json({ error: "User tidak terautentikasi" });
+        }
+
+        // Ambil pesanan, pastikan milik user ini
+        const { data: order, error: fetchError } = await supabase
+            .from('orders')
+            .select('id, status, user_id')
+            .eq('id', id)
+            .single();
+
+        if (fetchError || !order) {
+            return res.status(404).json({ error: "Pesanan tidak ditemukan" });
+        }
+
+        // Pastikan pesanan ini milik customer yang login
+        if (order.user_id !== user_id) {
+            return res.status(403).json({ error: "Anda tidak berhak mengkonfirmasi pesanan ini" });
+        }
+
+        // Hanya bisa dikonfirmasi selesai jika status 'diproses'
+        if (order.status !== 'diproses') {
+            return res.status(400).json({
+                error: `Pesanan belum bisa dikonfirmasi selesai. Status saat ini: '${order.status}'.`
+            });
+        }
+
+        const { data, error } = await supabase
+            .from('orders')
+            .update({ status: 'selesai' })
+            .eq('id', id)
+            .select()
+            .single();
+
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        res.status(200).json({ message: "Pesanan dikonfirmasi selesai!", data });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export { checkout, getOrders, getAllOrders, updateOrderStatus, cancelOrder, completeOrder };
