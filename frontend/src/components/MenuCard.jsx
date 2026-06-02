@@ -22,16 +22,18 @@ function MenuCard({ item }) {
     : item.media_url;
 
   const handleAddToCart = async () => {
-    const userId = localStorage.getItem("user_id");
+    // [UPDATED] Cek token (bukan user_id), karena backend pakai verifyToken
+    const token = localStorage.getItem("token");
 
-    if (!userId) {
+    if (!token) {
       setToast({ message: "Silakan login terlebih dahulu!", type: "error" });
       setTimeout(() => setToast(null), 3000);
       return;
     }
 
     setAdding(true);
-    const result = await addToCart({ userId, itemId: item.id, quantity: 1 });
+    // [UPDATED] Tidak perlu kirim userId lagi — backend ambil dari JWT
+    const result = await addToCart({ itemId: item.id, quantity: 1 });
     setAdding(false);
 
     if (result.success) {

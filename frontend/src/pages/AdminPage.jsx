@@ -22,6 +22,7 @@ import AlertMessage from "../components/AlertMessage";
 import MenuForm from "../components/MenuForm";
 import MenuList from "../components/MenuList";
 import LandingEditor from "../components/LandingEditor";
+import AdminOrders from "../components/AdminOrders"; // [BARU] Panel kelola pesanan
 
 import "./AdminPage.css";
 
@@ -193,6 +194,11 @@ function AdminPage() {
             settingsForm={settingsForm} onFieldChange={setSettingsForm}
             onSubmit={handleSaveSettings} loading={loading}
           />
+        )}
+
+        {/* [BARU] Tab Kelola Pesanan */}
+        {activeTab === "orders" && (
+          <AdminOrders />
         )}
       </main>
     </div>

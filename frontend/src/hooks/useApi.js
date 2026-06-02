@@ -3,7 +3,10 @@
 // → Semua pemanggilan ke backend API
 // → Dipakai di: LandingPage, AdminPage, Cart, OrderHistory
 // → Returns: { items, loading, error, getItems, saveItem, deleteItem, loginUser, registerUser,
-//              cartItems, getCart, addToCart, removeFromCart, orders, checkoutOrder, getOrders }
+//              cartItems, getCart, addToCart, removeFromCart, orders, checkoutOrder, getOrders,
+//              getAllOrders, updateOrderStatus }
+// → [UPDATED] Cart & Order API sekarang pakai Authorization header
+//   (backend verifyToken middleware, user_id dari JWT)
 // ============================================
 
 import { useState, useCallback } from "react";
@@ -207,15 +210,26 @@ function useApi() {
 
   // ══════════════════════════════════════════
   // CART API FUNCTIONS
+  // → Backend menggunakan verifyToken middleware
+  // → user_id diambil dari JWT token (req.user.id)
+  // → Semua request WAJIB kirim Authorization header
   // ══════════════════════════════════════════
 
+  // Helper: ambil token dari localStorage
+  const getToken = () => localStorage.getItem("token");
+
   // ── GET isi keranjang user ────────────────
-  const getCart = useCallback(async (userId) => {
-    if (!userId) return;
-    console.log(`[useApi] GET /api/cart | user_id: ${userId}`);
+  // [UPDATED] Backend sekarang pakai verifyToken, user_id dari req.user.id
+  // Tidak perlu kirim user_id di query param lagi
+  const getCart = useCallback(async () => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] GET /api/cart (auth via token)`);
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/cart?user_id=${userId}`);
+      const res = await fetch(`${API_URL}/api/cart`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       console.log(`[useApi] GET /api/cart Status: ${res.status}`);
       const result = await res.json();
       console.log("[useApi] GET /api/cart Result:", result);
@@ -238,14 +252,21 @@ function useApi() {
   }, []);
 
   // ── POST tambah barang ke keranjang ───────
-  const addToCart = useCallback(async ({ userId, itemId, quantity = 1 }) => {
-    console.log(`[useApi] POST /api/cart | user_id: ${userId} | item_id: ${itemId} | qty: ${quantity}`);
+  // [UPDATED] Backend pakai verifyToken; user_id dari token, body cukup { item_id, quantity }
+  // Backend melakukan UPSERT: jika item sudah ada, quantity dijumlahkan
+  const addToCart = useCallback(async ({ itemId, quantity = 1 }) => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] POST /api/cart | item_id: ${itemId} | qty: ${quantity}`);
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/api/cart`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, item_id: itemId, quantity }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ item_id: itemId, quantity }),
       });
       console.log(`[useApi] POST /api/cart Status: ${res.status}`);
       const result = await res.json();
@@ -262,12 +283,16 @@ function useApi() {
   }, []);
 
   // ── DELETE hapus item dari keranjang ──────
+  // [UPDATED] Kirim Authorization header; param /:id = cart_items.id (BUKAN item_id)
   const removeFromCart = useCallback(async (cartItemId) => {
+    const token = getToken();
+    if (!token) return { success: false };
     console.log(`[useApi] DELETE /api/cart/${cartItemId}`);
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/api/cart/${cartItemId}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
       });
       console.log(`[useApi] DELETE /api/cart Status: ${res.status}`);
       const result = await res.json();
@@ -288,14 +313,19 @@ function useApi() {
   // ══════════════════════════════════════════
 
   // ── POST checkout pesanan ─────────────────
-  const checkoutOrder = useCallback(async (userId) => {
-    console.log(`[useApi] POST /api/orders/checkout | user_id: ${userId}`);
+  // [UPDATED] Backend pakai verifyToken; user_id dari token
+  const checkoutOrder = useCallback(async () => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] POST /api/orders/checkout (auth via token)`);
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/api/orders/checkout`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
       });
       console.log(`[useApi] POST /api/orders/checkout Status: ${res.status}`);
       const result = await res.json();
@@ -313,12 +343,16 @@ function useApi() {
   }, []);
 
   // ── GET riwayat pesanan user ──────────────
-  const getOrders = useCallback(async (userId) => {
-    if (!userId) return;
-    console.log(`[useApi] GET /api/orders | user_id: ${userId}`);
+  // [UPDATED] Backend pakai verifyToken; user_id dari token
+  const getOrders = useCallback(async () => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] GET /api/orders (auth via token)`);
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/orders?user_id=${userId}`);
+      const res = await fetch(`${API_URL}/api/orders`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       console.log(`[useApi] GET /api/orders Status: ${res.status}`);
       const result = await res.json();
       console.log("[useApi] GET /api/orders Result:", result);
@@ -335,6 +369,122 @@ function useApi() {
       console.error("[useApi] GET /api/orders Exception:", err);
       setError("Gagal mengambil riwayat pesanan");
       return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ══════════════════════════════════════════
+  // ADMIN ORDER API FUNCTIONS (BARU)
+  // ══════════════════════════════════════════
+
+  // ── GET semua pesanan (Admin) ─────────────
+  const getAllOrders = useCallback(async () => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] GET /api/orders/all (admin)`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders/all`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      console.log(`[useApi] GET /api/orders/all Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] GET /api/orders/all Result:", result);
+      if (res.ok) {
+        return { success: true, data: result.data || [] };
+      } else {
+        const errorMsg = result.message || result.error || "Gagal mengambil semua pesanan";
+        console.error("[useApi] GET /api/orders/all Error:", errorMsg);
+        setError(errorMsg);
+        return { success: false };
+      }
+    } catch (err) {
+      console.error("[useApi] GET /api/orders/all Exception:", err);
+      setError("Gagal mengambil semua pesanan");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── PUT update status pesanan (Admin) ─────
+  // Pilihan status: belum bayar, diproses, selesai, dibatalkan
+  const updateOrderStatus = useCallback(async (orderId, status) => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] PUT /api/orders/${orderId}/status | status: ${status}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ status }),
+      });
+      console.log(`[useApi] PUT /api/orders/status Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] PUT /api/orders/status Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal mengubah status pesanan");
+      return { success: true, data: result.data };
+    } catch (err) {
+      console.error("[useApi] PUT /api/orders/status Exception:", err);
+      setError(err.message || "Gagal mengubah status pesanan");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── PUT batalkan pesanan (Customer) ─────
+  // Hanya bisa jika status masih 'belum bayar'
+  const cancelOrder = useCallback(async (orderId) => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] PUT /api/orders/${orderId}/cancel`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/cancel`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(`[useApi] PUT /api/orders/cancel Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] PUT /api/orders/cancel Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal membatalkan pesanan");
+      return { success: true, data: result.data };
+    } catch (err) {
+      console.error("[useApi] PUT /api/orders/cancel Exception:", err);
+      setError(err.message || "Gagal membatalkan pesanan");
+      return { success: false, message: err.message };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── PUT konfirmasi pesanan selesai (Customer) ──
+  // Hanya bisa jika status 'diproses'
+  const completeOrder = useCallback(async (orderId) => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] PUT /api/orders/${orderId}/complete`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/complete`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(`[useApi] PUT /api/orders/complete Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] PUT /api/orders/complete Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal mengkonfirmasi pesanan");
+      return { success: true, data: result.data };
+    } catch (err) {
+      console.error("[useApi] PUT /api/orders/complete Exception:", err);
+      setError(err.message || "Gagal mengkonfirmasi pesanan");
+      return { success: false, message: err.message };
     } finally {
       setLoading(false);
     }
@@ -361,9 +511,14 @@ function useApi() {
     getCart,
     addToCart,
     removeFromCart,
-    // Orders
+    // Orders (Customer)
     checkoutOrder,
-    getOrders
+    getOrders,
+    cancelOrder,
+    completeOrder,
+    // Orders (Admin) — BARU
+    getAllOrders,
+    updateOrderStatus
   };
 }
 

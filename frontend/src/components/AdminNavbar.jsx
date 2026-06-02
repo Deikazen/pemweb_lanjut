@@ -13,8 +13,7 @@ function AdminNavbar({ onLogout }) {
   return (
     <nav className="admin-navbar">
       <div className="admin-navbar-brand">
-        <h2>☕ Admin KopiNara</h2>
-        <span>Dashboard CRUD Full Monorepo</span>
+        <h2> Dashboard Admin</h2>
       </div>
 
       <div className="admin-navbar-actions">

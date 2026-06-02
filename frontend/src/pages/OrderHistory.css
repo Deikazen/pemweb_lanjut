@@ -207,34 +207,39 @@
   letter-spacing: 0.3px;
 }
 
-/* ── Status badges ── */
+/* ── Status badges (4 kategori baru) ── */
 .order-status {
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 100px;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
+/* Belum Bayar — kuning */
 .status-pending {
   background: rgba(243, 156, 18, 0.15);
   border: 1px solid rgba(243, 156, 18, 0.4);
   color: #f1c40f;
 }
 
+/* Diproses — biru */
 .status-processing {
   background: rgba(52, 152, 219, 0.15);
   border: 1px solid rgba(52, 152, 219, 0.4);
   color: #3498db;
 }
 
+/* Selesai — hijau */
 .status-completed {
   background: rgba(39, 174, 96, 0.15);
   border: 1px solid rgba(39, 174, 96, 0.4);
   color: #2ecc71;
 }
 
+/* Dibatalkan — merah */
 .status-cancelled {
   background: rgba(192, 57, 43, 0.15);
   border: 1px solid rgba(192, 57, 43, 0.4);
@@ -311,10 +316,18 @@
   padding: 16px 24px;
   border-top: 1px solid rgba(192, 125, 62, 0.15);
   background: rgba(192, 125, 62, 0.06);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.order-footer-total {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .order-total-label {
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(245, 234, 216, 0.5);
 }
 
@@ -326,11 +339,224 @@
   letter-spacing: -0.5px;
 }
 
+/* ── Tombol aksi customer ── */
+.order-action-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Tombol Batalkan */
+.order-cancel-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 57, 43, 0.4);
+  background: rgba(192, 57, 43, 0.1);
+  color: #e74c3c;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.order-cancel-btn:hover:not(:disabled) {
+  background: rgba(192, 57, 43, 0.22);
+  border-color: #e74c3c;
+  transform: translateY(-1px);
+}
+
+/* Tombol Pesanan Selesai */
+.order-complete-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(39, 174, 96, 0.45);
+  background: rgba(39, 174, 96, 0.12);
+  color: #2ecc71;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.order-complete-btn:hover:not(:disabled) {
+  background: rgba(39, 174, 96, 0.25);
+  border-color: #2ecc71;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(39, 174, 96, 0.25);
+}
+
+.order-cancel-btn:disabled,
+.order-complete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ══ Modal Konfirmasi ══ */
+.order-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 5, 2, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  animation: backdropFadeIn 0.2s ease;
+}
+
+.order-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  background: linear-gradient(160deg, #1e1009 0%, #2c1a0e 100%);
+  border: 1px solid rgba(192, 125, 62, 0.3);
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(192, 125, 62, 0.1);
+  animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.order-modal-icon {
+  font-size: 52px;
+  display: block;
+  margin-bottom: 16px;
+  animation: iconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes iconPop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.order-modal-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--cream);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+
+.order-modal-desc {
+  font-size: 14px;
+  color: rgba(245, 234, 216, 0.55);
+  line-height: 1.7;
+  margin: 0 0 28px;
+}
+
+.order-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-cancel-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 125, 62, 0.3);
+  background: rgba(192, 125, 62, 0.08);
+  color: var(--latte);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-cancel-btn:hover {
+  background: rgba(192, 125, 62, 0.16);
+  border-color: rgba(192, 125, 62, 0.5);
+}
+
+.modal-confirm-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-confirm-btn--success {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: #fff;
+}
+
+.modal-confirm-btn--success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(39, 174, 96, 0.4);
+}
+
+.modal-confirm-btn--danger {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: #fff;
+}
+
+.modal-confirm-btn--danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(231, 76, 60, 0.4);
+}
+
+/* ── Toast Notifikasi ── */
+.order-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  animation: toastPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+}
+
+.order-toast--success {
+  background: rgba(39, 174, 96, 0.95);
+  color: #fff;
+  border: 1px solid rgba(39, 174, 96, 0.8);
+}
+
+.order-toast--error {
+  background: rgba(192, 57, 43, 0.95);
+  color: #fff;
+  border: 1px solid rgba(192, 57, 43, 0.8);
+}
+
+.order-toast--info {
+  background: rgba(26, 14, 8, 0.95);
+  color: var(--latte);
+  border: 1px solid rgba(192, 125, 62, 0.4);
+}
+
+@keyframes toastPop {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
-  .order-history-container {
-    padding: 24px 16px 60px;
-  }
+  .order-history-container { padding: 24px 16px 60px; }
 
   .order-card-header {
     flex-direction: column;
@@ -339,15 +565,24 @@
     padding: 16px 18px;
   }
 
-  .order-items {
-    padding: 12px 18px;
-  }
+  .order-items { padding: 12px 18px; }
 
   .order-card-footer {
     padding: 14px 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
-  .order-total-amount {
-    font-size: 20px;
-  }
+  .order-action-btns { width: 100%; }
+
+  .order-cancel-btn,
+  .order-complete-btn { width: 100%; justify-content: center; }
+
+  .order-total-amount { font-size: 20px; }
+
+  .order-modal { padding: 28px 20px 22px; }
+
+  .order-modal-actions { flex-direction: column; }
 }
+
