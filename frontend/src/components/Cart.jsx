@@ -63,7 +63,6 @@ function Cart({ isOpen, onClose }) {
   // quantity: +1 untuk tambah, -1 untuk kurangi
   // ══════════════════════════════════════════
   const handleUpdateQuantity = async (cartItem, delta) => {
-    const itemData = cartItem.items || {};
     setUpdatingItemId(cartItem.id);
 
     // Jika mengurangi dan quantity sudah 1, hapus item
