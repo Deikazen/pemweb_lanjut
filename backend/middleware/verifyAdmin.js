@@ -27,7 +27,7 @@ export const verifyAdmin = async (req, res, next) => {
                 userData: userData || null,
                 authenticatedEmail: user.email
             });
-            return res.status(403).json({ 
+            return res.status(403).json({
                 message: "Akses dilarang. Hanya admin yang dizinkan!",
                 debug: {
                     authenticatedEmail: user.email,
