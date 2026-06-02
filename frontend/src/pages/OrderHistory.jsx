@@ -17,7 +17,6 @@ function OrderHistory() {
   const { orders, getOrders, loading } = useApi();
   const [localOrders, setLocalOrders] = useState([]);
   const userId = localStorage.getItem("user_id");
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     // Redirect jika belum login
