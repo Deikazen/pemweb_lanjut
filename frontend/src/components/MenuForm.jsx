@@ -12,11 +12,21 @@ function MenuForm({
   name,
   price,
   mediaUrl,
+  description,
+  badge,
+  tag1,
+  tag2,
+  tag3,
   editId,
   loading,
   onNameChange,
   onPriceChange,
   onMediaUrlChange,
+  onDescriptionChange,
+  onBadgeChange,
+  onTag1Change,
+  onTag2Change,
+  onTag3Change,
   onSubmit,
   onCancelEdit,
 }) {
@@ -43,6 +53,65 @@ function MenuForm({
             value={price}
             onChange={(e) => onPriceChange(e.target.value)}
           />
+        </div>
+
+        <div className="field-group">
+          <label>Deskripsi / Detail Item</label>
+          <textarea
+            placeholder="Contoh: Perpaduan espresso murni dengan susu segar dan sirup caramel premium..."
+            value={description}
+            onChange={(e) => onDescriptionChange(e.target.value)}
+            rows="3"
+            style={{
+              width: "100%",
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid rgba(192, 125, 62, 0.3)",
+              background: "rgba(245, 234, 216, 0.05)",
+              color: "var(--cream)",
+              fontSize: "14px",
+              fontFamily: "inherit",
+              resize: "vertical",
+              outline: "none",
+            }}
+          />
+        </div>
+
+        <div className="field-group">
+          <label>Tag Kiri Atas Card (Maksimal 1, Contoh: Favorit, Baru, Best Seller)</label>
+          <input
+            type="text"
+            placeholder="Biarkan kosong jika tidak ada"
+            value={badge}
+            onChange={(e) => onBadgeChange(e.target.value)}
+          />
+        </div>
+
+        <div className="field-group">
+          <label>Tag Kecil Bawah Card (Maksimal 3)</label>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <input
+              type="text"
+              placeholder="Tag 1"
+              value={tag1}
+              onChange={(e) => onTag1Change(e.target.value)}
+              style={{ flex: 1 }}
+            />
+            <input
+              type="text"
+              placeholder="Tag 2"
+              value={tag2}
+              onChange={(e) => onTag2Change(e.target.value)}
+              style={{ flex: 1 }}
+            />
+            <input
+              type="text"
+              placeholder="Tag 3"
+              value={tag3}
+              onChange={(e) => onTag3Change(e.target.value)}
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
 
         <div className="field-group">

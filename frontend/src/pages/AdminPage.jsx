@@ -12,7 +12,7 @@
 // ============================================
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useApi from "../hooks/useApi";
 
 // ── Sub-komponen ──
@@ -28,6 +28,7 @@ import "./AdminPage.css";
 
 function AdminPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     items,
     landingSettings,
@@ -51,6 +52,11 @@ function AdminPage() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [badge, setBadge] = useState("");
+  const [tag1, setTag1] = useState("");
+  const [tag2, setTag2] = useState("");
+  const [tag3, setTag3] = useState("");
   const [editId, setEditId] = useState(null);
 
   // Landing Page Settings Form state
@@ -95,6 +101,17 @@ function AdminPage() {
   }, [token, getItems, getLandingSettings]);
 
   useEffect(() => {
+    if (location.state?.editItemId && items.length > 0) {
+      const targetItem = items.find(item => item.id === location.state.editItemId);
+      if (targetItem) {
+        handleStartEdit(targetItem);
+        // Hapus state agar tidak terpicu kembali saat reload
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+    }
+  }, [location.state, items, navigate]);
+
+  useEffect(() => {
     if (landingSettings) {
       setSettingsForm(landingSettings);
     }
@@ -107,9 +124,11 @@ function AdminPage() {
       showMessage("Nama, harga dan gambar wajib diisi/diupload");
       return;
     }
-    const result = await saveItem({ token, name, price, mediaUrl, editId });
+    const tags = [tag1, tag2, tag3].map(t => t.trim()).filter(t => t !== "");
+    const result = await saveItem({ token, name, price, mediaUrl, editId, description, tags, badge });
     if (result.success) {
-      setName(""); setPrice(""); setMediaUrl(""); setEditId(null);
+      setName(""); setPrice(""); setMediaUrl(""); setDescription(""); setEditId(null);
+      setBadge(""); setTag1(""); setTag2(""); setTag3("");
       showMessage(editId ? "Item berhasil diupdate!" : "Item berhasil ditambahkan!", "success");
       getItems(token);
     } else {
@@ -124,6 +143,11 @@ function AdminPage() {
     setName(item.name);
     setPrice(item.price || "");
     setMediaUrl(Array.isArray(item.media_url) ? item.media_url[0] : item.media_url);
+    setDescription(item.description || "");
+    setBadge(item.badge || "");
+    setTag1(item.tags?.[0] || "");
+    setTag2(item.tags?.[1] || "");
+    setTag3(item.tags?.[2] || "");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -142,7 +166,8 @@ function AdminPage() {
 
   // ── CANCEL EDIT ──────────────────────────
   const handleCancelEdit = () => {
-    setEditId(null); setName(""); setMediaUrl(""); setPrice("");
+    setEditId(null); setName(""); setMediaUrl(""); setPrice(""); setDescription("");
+    setBadge(""); setTag1(""); setTag2(""); setTag3("");
   };
 
   // ── SAVE LANDING SETTINGS ─────────────────
@@ -178,9 +203,12 @@ function AdminPage() {
         {activeTab === "menu" && (
           <div className="tab-panel">
             <MenuForm
-              name={name} price={price} mediaUrl={mediaUrl} editId={editId}
+              name={name} price={price} mediaUrl={mediaUrl} description={description}
+              badge={badge} tag1={tag1} tag2={tag2} tag3={tag3} editId={editId}
               loading={loading} onNameChange={setName} onPriceChange={setPrice}
-              onMediaUrlChange={setMediaUrl} onSubmit={handleSave} onCancelEdit={handleCancelEdit}
+              onMediaUrlChange={setMediaUrl} onDescriptionChange={setDescription}
+              onBadgeChange={setBadge} onTag1Change={setTag1} onTag2Change={setTag2} onTag3Change={setTag3}
+              onSubmit={handleSave} onCancelEdit={handleCancelEdit}
             />
             <MenuList
               items={items} loading={loading} error={error}

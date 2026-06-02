@@ -104,10 +104,10 @@ function useApi() {
   }, []);
 
   // ── POST / PUT item (tambah atau edit) ───
-  const saveItem = useCallback(async ({ token, name, price, mediaUrl, editId }) => {
+  const saveItem = useCallback(async ({ token, name, price, mediaUrl, editId, description, tags, badge }) => {
     const url = editId ? `${API_URL}/api/item/${editId}` : `${API_URL}/api/item`;
     const method = editId ? "PUT" : "POST";
-    console.log(`[useApi] ${method} ${url} | Name: ${name} | mediaUrl: ${mediaUrl}`);
+    console.log(`[useApi] ${method} ${url} | Name: ${name} | mediaUrl: ${mediaUrl} | Description: ${description} | Tags: ${JSON.stringify(tags)} | Badge: ${badge}`);
 
     try {
       setLoading(true);
@@ -117,7 +117,7 @@ function useApi() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, price, media_url: [mediaUrl] }),
+        body: JSON.stringify({ name, price, media_url: [mediaUrl], description, tags, badge }),
       });
       console.log(`[useApi] ${method} Response Status: ${res.status}`);
       const result = await res.json();
