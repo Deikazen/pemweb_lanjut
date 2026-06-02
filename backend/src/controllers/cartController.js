@@ -9,7 +9,7 @@ const getCart = async (req, res) => {
     try {
         // ID user idealnya didapat dari token JWT via middleware (req.user.id)
         // Sebagai fallback/testing, kita bisa ambil dari query atau body
-        const user_id = req.user?.id || req.query.user_id || req.body.user_id;
+        const user_id = req.user?.id;
 
         if (!user_id) {
             return res.status(400).json({ error: "User ID diperlukan untuk melihat keranjang" });
