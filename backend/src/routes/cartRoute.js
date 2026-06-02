@@ -10,4 +10,4 @@ router.get('/', verifyToken, getCart);
 router.post('/', verifyToken, addToCart);
 router.delete('/:id', verifyToken, removeFromCart);
 
-export default router;
+export default router;  
