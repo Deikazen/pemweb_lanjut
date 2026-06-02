@@ -102,12 +102,13 @@ function Navbar() {
   };
 
   // ── Link items (dipakai di desktop dan mobile) ──
+  // PERUBAHAN: Tag <a> diubah menjadi <button> untuk mengatasi error ESLint jsx-a11y/anchor-is-valid
   const NavItems = ({ isMobile = false }) => (
     <>
-      <a className={isMobile ? "mobile-nav-link" : ""} onClick={() => scrollToSection("home")}>Home</a>
-      <a className={isMobile ? "mobile-nav-link" : ""} onClick={() => scrollToSection("about")}>About</a>
-      <a className={isMobile ? "mobile-nav-link" : ""} onClick={() => scrollToSection("menu")}>Menu</a>
-      <a className={isMobile ? "mobile-nav-link" : ""} onClick={() => scrollToSection("contact")}>Contact</a>
+      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("home")}>Home</button>
+      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("about")}>About</button>
+      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("menu")}>Menu</button>
+      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("contact")}>Contact</button>
 
       {role === "customer" && (
         <>
@@ -145,7 +146,7 @@ function Navbar() {
     <>
       <nav ref={navRef} className={`navbar ${scrolled ? "navbar--scrolled" : ""} ${menuOpen ? "navbar--menu-open" : ""}`}>
         {/* ── Logo / Brand ── */}
-        <div className="navbar-brand" onClick={() => scrollToSection("home")}>
+        <div className="navbar-brand" onClick={() => scrollToSection("home")} style={{ cursor: "pointer" }}>
           <span className="brand-icon">☕</span>
           Kopi<span>Bekmer</span>
         </div>
