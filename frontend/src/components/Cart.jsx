@@ -3,6 +3,8 @@
 // → Drawer slide-in dari kanan
 // → Menampilkan daftar item keranjang
 // → Hapus item, hitung total, checkout
+// → [UPDATED] Tombol +/- quantity per item
+// → [UPDATED] API sekarang pakai token auth (tanpa userId param)
 // → Dipakai di: LandingPage (via Navbar toggle)
 // ============================================
 
@@ -13,17 +15,20 @@ import "./Cart.css";
 
 function Cart({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const { cartItems, getCart, removeFromCart, checkoutOrder, loading } = useApi();
+  const { cartItems, getCart, addToCart, removeFromCart, checkoutOrder, loading } = useApi();
   const [localCart, setLocalCart] = useState([]);
   const [message, setMessage] = useState(null);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  // [BARU] Track loading state per-item agar tombol +/- tidak spam
+  const [updatingItemId, setUpdatingItemId] = useState(null);
 
   const userId = localStorage.getItem("user_id");
 
   // Fetch cart data when drawer opens
+  // [UPDATED] getCart() tidak perlu userId lagi — backend ambil dari token
   const fetchCart = useCallback(async () => {
     if (userId && isOpen) {
-      const result = await getCart(userId);
+      const result = await getCart();
       if (result?.success) {
         setLocalCart(result.data);
       }
@@ -52,10 +57,44 @@ function Cart({ isOpen, onClose }) {
     }
   };
 
+  // ══════════════════════════════════════════
+  // [BARU] Handle update quantity (+/-)
+  // Backend addToCart melakukan UPSERT: quantity dijumlahkan
+  // quantity: +1 untuk tambah, -1 untuk kurangi
+  // ══════════════════════════════════════════
+  const handleUpdateQuantity = async (cartItem, delta) => {
+    setUpdatingItemId(cartItem.id);
+
+    // Jika mengurangi dan quantity sudah 1, hapus item
+    if (delta < 0 && cartItem.quantity <= 1) {
+      await handleRemove(cartItem.id);
+      setUpdatingItemId(null);
+      return;
+    }
+
+    const result = await addToCart({ itemId: cartItem.item_id, quantity: delta });
+    if (result.success) {
+      // Update localCart secara optimistic
+      setLocalCart(prev =>
+        prev.map(item =>
+          item.id === cartItem.id
+            ? { ...item, quantity: item.quantity + delta }
+            : item
+        )
+      );
+      window.dispatchEvent(new Event("cart-updated"));
+    } else {
+      setMessage({ text: "Gagal memperbarui quantity", type: "error" });
+      setTimeout(() => setMessage(null), 2500);
+    }
+    setUpdatingItemId(null);
+  };
+
   // Handle checkout
+  // [UPDATED] checkoutOrder() tidak perlu userId lagi
   const handleCheckout = async () => {
     if (!userId) return;
-    const result = await checkoutOrder(userId);
+    const result = await checkoutOrder();
     if (result.success) {
       setLocalCart([]);
       setCheckoutSuccess(true);
@@ -151,6 +190,7 @@ function Cart({ isOpen, onClose }) {
                 const imageUrl = Array.isArray(itemData.media_url)
                   ? itemData.media_url[0]
                   : itemData.media_url;
+                const isUpdating = updatingItemId === cartItem.id;
 
                 return (
                   <div className="cart-item" key={cartItem.id}>
@@ -168,7 +208,30 @@ function Cart({ isOpen, onClose }) {
                       <p className="cart-item-price">
                         Rp {Number(itemData.price || 0).toLocaleString('id-ID')}
                       </p>
-                      <span className="cart-item-qty">Qty: {cartItem.quantity}</span>
+                      {/* ══ [BARU] Tombol +/- Quantity ══ */}
+                      <div className="cart-qty-controls">
+                        <button
+                          className="cart-qty-btn cart-qty-btn--minus"
+                          onClick={() => handleUpdateQuantity(cartItem, -1)}
+                          disabled={isUpdating}
+                          title="Kurangi quantity"
+                          id={`cart-qty-minus-${cartItem.id}`}
+                        >
+                          −
+                        </button>
+                        <span className="cart-qty-value">
+                          {isUpdating ? "..." : cartItem.quantity}
+                        </span>
+                        <button
+                          className="cart-qty-btn cart-qty-btn--plus"
+                          onClick={() => handleUpdateQuantity(cartItem, 1)}
+                          disabled={isUpdating}
+                          title="Tambah quantity"
+                          id={`cart-qty-plus-${cartItem.id}`}
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                     <div className="cart-item-actions">
                       <p className="cart-item-subtotal">

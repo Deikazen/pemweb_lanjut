@@ -1,11 +1,13 @@
 import express from 'express';
 import { getCart, addToCart, removeFromCart } from '../controllers/cartController.js';
-// import { verifyToken } from '../middleware/authMiddleware.js'; // Tambahkan ini nanti
+import { verifyToken } from '../../middleware/authMiddleware.js';
+
+
 
 const router = express.Router();
 
-router.get('/', getCart);
-router.post('/', addToCart);
-router.delete('/:id', removeFromCart);
+router.get('/', verifyToken, getCart);
+router.post('/', verifyToken, addToCart);
+router.delete('/:id', verifyToken, removeFromCart);
 
-export default router;
+export default router;  
