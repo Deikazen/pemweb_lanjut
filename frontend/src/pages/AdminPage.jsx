@@ -100,6 +100,7 @@ function AdminPage() {
     }
   }, [token, getItems, getLandingSettings]);
 
+  // ── PERBAIKAN DI SINI (Menambahkan location.pathname ke dependency array) ──
   useEffect(() => {
     if (location.state?.editItemId && items.length > 0) {
       const targetItem = items.find(item => item.id === location.state.editItemId);
@@ -109,7 +110,7 @@ function AdminPage() {
         navigate(location.pathname, { replace: true, state: {} });
       }
     }
-  }, [location.state, items, navigate]);
+  }, [location.state, items, navigate, location.pathname]);
 
   useEffect(() => {
     if (landingSettings) {
