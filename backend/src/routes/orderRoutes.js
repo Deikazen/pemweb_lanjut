@@ -1,14 +1,14 @@
 import express from 'express';
-import { checkout, getAllOrders, getOrders, updateOrderStatus } from '../controllers/orderController.js';
+import { checkout, getAllOrders, getOrders, updateOrderStatus, cancelOrder } from '../controllers/orderController.js';
 import { verifyAdmin } from '../../middleware/verifyAdmin.js';
 import { verifyToken } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 // --- Rute untuk Customer ---
-router.get('/', verifyToken, getOrders);        // Untuk melihat riwayat order
-router.post('/checkout', verifyToken, checkout); // Untuk tombol "Checkout"
-
+router.get('/', verifyToken, getOrders);              // Lihat riwayat order
+router.post('/checkout', verifyToken, checkout);       // Tombol "Checkout"
+router.put('/:id/cancel', verifyToken, cancelOrder);  // Batalkan order (hanya jika 'belum bayar')
 
 // --- Rute untuk Admin Panel ---
 router.get('/all', verifyAdmin, getAllOrders);
