@@ -2,6 +2,7 @@
    MenuCard.css
    → Kartu produk menu di landing page
    → Interaksi: hover lift + overlay + zoom gambar
+   → Tombol Add to Cart + Toast notification
    ============================================ */
 
 .menu-card {
@@ -12,11 +13,50 @@
   border: 1px solid rgba(192, 125, 62, 0.15);
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
   cursor: default;
+  position: relative;
 }
 
 .menu-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 24px 50px rgba(26, 14, 8, 0.18);
+}
+
+/* ── Toast notification ── */
+.menu-card-toast {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  animation: toastSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.toast-success {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+}
+
+.toast-error {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: white;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
 }
 
 /* ── Gambar ── */
@@ -100,6 +140,7 @@
 .menu-card-footer {
   display: flex;
   gap: 8px;
+  margin-bottom: 16px;
 }
 
 .menu-tag {
@@ -109,4 +150,74 @@
   padding: 4px 10px;
   border-radius: 100px;
   font-weight: 500;
+}
+
+/* ── Tombol Add to Cart ── */
+.menu-card-cart-btn {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--caramel), var(--latte));
+  color: var(--espresso);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-card-cart-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--latte), var(--caramel));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.menu-card-cart-btn:hover::before {
+  opacity: 1;
+}
+
+.menu-card-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(192, 125, 62, 0.35);
+}
+
+.menu-card-cart-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.menu-card-cart-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.menu-card-cart-btn .cart-icon,
+.menu-card-cart-btn .btn-loading {
+  position: relative;
+  z-index: 1;
+}
+
+.menu-card-cart-btn .cart-icon {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.menu-card-cart-btn:hover .cart-icon {
+  transform: scale(1.2) rotate(-5deg);
+}
+
+/* Ensure text above pseudo-element */
+.menu-card-cart-btn > * {
+  position: relative;
+  z-index: 1;
 }

@@ -1,8 +1,9 @@
 // ============================================
 // useApi.js  (Custom Hook)
 // → Semua pemanggilan ke backend API
-// → Dipakai di: LandingPage, AdminPage
-// → Returns: { items, loading, error, getItems, saveItem, deleteItem, loginUser, registerUser }
+// → Dipakai di: LandingPage, AdminPage, Cart, OrderHistory
+// → Returns: { items, loading, error, getItems, saveItem, deleteItem, loginUser, registerUser,
+//              cartItems, getCart, addToCart, removeFromCart, orders, checkoutOrder, getOrders }
 // ============================================
 
 import { useState, useCallback } from "react";
@@ -14,6 +15,8 @@ const API_URL = process.env.NODE_ENV === "production"
 function useApi() {
   const [items, setItems] = useState([]);
   const [landingSettings, setLandingSettings] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -202,11 +205,148 @@ function useApi() {
     }
   }, []);
 
+  // ══════════════════════════════════════════
+  // CART API FUNCTIONS
+  // ══════════════════════════════════════════
+
+  // ── GET isi keranjang user ────────────────
+  const getCart = useCallback(async (userId) => {
+    if (!userId) return;
+    console.log(`[useApi] GET /api/cart | user_id: ${userId}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/cart?user_id=${userId}`);
+      console.log(`[useApi] GET /api/cart Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] GET /api/cart Result:", result);
+      if (res.ok) {
+        setCartItems(result.data || []);
+        return { success: true, data: result.data || [] };
+      } else {
+        const errorMsg = result.message || result.error || "Gagal mengambil keranjang";
+        console.error("[useApi] GET /api/cart Error:", errorMsg);
+        setError(errorMsg);
+        return { success: false };
+      }
+    } catch (err) {
+      console.error("[useApi] GET /api/cart Exception:", err);
+      setError("Gagal mengambil data keranjang");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── POST tambah barang ke keranjang ───────
+  const addToCart = useCallback(async ({ userId, itemId, quantity = 1 }) => {
+    console.log(`[useApi] POST /api/cart | user_id: ${userId} | item_id: ${itemId} | qty: ${quantity}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/cart`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, item_id: itemId, quantity }),
+      });
+      console.log(`[useApi] POST /api/cart Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] POST /api/cart Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal menambahkan ke keranjang");
+      return { success: true, message: result.message };
+    } catch (err) {
+      console.error("[useApi] POST /api/cart Exception:", err);
+      setError(err.message || "Gagal menambahkan ke keranjang");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── DELETE hapus item dari keranjang ──────
+  const removeFromCart = useCallback(async (cartItemId) => {
+    console.log(`[useApi] DELETE /api/cart/${cartItemId}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/cart/${cartItemId}`, {
+        method: "DELETE",
+      });
+      console.log(`[useApi] DELETE /api/cart Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] DELETE /api/cart Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal menghapus dari keranjang");
+      return { success: true };
+    } catch (err) {
+      console.error("[useApi] DELETE /api/cart Exception:", err);
+      setError(err.message || "Gagal menghapus dari keranjang");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ══════════════════════════════════════════
+  // ORDER API FUNCTIONS
+  // ══════════════════════════════════════════
+
+  // ── POST checkout pesanan ─────────────────
+  const checkoutOrder = useCallback(async (userId) => {
+    console.log(`[useApi] POST /api/orders/checkout | user_id: ${userId}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      console.log(`[useApi] POST /api/orders/checkout Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] POST /api/orders/checkout Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal melakukan checkout");
+      setCartItems([]); // Kosongkan keranjang di state setelah checkout sukses
+      return { success: true, order: result.order_summary, message: result.message };
+    } catch (err) {
+      console.error("[useApi] POST /api/orders/checkout Exception:", err);
+      setError(err.message || "Gagal melakukan checkout");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── GET riwayat pesanan user ──────────────
+  const getOrders = useCallback(async (userId) => {
+    if (!userId) return;
+    console.log(`[useApi] GET /api/orders | user_id: ${userId}`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders?user_id=${userId}`);
+      console.log(`[useApi] GET /api/orders Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] GET /api/orders Result:", result);
+      if (res.ok) {
+        setOrders(result.data || []);
+        return { success: true, data: result.data || [] };
+      } else {
+        const errorMsg = result.message || result.error || "Gagal mengambil riwayat pesanan";
+        console.error("[useApi] GET /api/orders Error:", errorMsg);
+        setError(errorMsg);
+        return { success: false };
+      }
+    } catch (err) {
+      console.error("[useApi] GET /api/orders Exception:", err);
+      setError("Gagal mengambil riwayat pesanan");
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const clearError = () => setError("");
 
   return {
     items,
     landingSettings,
+    cartItems,
+    orders,
     loading,
     error,
     clearError,
@@ -216,9 +356,15 @@ function useApi() {
     saveItem,
     deleteItem,
     loginUser,
-    registerUser
+    registerUser,
+    // Cart
+    getCart,
+    addToCart,
+    removeFromCart,
+    // Orders
+    checkoutOrder,
+    getOrders
   };
 }
 
 export default useApi;
-

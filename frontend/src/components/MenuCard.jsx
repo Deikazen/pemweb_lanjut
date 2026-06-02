@@ -2,20 +2,58 @@
 // MenuCard.jsx  (Kartu Menu Kopi)
 // → Kartu produk dengan gambar, nama, deskripsi
 // → Interaksi: hover flip efek + zoom gambar
+// → Tombol "Tambah ke Keranjang" (Add to Cart)
 // → Dipakai di: LandingPage → section Menu
-// → Props: item { id, name, media_url }
+// → Props: item { id, name, media_url, price }, onAddToCart
 // ============================================
 
+import { useState } from "react";
+import useApi from "../hooks/useApi";
 import "./MenuCard.css";
 
 function MenuCard({ item }) {
+  const { addToCart } = useApi();
+  const [toast, setToast] = useState(null);
+  const [adding, setAdding] = useState(false);
+
   // Ambil URL gambar pertama jika berupa array
   const imageUrl = Array.isArray(item.media_url)
     ? item.media_url[0]
     : item.media_url;
 
+  const handleAddToCart = async () => {
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      setToast({ message: "Silakan login terlebih dahulu!", type: "error" });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+
+    setAdding(true);
+    const result = await addToCart({ userId, itemId: item.id, quantity: 1 });
+    setAdding(false);
+
+    if (result.success) {
+      setToast({ message: "Berhasil ditambahkan ke keranjang! 🛒", type: "success" });
+      // Dispatch custom event agar Navbar bisa update badge
+      window.dispatchEvent(new Event("cart-updated"));
+    } else {
+      setToast({ message: "Gagal menambahkan ke keranjang", type: "error" });
+    }
+
+    setTimeout(() => setToast(null), 3000);
+  };
+
   return (
     <div className="menu-card">
+      {/* ── Toast notification ── */}
+      {toast && (
+        <div className={`menu-card-toast ${toast.type === "success" ? "toast-success" : "toast-error"}`}>
+          {toast.message}
+        </div>
+      )}
+
       {/* ── Gambar dengan badge ── */}
       <div className="menu-card-img-wrap">
         <img
@@ -42,6 +80,23 @@ function MenuCard({ item }) {
           <span className="menu-tag">☕ Signature</span>
           <span className="menu-tag">🍃 Fresh</span>
         </div>
+
+        {/* ── Tombol Add to Cart ── */}
+        <button
+          className="menu-card-cart-btn"
+          onClick={handleAddToCart}
+          disabled={adding}
+          id={`add-to-cart-${item.id}`}
+        >
+          {adding ? (
+            <span className="btn-loading">⏳ Menambahkan...</span>
+          ) : (
+            <>
+              <span className="cart-icon">🛒</span>
+              Tambah ke Keranjang
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

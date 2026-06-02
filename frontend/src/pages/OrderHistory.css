@@ -1,0 +1,353 @@
+/* ============================================
+   OrderHistory.css
+   → Styling halaman riwayat pesanan
+   → Tema: KopiNara warm coffee tones
+   → Card per order, animasi reveal
+   ============================================ */
+
+.order-history-page {
+  min-height: 100vh;
+  background-color: var(--espresso);
+}
+
+/* ── Container ── */
+.order-history-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ── Header ── */
+.order-history-header {
+  margin-bottom: 40px;
+}
+
+.order-back-btn {
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid rgba(192, 125, 62, 0.3);
+  background: rgba(192, 125, 62, 0.1);
+  color: var(--latte);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.order-back-btn:hover {
+  background: rgba(192, 125, 62, 0.2);
+  border-color: var(--caramel);
+  transform: translateX(-4px);
+}
+
+.order-history-title {
+  text-align: center;
+}
+
+.order-history-title h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+
+.order-subtitle {
+  font-size: 15px;
+  color: rgba(245, 234, 216, 0.5);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ── Loading state ── */
+.order-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 16px;
+}
+
+.order-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(192, 125, 62, 0.2);
+  border-top-color: var(--caramel);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.order-loading p {
+  color: rgba(245, 234, 216, 0.5);
+  font-size: 14px;
+}
+
+/* ── Empty state ── */
+.order-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(192, 125, 62, 0.15);
+  border-radius: var(--card-radius);
+}
+
+.order-empty-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 8px;
+  animation: emptyFloat 3s ease-in-out infinite;
+}
+
+@keyframes emptyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.order-empty h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--cream);
+  margin: 0;
+}
+
+.order-empty p {
+  font-size: 14px;
+  color: rgba(245, 234, 216, 0.5);
+  line-height: 1.7;
+  max-width: 350px;
+}
+
+.order-cta-btn {
+  margin-top: 12px;
+  padding: 12px 28px;
+  border-radius: 100px;
+  border: none;
+  background: linear-gradient(135deg, var(--caramel), var(--latte));
+  color: var(--espresso);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.order-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(192, 125, 62, 0.35);
+}
+
+/* ── Orders list ── */
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Order card ── */
+.order-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(192, 125, 62, 0.15);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: orderReveal 0.5s ease both;
+}
+
+@keyframes orderReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.order-card:hover {
+  border-color: rgba(192, 125, 62, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Order card header ── */
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(192, 125, 62, 0.1);
+  background: rgba(192, 125, 62, 0.04);
+}
+
+.order-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-id {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.order-date {
+  font-size: 12px;
+  color: rgba(245, 234, 216, 0.45);
+  letter-spacing: 0.3px;
+}
+
+/* ── Status badges ── */
+.order-status {
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background: rgba(243, 156, 18, 0.15);
+  border: 1px solid rgba(243, 156, 18, 0.4);
+  color: #f1c40f;
+}
+
+.status-processing {
+  background: rgba(52, 152, 219, 0.15);
+  border: 1px solid rgba(52, 152, 219, 0.4);
+  color: #3498db;
+}
+
+.status-completed {
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid rgba(39, 174, 96, 0.4);
+  color: #2ecc71;
+}
+
+.status-cancelled {
+  background: rgba(192, 57, 43, 0.15);
+  border: 1px solid rgba(192, 57, 43, 0.4);
+  color: #e74c3c;
+}
+
+/* ── Order items ── */
+.order-items {
+  padding: 16px 24px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+.order-item-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.order-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.order-item-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.order-item-name {
+  font-size: 14px;
+  color: var(--cream);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-item-qty {
+  font-size: 12px;
+  color: rgba(245, 234, 216, 0.45);
+  font-weight: 500;
+}
+
+.order-item-price {
+  font-size: 14px;
+  color: var(--latte);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Order card footer ── */
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(192, 125, 62, 0.15);
+  background: rgba(192, 125, 62, 0.06);
+}
+
+.order-total-label {
+  font-size: 14px;
+  color: rgba(245, 234, 216, 0.5);
+}
+
+.order-total-amount {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--caramel);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .order-history-container {
+    padding: 24px 16px 60px;
+  }
+
+  .order-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px 18px;
+  }
+
+  .order-items {
+    padding: 12px 18px;
+  }
+
+  .order-card-footer {
+    padding: 14px 18px;
+  }
+
+  .order-total-amount {
+    font-size: 20px;
+  }
+}
