@@ -28,14 +28,14 @@ const createItem = async (req, res) => {
         return res.status(500).json({ error: "Supabase client is not initialized. Please configure SUPABASE_URL and SUPABASE_KEY in Vercel Environment Variables!" });
     }
     try {
-        const { name, media_url, price } = req.body;
+        const { name, media_url, price, description } = req.body;
         let finalMediaUrl = Array.isArray(media_url) ? media_url[0] : media_url;
 
         if (finalMediaUrl && finalMediaUrl.startsWith('data:image')) {
             finalMediaUrl = await uploadBase64ToSupabase(finalMediaUrl, 'item');
         }
 
-        const { data, error } = await supabase.from('items').insert([{ name, media_url: [finalMediaUrl], price }]).select();
+        const { data, error } = await supabase.from('items').insert([{ name, media_url: [finalMediaUrl], price, description }]).select();
         if (error) {
             console.error("Supabase INSERT items error:", error);
             return res.status(400).json({ error: error.message });
@@ -52,14 +52,14 @@ const editItem = async (req, res) => {
     }
     try {
         const { id } = req.params;
-        const { name, media_url, price } = req.body;
+        const { name, media_url, price, description } = req.body;
         let finalMediaUrl = Array.isArray(media_url) ? media_url[0] : media_url;
 
         if (finalMediaUrl && finalMediaUrl.startsWith('data:image')) {
             finalMediaUrl = await uploadBase64ToSupabase(finalMediaUrl, 'item');
         }
 
-        const { data, error } = await supabase.from('items').update({ name, media_url: [finalMediaUrl], price }).eq('id', id).select();
+        const { data, error } = await supabase.from('items').update({ name, media_url: [finalMediaUrl], price, description }).eq('id', id).select();
         if (error) {
             console.error("Supabase UPDATE items error:", error);
             return res.status(400).json({ error: error.message });
