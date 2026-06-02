@@ -135,7 +135,7 @@ const loginUser = async (req, res) => {
         // Ambil role user dari tabel users
         const { data: userData, error: dbError } = await supabase
             .from('users')
-            .select('role, name')
+            .select('id, role, name')
             .eq('email', email)
             .single();
 
@@ -143,6 +143,7 @@ const loginUser = async (req, res) => {
             message: "Login Berhasil!",
             token: token,
             user: {
+                id: userData?.id || data.user?.id,
                 email: email,
                 name: userData?.name || email,
                 role: userData?.role || 'customer'
