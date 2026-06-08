@@ -1,4 +1,15 @@
 import { supabase } from "../../config/supabaseClient.js";
+import midtransClient from "midtrans-client";
+
+// Inisialisasi Midtrans Snap
+const snap = new midtransClient.Snap({
+    isProduction: false, // Set ke true jika sudah menggunakan akun Production
+    serverKey: process.env.MIDTRANS_SERVER_KEY,
+    clientKey: process.env.MIDTRANS_CLIENT_KEY
+});
+
+
+
 
 // 1. Proses Checkout (Membuat Pesanan)
 const checkout = async (req, res) => {
@@ -79,14 +90,78 @@ const checkout = async (req, res) => {
 
         if (deleteCartError) throw new Error(deleteCartError.message);
 
+        const midtransParams = {
+            transaction_details: {
+                order_id: orderId.toString(),
+                gross_amount: totalPrice
+            },
+            credit_card: {
+                secure: true
+            },
+        };
+
+        const midtransTransaction = await snap.createTransaction(midtransParams);
+
         res.status(201).json({
             message: "Checkout berhasil dilakukan!",
-            order_summary: newOrder
+            order_summary: newOrder,
+            token: midtransTransaction.token,
+            redirect_url: midtransTransaction.redirect_url
         });
 
     } catch (err) {
         console.error("Checkout Error:", err);
         res.status(500).json({ error: err.message || "Terjadi kesalahan saat memproses checkout" });
+    }
+
+}
+
+// Tambahkan Fungsi Baru untuk Menangani Webhook Notifikasi Midtrans
+const paymentNotification = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized." });
+    }
+
+    try {
+        const notificationData = req.body;
+
+        // Ambil status transaksi dari payload Midtrans
+        const orderId = notificationData.order_id;
+        const transactionStatus = notificationData.transaction_status;
+        const fraudStatus = notificationData.fraud_status;
+
+        // Tentukan pemetaan status transaksi ke sistem status internal kamu
+        // Pilihan status internal kamu: ['belum bayar', 'diproses', 'selesai', 'dibatalkan']
+        let updatedStatus = 'belum bayar';
+
+        if (transactionStatus === 'capture') {
+            if (fraudStatus === 'challenge') {
+                updatedStatus = 'belum bayar'; // Memerlukan review manual
+            } else if (fraudStatus === 'accept') {
+                updatedStatus = 'diproses';    // Pembayaran sukses kartu kredit
+            }
+        } else if (transactionStatus === 'settlement') {
+            updatedStatus = 'diproses';        // Pembayaran sukses (Gopay/Transfer Bank/dll)
+        } else if (['cancel', 'deny', 'expire'].includes(transactionStatus)) {
+            updatedStatus = 'dibatalkan';      // Gagal atau kedaluwarsa
+        } else if (transactionStatus === 'pending') {
+            updatedStatus = 'belum bayar';     // Menunggu pembayaran
+        }
+
+        // Perbarui status pesanan di database Supabase
+        const { error } = await supabase
+            .from('orders')
+            .update({ status: updatedStatus })
+            .eq('id', orderId);
+
+        if (error) throw new Error(error.message);
+
+        // Midtrans membutuhkan respon HTTP 200 OK untuk mengonfirmasi webhook diterima
+        res.status(200).json({ message: "Notifikasi pembayaran berhasil diproses!" });
+
+    } catch (err) {
+        console.error("Midtrans Notification Error:", err);
+        res.status(500).json({ error: err.message });
     }
 }
 
@@ -127,6 +202,8 @@ const getOrders = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+
 
 // ------ Untuk Admin Panel -------
 
@@ -308,4 +385,4 @@ const completeOrder = async (req, res) => {
     }
 }
 
-export { checkout, getOrders, getAllOrders, updateOrderStatus, cancelOrder, completeOrder };
+export { checkout, getOrders, getAllOrders, updateOrderStatus, cancelOrder, completeOrder, paymentNotification };

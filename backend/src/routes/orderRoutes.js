@@ -1,9 +1,11 @@
 import express from 'express';
-import { checkout, getAllOrders, getOrders, updateOrderStatus, cancelOrder, completeOrder } from '../controllers/orderController.js';
+import { checkout, getAllOrders, getOrders, updateOrderStatus, cancelOrder, completeOrder, paymentNotification } from '../controllers/orderController.js';
 import { verifyAdmin } from '../../middleware/verifyAdmin.js';
 import { verifyToken } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+router.post('/notification', paymentNotification);
 
 // --- Rute untuk Customer ---
 router.get('/', verifyToken, getOrders);               // Lihat riwayat order
