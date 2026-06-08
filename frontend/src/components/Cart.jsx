@@ -15,7 +15,7 @@ import "./Cart.css";
 
 function Cart({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const { cartItems, getCart, addToCart, removeFromCart, checkoutOrder, loading } = useApi();
+  const { cartItems, getCart, addToCart, removeFromCart, checkoutOrder, verifyPayment, loading } = useApi();
   const [localCart, setLocalCart] = useState([]);
   const [message, setMessage] = useState(null);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
@@ -90,19 +90,80 @@ function Cart({ isOpen, onClose }) {
     setUpdatingItemId(null);
   };
 
-  // Handle checkout
-  // [UPDATED] checkoutOrder() tidak perlu userId lagi
+  // Handle checkout → Open Midtrans Snap Payment Popup
+  // Setelah Snap callback, panggil verifyPayment untuk update status di database
   const handleCheckout = async () => {
     if (!userId) return;
     const result = await checkoutOrder();
-    if (result.success) {
-      setLocalCart([]);
-      setCheckoutSuccess(true);
-      setMessage({ text: "🎉 Checkout berhasil! Pesanan Anda sedang diproses.", type: "success" });
-      window.dispatchEvent(new Event("cart-updated"));
-    } else {
+
+    if (!result.success) {
       setMessage({ text: "Gagal melakukan checkout. Coba lagi.", type: "error" });
       setTimeout(() => setMessage(null), 3000);
+      return;
+    }
+
+    const snapToken = result.token;
+    const orderId = result.order?.id; // Supabase order ID
+    const midtransOrderId = orderId; // Untuk checkout pertama, order_id = Supabase ID
+
+    // Jika tidak ada snap token (edge case), fallback ke redirect_url atau tampilkan error
+    if (!snapToken) {
+      if (result.redirect_url) {
+        window.location.href = result.redirect_url;
+        return;
+      }
+      setMessage({ text: "Token pembayaran tidak tersedia.", type: "error" });
+      setTimeout(() => setMessage(null), 3000);
+      return;
+    }
+
+    // Buka Midtrans Snap Payment Popup
+    if (window.snap) {
+      window.snap.pay(snapToken, {
+        onSuccess: async function (snapResult) {
+          console.log("[Midtrans] Payment Success:", snapResult);
+          // Verifikasi pembayaran ke backend → update status di database
+          await verifyPayment(orderId, snapResult.order_id || midtransOrderId);
+          setLocalCart([]);
+          setCheckoutSuccess(true);
+          setMessage({ text: "🎉 Pembayaran berhasil! Pesanan Anda sedang diproses.", type: "success" });
+          window.dispatchEvent(new Event("cart-updated"));
+        },
+        onPending: async function (snapResult) {
+          console.log("[Midtrans] Payment Pending:", snapResult);
+          await verifyPayment(orderId, snapResult.order_id || midtransOrderId);
+          setLocalCart([]);
+          setCheckoutSuccess(true);
+          setMessage({ text: "⏳ Menunggu pembayaran... Cek riwayat pesanan untuk status.", type: "info" });
+          window.dispatchEvent(new Event("cart-updated"));
+        },
+        onError: async function (snapResult) {
+          console.error("[Midtrans] Payment Error:", snapResult);
+          await verifyPayment(orderId, snapResult.order_id || midtransOrderId);
+          setMessage({ text: "❌ Pembayaran gagal. Silakan coba lagi dari riwayat pesanan.", type: "error" });
+          setLocalCart([]);
+          window.dispatchEvent(new Event("cart-updated"));
+          setTimeout(() => setMessage(null), 4000);
+        },
+        onClose: function () {
+          console.log("[Midtrans] Popup closed by user");
+          // Verifikasi juga saat popup ditutup (mungkin user sudah bayar tapi tutup popup)
+          verifyPayment(orderId, midtransOrderId);
+          setMessage({ text: "💡 Pembayaran belum selesai. Anda bisa melanjutkan dari riwayat pesanan.", type: "info" });
+          setLocalCart([]);
+          window.dispatchEvent(new Event("cart-updated"));
+          setTimeout(() => setMessage(null), 5000);
+        },
+      });
+    } else {
+      // Fallback jika Snap.js belum ter-load
+      console.error("[Midtrans] Snap.js not loaded!");
+      if (result.redirect_url) {
+        window.location.href = result.redirect_url;
+      } else {
+        setMessage({ text: "Snap.js belum ter-load. Coba refresh halaman.", type: "error" });
+        setTimeout(() => setMessage(null), 3000);
+      }
     }
   };
 

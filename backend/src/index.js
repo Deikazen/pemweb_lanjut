@@ -28,6 +28,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://pemweb-lanjut-frontend.vercel.app",
   "https://pemweb-lanjut-six.vercel.app",
+  "https://shudder-railroad-snitch.ngrok-free.dev/",
   process.env.FRONTEND_URL
 ];
 

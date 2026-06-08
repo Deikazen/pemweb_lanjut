@@ -14,7 +14,7 @@ import "./OrderHistory.css";
 
 function OrderHistory() {
   const navigate = useNavigate();
-  const { orders, getOrders, cancelOrder, completeOrder, loading } = useApi();
+  const { orders, getOrders, cancelOrder, completeOrder, repayOrder, verifyPayment, loading } = useApi();
   const [localOrders, setLocalOrders]   = useState([]);
   const [processingId, setProcessingId] = useState(null);
   const [toast, setToast]               = useState(null);
@@ -72,6 +72,73 @@ function OrderHistory() {
     }
 
     setProcessingId(null);
+  };
+
+  // ── Bayar ulang order yang belum dibayar (re-open Midtrans Snap) ──
+  const handleRepay = async (orderId) => {
+    setProcessingId(orderId);
+    const result = await repayOrder(orderId);
+
+    if (!result.success) {
+      showToast(result.message || "Gagal mendapatkan token pembayaran.", "error");
+      setProcessingId(null);
+      return;
+    }
+
+    const snapToken = result.token;
+
+    if (!snapToken) {
+      if (result.redirect_url) {
+        window.location.href = result.redirect_url;
+      } else {
+        showToast("Token pembayaran tidak tersedia.", "error");
+      }
+      setProcessingId(null);
+      return;
+    }
+
+    // Buka Midtrans Snap popup
+    if (window.snap) {
+      window.snap.pay(snapToken, {
+        onSuccess: async function (snapResult) {
+          // Verifikasi pembayaran ke backend → update status di database
+          const verifyResult = await verifyPayment(orderId, snapResult.order_id);
+          const newStatus = verifyResult?.status || "diproses";
+          showToast("🎉 Pembayaran berhasil! Pesanan sedang diproses.", "success");
+          setLocalOrders(prev =>
+            prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o)
+          );
+          setProcessingId(null);
+        },
+        onPending: async function (snapResult) {
+          await verifyPayment(orderId, snapResult.order_id);
+          showToast("⏳ Menunggu pembayaran...", "info");
+          setProcessingId(null);
+        },
+        onError: async function (snapResult) {
+          const verifyResult = await verifyPayment(orderId, snapResult.order_id);
+          const newStatus = verifyResult?.status || "belum bayar";
+          setLocalOrders(prev =>
+            prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o)
+          );
+          showToast("❌ Pembayaran gagal. Silakan coba lagi.", "error");
+          setProcessingId(null);
+        },
+        onClose: function () {
+          // Verifikasi saat popup ditutup
+          verifyPayment(orderId, orderId);
+          showToast("💡 Popup pembayaran ditutup. Anda bisa membayar kapan saja.", "info");
+          setProcessingId(null);
+        },
+      });
+    } else {
+      if (result.redirect_url) {
+        window.location.href = result.redirect_url;
+      } else {
+        showToast("Snap.js belum ter-load. Coba refresh halaman.", "error");
+      }
+      setProcessingId(null);
+    }
   };
 
   // ── Format tanggal ──
@@ -250,16 +317,26 @@ function OrderHistory() {
                     {/* Tombol aksi customer */}
                     <div className="order-action-btns">
                       {/* Batalkan — hanya saat 'belum bayar' */}
-                      {canCancel && (
-                        <button
-                          className="order-cancel-btn"
-                          onClick={() => openModal(order.id, "cancel")}
-                          disabled={isProcessing}
-                          id={`cancel-order-${order.id}`}
-                        >
-                          {isProcessing ? "⏳..." : "❌ Batalkan"}
-                        </button>
-                      )}
+                        {canCancel && (
+                          <>
+                            <button
+                              className="order-pay-btn"
+                              onClick={() => handleRepay(order.id)}
+                              disabled={isProcessing}
+                              id={`repay-order-${order.id}`}
+                            >
+                              {isProcessing ? "⏳..." : "💳 Bayar Sekarang"}
+                            </button>
+                            <button
+                              className="order-cancel-btn"
+                              onClick={() => openModal(order.id, "cancel")}
+                              disabled={isProcessing}
+                              id={`cancel-order-${order.id}`}
+                            >
+                              {isProcessing ? "⏳..." : "❌ Batalkan"}
+                            </button>
+                          </>
+                        )}
 
                       {/* Konfirmasi selesai — hanya saat 'diproses' */}
                       {canComplete && (

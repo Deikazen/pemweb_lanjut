@@ -367,6 +367,37 @@
   transform: translateY(-1px);
 }
 
+/* Tombol Bayar Sekarang (Repay) */
+.order-pay-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--caramel), #e8a64a);
+  color: var(--espresso);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.order-pay-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(192, 125, 62, 0.4);
+}
+
+.order-pay-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
+.order-pay-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Tombol Pesanan Selesai */
 .order-complete-btn {
   padding: 10px 18px;
@@ -577,7 +608,8 @@
   .order-action-btns { width: 100%; }
 
   .order-cancel-btn,
-  .order-complete-btn { width: 100%; justify-content: center; }
+  .order-complete-btn,
+  .order-pay-btn { width: 100%; justify-content: center; text-align: center; }
 
   .order-total-amount { font-size: 20px; }
 

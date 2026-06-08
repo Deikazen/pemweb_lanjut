@@ -135,7 +135,7 @@ function AdminOrders() {
                 <div className="admin-order-meta">
                   <span className="admin-order-id">#{order.id?.slice(0, 8)}</span>
                   <span className="admin-order-user">
-                    👤 User: {order.user_id?.slice(0, 8)}...
+                    👤 {order.users?.name || order.users?.email || `User ${order.user_id?.slice(0, 8)}...`}
                   </span>
                   <span className="admin-order-date">{formatDate(order.created_at)}</span>
                 </div>

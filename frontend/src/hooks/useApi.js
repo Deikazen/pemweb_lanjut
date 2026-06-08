@@ -332,7 +332,13 @@ function useApi() {
       console.log("[useApi] POST /api/orders/checkout Result:", result);
       if (!res.ok) throw new Error(result.message || result.error || "Gagal melakukan checkout");
       setCartItems([]); // Kosongkan keranjang di state setelah checkout sukses
-      return { success: true, order: result.order_summary, message: result.message };
+      return {
+        success: true,
+        order: result.order_summary,
+        message: result.message,
+        token: result.token,           // Midtrans Snap token untuk popup pembayaran
+        redirect_url: result.redirect_url // URL redirect Midtrans (fallback)
+      };
     } catch (err) {
       console.error("[useApi] POST /api/orders/checkout Exception:", err);
       setError(err.message || "Gagal melakukan checkout");
@@ -490,6 +496,61 @@ function useApi() {
     }
   }, []);
 
+  // ── POST re-pay order (Customer) ──
+  // Re-generate Midtrans Snap token untuk order yang belum dibayar
+  const repayOrder = useCallback(async (orderId) => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] POST /api/orders/${orderId}/repay`);
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/repay`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(`[useApi] POST /api/orders/repay Status: ${res.status}`);
+      const result = await res.json();
+      console.log("[useApi] POST /api/orders/repay Result:", result);
+      if (!res.ok) throw new Error(result.message || result.error || "Gagal mendapatkan token pembayaran");
+      return {
+        success: true,
+        token: result.token,
+        redirect_url: result.redirect_url
+      };
+    } catch (err) {
+      console.error("[useApi] POST /api/orders/repay Exception:", err);
+      setError(err.message || "Gagal mendapatkan token pembayaran");
+      return { success: false, message: err.message };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // ── POST verifikasi pembayaran ke Midtrans API ──
+  // Dipanggil setelah Snap popup callback untuk update status otomatis
+  const verifyPayment = useCallback(async (orderId, midtransOrderId) => {
+    const token = getToken();
+    if (!token) return { success: false };
+    console.log(`[useApi] POST /api/orders/${orderId}/verify-payment | midtrans_order_id: ${midtransOrderId}`);
+    try {
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/verify-payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ midtrans_order_id: midtransOrderId }),
+      });
+      const result = await res.json();
+      console.log("[useApi] verify-payment Result:", result);
+      if (!res.ok) throw new Error(result.error || "Gagal verifikasi pembayaran");
+      return { success: true, status: result.status };
+    } catch (err) {
+      console.error("[useApi] verify-payment Exception:", err);
+      return { success: false, message: err.message };
+    }
+  }, []);
+
   const clearError = () => setError("");
 
   return {
@@ -516,6 +577,8 @@ function useApi() {
     getOrders,
     cancelOrder,
     completeOrder,
+    repayOrder,
+    verifyPayment,
     // Orders (Admin) — BARU
     getAllOrders,
     updateOrderStatus

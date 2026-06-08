@@ -8,6 +8,13 @@ const snap = new midtransClient.Snap({
     clientKey: process.env.MIDTRANS_CLIENT_KEY
 });
 
+// Inisialisasi Midtrans Core API (untuk cek status transaksi)
+const coreApi = new midtransClient.CoreApi({
+    isProduction: false,
+    serverKey: process.env.MIDTRANS_SERVER_KEY,
+    clientKey: process.env.MIDTRANS_CLIENT_KEY
+});
+
 
 
 
@@ -126,9 +133,17 @@ const paymentNotification = async (req, res) => {
         const notificationData = req.body;
 
         // Ambil status transaksi dari payload Midtrans
-        const orderId = notificationData.order_id;
+        const rawOrderId = notificationData.order_id;
         const transactionStatus = notificationData.transaction_status;
         const fraudStatus = notificationData.fraud_status;
+
+        // Midtrans order_id mungkin mengandung suffix '-repay-{timestamp}'
+        // dari fitur repay. Kita perlu extract ID asli Supabase.
+        const orderId = rawOrderId.includes('-repay-')
+            ? rawOrderId.split('-repay-')[0]
+            : rawOrderId;
+
+        console.log(`[Notification] Raw order_id: ${rawOrderId}, Parsed Supabase ID: ${orderId}`);
 
         // Tentukan pemetaan status transaksi ke sistem status internal kamu
         // Pilihan status internal kamu: ['belum bayar', 'diproses', 'selesai', 'dibatalkan']
@@ -214,10 +229,12 @@ const getAllOrders = async (req, res) => {
 
     try {
         // Mengambil semua orders tanpa filter user_id, diurutkan dari terbaru
+        // JOIN ke tabel users untuk mendapatkan nama pelanggan
         const { data, error } = await supabase
             .from('orders')
             .select(`
                 *,
+                users ( id, name, email ),
                 order_items (
                     id,
                     quantity,
@@ -385,4 +402,156 @@ const completeOrder = async (req, res) => {
     }
 }
 
-export { checkout, getOrders, getAllOrders, updateOrderStatus, cancelOrder, completeOrder, paymentNotification };
+// 7. Re-generate Midtrans Snap Token untuk order yang belum dibayar
+// Berguna jika customer menutup popup atau ingin membayar nanti
+const repayOrder = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized." });
+    }
+
+    try {
+        const { id } = req.params; // order ID
+        const user_id = req.user?.id;
+
+        if (!user_id) {
+            return res.status(401).json({ error: "User tidak terautentikasi" });
+        }
+
+        // Ambil data pesanan
+        const { data: order, error: fetchError } = await supabase
+            .from('orders')
+            .select('id, status, user_id, total_price')
+            .eq('id', id)
+            .single();
+
+        if (fetchError || !order) {
+            return res.status(404).json({ error: "Pesanan tidak ditemukan" });
+        }
+
+        // Pastikan pesanan milik user yang login
+        if (order.user_id !== user_id) {
+            return res.status(403).json({ error: "Anda tidak berhak mengakses pesanan ini" });
+        }
+
+        // Hanya bisa re-pay jika status masih 'belum bayar'
+        if (order.status !== 'belum bayar') {
+            return res.status(400).json({
+                error: `Pesanan tidak dapat dibayar ulang. Status saat ini: '${order.status}'.`
+            });
+        }
+
+        // Buat Midtrans Snap token baru dengan order_id UNIK
+        // Midtrans tidak mengizinkan order_id yang sama dipakai ulang,
+        // jadi kita tambahkan suffix '-repay-{timestamp}'
+        const uniqueOrderId = `${order.id}-repay-${Date.now()}`;
+        console.log(`[Repay] Original order: ${order.id}, Midtrans order_id: ${uniqueOrderId}`);
+
+        const midtransParams = {
+            transaction_details: {
+                order_id: uniqueOrderId,
+                gross_amount: order.total_price
+            },
+            credit_card: {
+                secure: true
+            },
+        };
+
+        const midtransTransaction = await snap.createTransaction(midtransParams);
+
+        res.status(200).json({
+            message: "Token pembayaran berhasil di-generate!",
+            token: midtransTransaction.token,
+            redirect_url: midtransTransaction.redirect_url
+        });
+
+    } catch (err) {
+        console.error("Repay Order Error:", err);
+        res.status(500).json({ error: err.message || "Gagal generate token pembayaran" });
+    }
+}
+
+// 8. Verifikasi status pembayaran langsung ke Midtrans API
+// Dipanggil oleh frontend setelah Snap popup callback (onSuccess/onPending/onClose)
+// Ini lebih reliable daripada hanya mengandalkan webhook
+const verifyPayment = async (req, res) => {
+    if (!supabase) {
+        return res.status(500).json({ error: "Supabase client is not initialized." });
+    }
+
+    try {
+        const { id } = req.params; // Supabase order ID
+        const user_id = req.user?.id;
+
+        if (!user_id) {
+            return res.status(401).json({ error: "User tidak terautentikasi" });
+        }
+
+        // Ambil data pesanan dari Supabase
+        const { data: order, error: fetchError } = await supabase
+            .from('orders')
+            .select('id, status, user_id')
+            .eq('id', id)
+            .single();
+
+        if (fetchError || !order) {
+            return res.status(404).json({ error: "Pesanan tidak ditemukan" });
+        }
+
+        if (order.user_id !== user_id) {
+            return res.status(403).json({ error: "Anda tidak berhak mengakses pesanan ini" });
+        }
+
+        // Coba cek status transaksi di Midtrans
+        // order_id di Midtrans bisa berupa ID asli atau dengan suffix '-repay-{timestamp}'
+        // Kita coba ID asli dulu, kalau gagal kita return status dari database
+        let updatedStatus = order.status;
+
+        // Ambil midtrans_order_id dari request body (dikirim oleh frontend dari Snap callback)
+        const midtransOrderId = req.body.midtrans_order_id || id;
+
+        try {
+            const statusResponse = await coreApi.transaction.status(midtransOrderId);
+            console.log(`[VerifyPayment] Midtrans status for ${midtransOrderId}:`, statusResponse);
+
+            const txStatus = statusResponse.transaction_status;
+            const fraudStatus = statusResponse.fraud_status;
+
+            if (txStatus === 'capture') {
+                if (fraudStatus === 'accept') {
+                    updatedStatus = 'diproses';
+                }
+            } else if (txStatus === 'settlement') {
+                updatedStatus = 'diproses';
+            } else if (['cancel', 'deny', 'expire'].includes(txStatus)) {
+                updatedStatus = 'dibatalkan';
+            } else if (txStatus === 'pending') {
+                updatedStatus = 'belum bayar';
+            }
+        } catch (midtransErr) {
+            console.warn(`[VerifyPayment] Midtrans status check failed for ${midtransOrderId}:`, midtransErr.message);
+            // Jika gagal cek Midtrans (misal order belum terdaftar), gunakan status dari DB
+        }
+
+        // Update status di Supabase jika berubah
+        if (updatedStatus !== order.status) {
+            const { error: updateError } = await supabase
+                .from('orders')
+                .update({ status: updatedStatus })
+                .eq('id', id);
+
+            if (updateError) throw new Error(updateError.message);
+            console.log(`[VerifyPayment] Order ${id} status updated: ${order.status} → ${updatedStatus}`);
+        }
+
+        res.status(200).json({
+            message: "Verifikasi pembayaran berhasil",
+            status: updatedStatus
+        });
+
+    } catch (err) {
+        console.error("Verify Payment Error:", err);
+        res.status(500).json({ error: err.message || "Gagal memverifikasi pembayaran" });
+    }
+}
+
+export { checkout, getOrders, getAllOrders, updateOrderStatus, cancelOrder, completeOrder, paymentNotification, repayOrder, verifyPayment };
