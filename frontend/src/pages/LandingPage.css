@@ -562,3 +562,1987 @@
     font-size: 32px;
   }
 }
+
+/* ============================================
+   HERO KOPI BEKMER 70
+   ============================================ */
+
+.bekmer-hero {
+  position: relative;
+  min-height: 820px;
+  padding: 150px 60px 110px;
+  overflow: hidden;
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 80% 30%, rgba(151, 14, 8, 0.34), transparent 28%),
+    radial-gradient(circle at 15% 85%, rgba(236, 152, 82, 0.13), transparent 24%),
+    var(--espresso);
+}
+
+.bekmer-hero-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.bekmer-hero-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  max-width: 1450px;
+  margin: 0 auto;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.bekmer-eyebrow {
+  display: inline-flex;
+  padding: 9px 14px;
+  margin-bottom: 22px;
+  color: var(--latte);
+  border: 1px solid rgba(244, 178, 110, 0.5);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.bekmer-hero-copy h1 {
+  max-width: 720px;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: clamp(82px, 9vw, 146px);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: 3px;
+}
+
+.bekmer-hero-copy h1 span {
+  display: block;
+  color: var(--caramel);
+}
+
+.bekmer-hero-desc {
+  max-width: 660px;
+  margin-top: 28px;
+  color: rgba(247, 240, 232, 0.78);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.bekmer-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.bekmer-btn-primary,
+.bekmer-btn-outline {
+  display: inline-flex;
+  padding: 15px 24px;
+  border: 2px solid var(--caramel);
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+  transition: 0.2s ease;
+}
+
+.bekmer-btn-primary {
+  color: var(--espresso);
+  background: var(--caramel);
+  box-shadow: 5px 5px 0 var(--red-bekmer);
+}
+
+.bekmer-btn-primary:hover {
+  box-shadow: 2px 2px 0 var(--red-bekmer);
+  transform: translate(3px, 3px);
+}
+
+.bekmer-btn-outline {
+  color: var(--cream);
+  background: transparent;
+}
+
+.bekmer-btn-outline:hover {
+  color: var(--espresso);
+  background: var(--cream);
+  border-color: var(--cream);
+}
+
+.bekmer-hero-notes {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.bekmer-hero-notes div {
+  min-width: 230px;
+  padding: 11px 16px;
+  border: 1px solid rgba(244, 178, 110, 0.32);
+  border-left: 4px solid var(--caramel);
+  border-radius: 9px;
+  background: rgba(247, 240, 232, 0.08);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(5px);
+}
+
+.bekmer-hero-notes strong,
+.bekmer-hero-notes span {
+  display: block;
+}
+
+.bekmer-hero-notes strong {
+  color: var(--latte);
+  font-family: var(--font-display);
+  font-size: 29px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+}
+
+.bekmer-hero-notes span {
+  margin-top: 4px;
+  color: rgba(255, 250, 245, 0.92);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.45px;
+  line-height: 1.4;
+}
+
+.bekmer-hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bekmer-logo-card {
+  display: flex;
+  width: min(490px, 100%);
+  min-height: 490px;
+  padding: 32px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid var(--red-bekmer);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #f7c18c 0%, #ec9852 72%);
+  box-shadow:
+    0 0 0 12px rgba(247, 240, 232, 0.04),
+    0 0 0 20px rgba(151, 14, 8, 0.22),
+    18px 18px 0 rgba(0, 0, 0, 0.15);
+}
+
+.bekmer-hero-logo {
+  width: 75%;
+  max-width: 370px;
+  object-fit: contain;
+}
+
+.bekmer-logo-small-text,
+.bekmer-logo-year {
+  color: var(--maroon);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 4px;
+}
+
+.bekmer-logo-small-text {
+  margin-bottom: 16px;
+}
+
+.bekmer-logo-year {
+  margin-top: 16px;
+}
+
+.bekmer-sticker {
+  position: absolute;
+  padding: 9px 17px;
+  color: var(--cream);
+  border: 2px solid var(--cream);
+  border-radius: 6px;
+  background: var(--red-bekmer);
+  font-family: var(--font-display);
+  font-size: 25px;
+  letter-spacing: 2px;
+  box-shadow: 5px 5px 0 var(--caramel);
+  transform: rotate(-6deg);
+}
+
+.bekmer-sticker-top {
+  top: 55px;
+  right: 10px;
+}
+
+.bekmer-sticker-bottom {
+  bottom: 60px;
+  left: -20px;
+  transform: rotate(5deg);
+}
+
+.bekmer-marquee {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  overflow: hidden;
+  color: var(--cream);
+  background: var(--red-bekmer);
+  border-top: 4px solid var(--caramel);
+  border-bottom: 4px solid var(--caramel);
+}
+
+.bekmer-marquee-track {
+  display: flex;
+  width: max-content;
+  padding: 13px 0;
+  gap: 28px;
+  align-items: center;
+  animation: bekmerMarquee 23s linear infinite;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+@keyframes bekmerMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1050px) {
+  .bekmer-hero {
+    min-height: auto;
+    padding: 130px 28px 120px;
+  }
+
+  .bekmer-hero-content {
+    grid-template-columns: 1fr;
+    gap: 58px;
+  }
+
+  .bekmer-hero-visual {
+    padding-bottom: 65px;
+  }
+
+  .bekmer-logo-card {
+    width: min(390px, 88vw);
+    min-height: min(390px, 88vw);
+  }
+}
+
+@media (max-width: 600px) {
+  .bekmer-hero {
+    padding: 115px 20px 70px;
+  }
+
+  .bekmer-hero-copy h1 {
+    font-size: 82px;
+  }
+
+  .bekmer-hero-desc {
+    font-size: 15px;
+  }
+
+  .bekmer-hero-notes {
+    gap: 18px;
+  }
+
+  .bekmer-sticker {
+    font-size: 20px;
+  }
+
+  .bekmer-sticker-top {
+    right: 0;
+  }
+
+  .bekmer-sticker-bottom {
+    left: 0;
+  }
+}
+
+/* ============================================
+   ABOUT KOPI BEKMER 70
+   ============================================ */
+
+.bekmer-about {
+  padding: 110px 60px;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(247, 240, 232, 0.93), rgba(247, 240, 232, 0.93)),
+    repeating-linear-gradient(
+      135deg,
+      rgba(151, 14, 8, 0.06) 0 2px,
+      transparent 2px 18px
+    );
+}
+
+.bekmer-about-header,
+.bekmer-about-grid,
+.bekmer-quote {
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bekmer-about-header {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  column-gap: 44px;
+  align-items: end;
+}
+
+.bekmer-about-header .section-label {
+  grid-column: 1 / -1;
+}
+
+.bekmer-about-header h2 {
+  max-width: 700px;
+  color: var(--espresso);
+  font-size: clamp(66px, 7vw, 112px);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 2px;
+}
+
+.bekmer-about-header h2 span {
+  display: block;
+  color: var(--red-bekmer);
+}
+
+.bekmer-about-lead {
+  max-width: 680px;
+  padding-bottom: 5px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.bekmer-about-grid {
+  display: grid;
+  margin-top: 60px;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  gap: 18px;
+}
+
+.bekmer-story-card {
+  position: relative;
+  min-height: 360px;
+  padding: 28px;
+  overflow: hidden;
+  border: 2px solid rgba(101, 16, 11, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 250, 245, 0.78);
+  box-shadow: 8px 8px 0 rgba(101, 16, 11, 0.1);
+  transition: 0.22s ease;
+}
+
+.bekmer-story-card:hover {
+  box-shadow: 4px 4px 0 rgba(101, 16, 11, 0.16);
+  transform: translate(4px, 4px);
+}
+
+.bekmer-story-card-main {
+  color: var(--cream);
+  border-color: var(--red-bekmer);
+  background:
+    radial-gradient(circle at 90% 5%, rgba(236, 152, 82, 0.22), transparent 22%),
+    var(--espresso);
+  box-shadow: 8px 8px 0 var(--caramel);
+}
+
+.bekmer-card-number {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: rgba(151, 14, 8, 0.12);
+  font-family: var(--font-display);
+  font-size: 100px;
+  line-height: 1;
+}
+
+.bekmer-story-card-main .bekmer-card-number {
+  color: rgba(247, 240, 232, 0.08);
+}
+
+.bekmer-card-kicker {
+  position: relative;
+  z-index: 1;
+  color: var(--red-bekmer);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+}
+
+.bekmer-story-card-main .bekmer-card-kicker {
+  color: var(--latte);
+}
+
+.bekmer-story-card h3 {
+  position: relative;
+  z-index: 1;
+  max-width: 360px;
+  margin-top: 25px;
+  color: var(--espresso);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 1px;
+}
+
+.bekmer-story-card-main h3 {
+  color: var(--cream);
+  font-size: 56px;
+}
+
+.bekmer-story-card p:not(.bekmer-card-kicker) {
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.bekmer-story-card-main p:not(.bekmer-card-kicker) {
+  color: rgba(247, 240, 232, 0.78);
+}
+
+.bekmer-card-tag {
+  display: inline-flex;
+  padding: 9px 12px;
+  margin-top: 22px;
+  color: var(--espresso);
+  border-radius: 5px;
+  background: var(--caramel);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.bekmer-quote {
+  display: flex;
+  padding: 28px 34px;
+  margin-top: 38px;
+  gap: 20px;
+  align-items: center;
+  border: 3px solid var(--red-bekmer);
+  border-radius: 13px;
+  background: var(--caramel);
+  box-shadow: 8px 8px 0 var(--red-bekmer);
+}
+
+.bekmer-quote > span {
+  height: 72px;
+  color: var(--red-bekmer);
+  font-family: Georgia, serif;
+  font-size: 110px;
+  line-height: 0.88;
+}
+
+.bekmer-quote p {
+  color: var(--espresso);
+  font-family: var(--font-display);
+  font-size: 41px;
+  letter-spacing: 1.8px;
+  line-height: 1;
+}
+
+.bekmer-quote small {
+  display: block;
+  max-width: 780px;
+  margin-top: 6px;
+  color: rgba(33, 11, 8, 0.78);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+@media (max-width: 1050px) {
+  .bekmer-about {
+    padding: 85px 28px;
+  }
+
+  .bekmer-about-header {
+    grid-template-columns: 1fr;
+    row-gap: 22px;
+  }
+
+  .bekmer-about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bekmer-story-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .bekmer-about {
+    padding: 70px 20px;
+  }
+
+  .bekmer-about-header h2 {
+    font-size: 70px;
+  }
+
+  .bekmer-about-lead {
+    font-size: 15px;
+  }
+
+  .bekmer-story-card-main h3 {
+    font-size: 46px;
+  }
+
+  .bekmer-quote {
+    padding: 22px 18px;
+    gap: 10px;
+  }
+
+  .bekmer-quote > span {
+    height: 55px;
+    font-size: 85px;
+  }
+
+  .bekmer-quote p {
+    font-size: 31px;
+  }
+
+  .bekmer-quote small {
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   BEST SELLER KOPI BEKMER 70
+   ============================================ */
+
+.bekmer-best-seller {
+  padding: 110px 60px;
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 90% 15%, rgba(151, 14, 8, 0.34), transparent 23%),
+    radial-gradient(circle at 5% 90%, rgba(236, 152, 82, 0.12), transparent 24%),
+    var(--espresso);
+}
+
+.bekmer-best-header,
+.bekmer-best-grid,
+.bekmer-best-footer {
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bekmer-best-header {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 42px;
+  align-items: end;
+}
+
+.bekmer-best-header .section-label {
+  color: var(--latte);
+}
+
+.bekmer-best-header h2 {
+  color: var(--cream);
+  font-size: clamp(70px, 8vw, 122px);
+  font-weight: 400;
+  line-height: 0.86;
+}
+
+.bekmer-best-header h2 span {
+  display: block;
+  color: var(--caramel);
+}
+
+.bekmer-best-header > p {
+  max-width: 600px;
+  padding-bottom: 8px;
+  color: rgba(247, 240, 232, 0.74);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.bekmer-best-grid {
+  display: grid;
+  margin-top: 54px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 17px;
+}
+
+.bekmer-product-card {
+  overflow: hidden;
+  border: 2px solid rgba(244, 178, 110, 0.35);
+  border-radius: 13px;
+  background: var(--cream);
+  box-shadow: 7px 7px 0 var(--red-bekmer);
+  transition: 0.22s ease;
+}
+
+.bekmer-product-card:hover {
+  box-shadow: 3px 3px 0 var(--red-bekmer);
+  transform: translate(4px, 4px);
+}
+
+.bekmer-product-image-wrap {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  background: var(--caramel);
+}
+
+.bekmer-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.bekmer-product-card:hover .bekmer-product-image {
+  transform: scale(1.06);
+}
+
+.bekmer-product-label {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 7px 10px;
+  color: var(--cream);
+  border-radius: 5px;
+  background: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bekmer-product-number {
+  position: absolute;
+  right: 14px;
+  bottom: -8px;
+  color: rgba(255, 250, 245, 0.88);
+  font-family: var(--font-display);
+  font-size: 72px;
+  line-height: 1;
+}
+
+.bekmer-product-body {
+  padding: 22px 19px 20px;
+}
+
+.bekmer-product-category {
+  color: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.bekmer-product-body h3 {
+  margin-top: 10px;
+  color: var(--espresso);
+  font-size: 37px;
+  font-weight: 400;
+  line-height: 0.97;
+}
+
+.bekmer-product-desc {
+  min-height: 90px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.bekmer-product-link {
+  display: flex;
+  padding-top: 15px;
+  margin-top: 17px;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--red-bekmer);
+  border-top: 1px solid rgba(101, 16, 11, 0.17);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.35px;
+}
+
+.bekmer-product-link span {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.bekmer-product-link:hover span {
+  transform: translateX(5px);
+}
+
+.bekmer-best-footer {
+  display: flex;
+  padding: 18px 22px;
+  margin-top: 38px;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--espresso);
+  border: 2px solid var(--caramel);
+  border-radius: 8px;
+  background: var(--caramel);
+  box-shadow: 6px 6px 0 var(--red-bekmer);
+}
+
+.bekmer-best-footer p {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bekmer-best-footer a {
+  flex-shrink: 0;
+  color: var(--espresso);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+@media (max-width: 1150px) {
+  .bekmer-best-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .bekmer-best-seller {
+    padding: 85px 28px;
+  }
+
+  .bekmer-best-header {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .bekmer-best-grid {
+    margin-top: 36px;
+  }
+}
+
+@media (max-width: 560px) {
+  .bekmer-best-seller {
+    padding: 70px 20px;
+  }
+
+  .bekmer-best-header h2 {
+    font-size: 74px;
+  }
+
+  .bekmer-best-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bekmer-product-image-wrap {
+    height: 245px;
+  }
+
+  .bekmer-best-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ============================================
+   POSTER MENU LENGKAP
+   ============================================ */
+
+.bekmer-menu-poster {
+  padding: 110px 60px;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(247, 240, 232, 0.96), rgba(247, 240, 232, 0.96)),
+    repeating-linear-gradient(
+      45deg,
+      rgba(151, 14, 8, 0.07) 0 2px,
+      transparent 2px 20px
+    );
+}
+
+.bekmer-menu-poster-header,
+.bekmer-menu-poster-frame {
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bekmer-menu-poster-header {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 44px;
+  align-items: end;
+}
+
+.bekmer-menu-poster-header h2 {
+  color: var(--espresso);
+  font-size: clamp(70px, 8vw, 122px);
+  font-weight: 400;
+  line-height: 0.87;
+}
+
+.bekmer-menu-poster-header h2 span {
+  display: block;
+  color: var(--red-bekmer);
+}
+
+.bekmer-menu-poster-intro {
+  padding-bottom: 7px;
+}
+
+.bekmer-menu-poster-intro p {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.bekmer-poster-order-btn {
+  display: inline-flex;
+  padding: 14px 19px;
+  margin-top: 20px;
+  color: var(--cream);
+  border-radius: 6px;
+  background: var(--red-bekmer);
+  box-shadow: 5px 5px 0 var(--caramel);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+  transition: 0.2s ease;
+}
+
+.bekmer-poster-order-btn:hover {
+  box-shadow: 2px 2px 0 var(--caramel);
+  transform: translate(3px, 3px);
+}
+
+.bekmer-menu-poster-frame {
+  margin-top: 50px;
+  overflow: hidden;
+  border: 4px solid var(--red-bekmer);
+  border-radius: 14px;
+  background: var(--cream);
+  box-shadow: 13px 13px 0 var(--caramel);
+}
+
+.bekmer-menu-poster-topbar,
+.bekmer-menu-poster-bottombar {
+  display: flex;
+  padding: 14px 20px;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--cream);
+  background: var(--red-bekmer);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bekmer-menu-poster-bottombar {
+  background: var(--espresso);
+}
+
+.bekmer-menu-poster-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 800px) {
+  .bekmer-menu-poster {
+    padding: 85px 28px;
+  }
+
+  .bekmer-menu-poster-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .bekmer-menu-poster-topbar,
+  .bekmer-menu-poster-bottombar {
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .bekmer-menu-poster {
+    padding: 70px 20px;
+  }
+
+  .bekmer-menu-poster-header h2 {
+    font-size: 74px;
+  }
+
+  .bekmer-menu-poster-frame {
+    margin-top: 34px;
+    box-shadow: 7px 7px 0 var(--caramel);
+  }
+}
+
+/* ============================================
+   MENU PEMESANAN ONLINE
+   ============================================ */
+
+.bekmer-order-menu {
+  padding: 110px 60px;
+  background:
+    linear-gradient(rgba(255, 250, 245, 0.96), rgba(255, 250, 245, 0.96)),
+    repeating-linear-gradient(
+      135deg,
+      rgba(151, 14, 8, 0.07) 0 2px,
+      transparent 2px 22px
+    );
+}
+
+.bekmer-order-head,
+.bekmer-order-menu .menu-grid {
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bekmer-order-head {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 44px;
+  align-items: end;
+  margin-bottom: 52px;
+}
+
+.bekmer-order-head h2 {
+  color: var(--espresso);
+  font-size: clamp(70px, 7.6vw, 118px);
+  font-weight: 400;
+  line-height: 0.87;
+}
+
+.bekmer-order-head h2 span {
+  display: block;
+  color: var(--red-bekmer);
+}
+
+.bekmer-order-intro {
+  padding-bottom: 6px;
+}
+
+.bekmer-order-intro p {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.bekmer-order-info {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  gap: 10px;
+  align-items: center;
+  color: var(--red-bekmer);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bekmer-order-menu .menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+@media (max-width: 1050px) {
+  .bekmer-order-menu {
+    padding: 85px 28px;
+  }
+
+  .bekmer-order-head {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .bekmer-order-menu .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .bekmer-order-menu {
+    padding: 70px 20px;
+  }
+
+  .bekmer-order-head h2 {
+    font-size: 72px;
+  }
+
+  .bekmer-order-menu .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   KEUNGGULAN KOPI BEKMER 70
+   ============================================ */
+
+.bekmer-values {
+  padding: 110px 60px;
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 92% 10%, rgba(151, 14, 8, 0.35), transparent 24%),
+    radial-gradient(circle at 8% 92%, rgba(236, 152, 82, 0.12), transparent 24%),
+    var(--espresso);
+}
+
+.bekmer-values-header,
+.bekmer-values-grid {
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bekmer-values-header {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 42px;
+  align-items: end;
+}
+
+.bekmer-values-header .section-label {
+  color: var(--latte);
+}
+
+.bekmer-values-header h2 {
+  color: var(--cream);
+  font-size: clamp(70px, 7.8vw, 120px);
+  font-weight: 400;
+  line-height: 0.87;
+}
+
+.bekmer-values-header h2 span {
+  display: block;
+  color: var(--caramel);
+}
+
+.bekmer-values-header > p {
+  max-width: 610px;
+  padding-bottom: 7px;
+  color: rgba(247, 240, 232, 0.74);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.bekmer-values-grid {
+  display: grid;
+  margin-top: 52px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.bekmer-value-card {
+  position: relative;
+  min-height: 330px;
+  padding: 24px 22px;
+  overflow: hidden;
+  border: 2px solid rgba(244, 178, 110, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 250, 245, 0.06);
+  box-shadow: 6px 6px 0 rgba(151, 14, 8, 0.78);
+  transition: 0.22s ease;
+}
+
+.bekmer-value-card:hover {
+  border-color: var(--caramel);
+  box-shadow: 3px 3px 0 rgba(151, 14, 8, 0.88);
+  transform: translate(3px, 3px);
+}
+
+.bekmer-value-number {
+  position: absolute;
+  top: 7px;
+  right: 13px;
+  color: rgba(247, 240, 232, 0.08);
+  font-family: var(--font-display);
+  font-size: 91px;
+  line-height: 1;
+}
+
+.bekmer-value-icon {
+  color: var(--latte);
+  font-size: 38px;
+  line-height: 1;
+}
+
+.bekmer-value-label {
+  margin-top: 25px;
+  color: var(--latte);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.bekmer-value-card h3 {
+  max-width: 250px;
+  margin-top: 12px;
+  color: var(--cream);
+  font-size: 37px;
+  font-weight: 400;
+  line-height: 0.95;
+}
+
+.bekmer-value-card > p:last-child {
+  margin-top: 18px;
+  color: rgba(247, 240, 232, 0.7);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 1100px) {
+  .bekmer-values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .bekmer-values {
+    padding: 85px 28px;
+  }
+
+  .bekmer-values-header {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .bekmer-values {
+    padding: 70px 20px;
+  }
+
+  .bekmer-values-header h2 {
+    font-size: 74px;
+  }
+
+  .bekmer-values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bekmer-value-card {
+    min-height: auto;
+  }
+}
+
+/* ============================================
+   CONTACT KOPI BEKMER 70
+   ============================================ */
+
+.bekmer-contact {
+  padding: 110px 60px;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(247, 240, 232, 0.96), rgba(247, 240, 232, 0.96)),
+    repeating-linear-gradient(
+      45deg,
+      rgba(151, 14, 8, 0.07) 0 2px,
+      transparent 2px 20px
+    );
+}
+
+.bekmer-contact-header,
+.bekmer-contact-layout {
+  max-width: 1420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bekmer-contact-header {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 42px;
+  align-items: end;
+}
+
+.bekmer-contact-header h2 {
+  color: var(--espresso);
+  font-size: clamp(74px, 8vw, 124px);
+  font-weight: 400;
+  line-height: 0.87;
+}
+
+.bekmer-contact-header h2 span {
+  display: block;
+  color: var(--red-bekmer);
+}
+
+.bekmer-contact-header > p {
+  max-width: 620px;
+  padding-bottom: 7px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.bekmer-contact-layout {
+  display: grid;
+  margin-top: 52px;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 22px;
+}
+
+.bekmer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bekmer-contact-card,
+.bekmer-social-card {
+  padding: 23px;
+  border: 2px solid rgba(101, 16, 11, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 250, 245, 0.86);
+  box-shadow: 6px 6px 0 rgba(151, 14, 8, 0.13);
+}
+
+.bekmer-contact-card-main {
+  color: var(--cream);
+  border-color: var(--red-bekmer);
+  background:
+    radial-gradient(circle at 92% 10%, rgba(236, 152, 82, 0.22), transparent 25%),
+    var(--espresso);
+  box-shadow: 7px 7px 0 var(--caramel);
+}
+
+.bekmer-contact-kicker {
+  color: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.bekmer-contact-card-main .bekmer-contact-kicker {
+  color: var(--latte);
+}
+
+.bekmer-contact-card h3,
+.bekmer-social-card h3 {
+  margin-top: 11px;
+  color: var(--espresso);
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 0.98;
+}
+
+.bekmer-contact-card-main h3 {
+  color: var(--cream);
+  font-size: 52px;
+}
+
+.bekmer-contact-card p:not(.bekmer-contact-kicker) {
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.bekmer-contact-card-main p:not(.bekmer-contact-kicker) {
+  color: rgba(247, 240, 232, 0.76);
+}
+
+.bekmer-contact-button {
+  display: inline-flex;
+  padding: 13px 17px;
+  margin-top: 20px;
+  color: var(--espresso);
+  border-radius: 6px;
+  background: var(--caramel);
+  box-shadow: 4px 4px 0 var(--red-bekmer);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  transition: 0.2s ease;
+}
+
+.bekmer-contact-button:hover {
+  box-shadow: 2px 2px 0 var(--red-bekmer);
+  transform: translate(2px, 2px);
+}
+
+.bekmer-contact-text-link {
+  display: inline-flex;
+  margin-top: 14px;
+  color: var(--red-bekmer);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.bekmer-contact-small-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.bekmer-social-card {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bekmer-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.bekmer-social-links a {
+  padding: 10px 12px;
+  color: var(--cream);
+  border-radius: 5px;
+  background: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  transition: 0.2s ease;
+}
+
+.bekmer-social-links a:hover {
+  color: var(--espresso);
+  background: var(--caramel);
+}
+
+.bekmer-map-wrap {
+  overflow: hidden;
+  border: 4px solid var(--red-bekmer);
+  border-radius: 13px;
+  background: var(--cream);
+  box-shadow: 10px 10px 0 var(--caramel);
+}
+
+.bekmer-map-wrap iframe {
+  width: 100%;
+  min-height: 535px;
+  border: 0;
+}
+
+.bekmer-map-topbar,
+.bekmer-map-bottombar {
+  display: flex;
+  padding: 13px 16px;
+  gap: 14px;
+  justify-content: space-between;
+  color: var(--cream);
+  background: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bekmer-map-bottombar {
+  background: var(--espresso);
+}
+
+@media (max-width: 1050px) {
+  .bekmer-contact {
+    padding: 85px 28px;
+  }
+
+  .bekmer-contact-header,
+  .bekmer-contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .bekmer-contact {
+    padding: 70px 20px;
+  }
+
+  .bekmer-contact-header h2 {
+    font-size: 76px;
+  }
+
+  .bekmer-contact-small-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bekmer-social-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bekmer-map-wrap iframe {
+    min-height: 390px;
+  }
+}
+
+/* ============================================
+   FOOTER KOPI BEKMER 70
+   ============================================ */
+
+.bekmer-footer {
+  color: var(--cream);
+  background: var(--espresso);
+}
+
+.bekmer-footer-checker {
+  height: 18px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--red-bekmer) 0 32px,
+      var(--cream) 32px 64px
+    );
+  background-size: 64px 100%;
+}
+
+.bekmer-footer-inner {
+  display: flex;
+  max-width: 1420px;
+  padding: 42px 60px;
+  margin: 0 auto;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bekmer-footer-brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.bekmer-footer-brand img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.bekmer-footer-brand h3 {
+  color: var(--cream);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.bekmer-footer-brand p {
+  margin-top: 5px;
+  color: var(--latte);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.bekmer-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: flex-end;
+}
+
+.bekmer-footer-links a {
+  color: rgba(247, 240, 232, 0.78);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  transition: 0.2s ease;
+}
+
+.bekmer-footer-links a:hover {
+  color: var(--latte);
+}
+
+.bekmer-footer-bottom {
+  display: flex;
+  padding: 14px 60px;
+  gap: 15px;
+  justify-content: space-between;
+  color: var(--cream);
+  border-top: 1px solid rgba(247, 240, 232, 0.13);
+  background: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+@media (max-width: 760px) {
+  .bekmer-footer-inner {
+    padding: 35px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bekmer-footer-links {
+    justify-content: flex-start;
+  }
+
+  .bekmer-footer-bottom {
+    padding: 13px 20px;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* ============================================
+   RAPihin HERO MOBILE
+   ============================================ */
+
+@media (max-width: 600px) {
+  .bekmer-hero {
+    padding: 112px 18px 104px;
+  }
+
+  .bekmer-eyebrow {
+    padding: 8px 11px;
+    margin-bottom: 17px;
+    font-size: 9px;
+    letter-spacing: 1.4px;
+  }
+
+  .bekmer-hero-copy h1 {
+    font-size: 76px;
+    line-height: 0.88;
+    letter-spacing: 1.5px;
+  }
+
+  .bekmer-hero-desc {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .bekmer-hero-actions {
+    gap: 11px;
+    margin-top: 25px;
+  }
+
+  .bekmer-btn-primary,
+  .bekmer-btn-outline {
+    padding: 12px 15px;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+  }
+
+  .bekmer-hero-notes {
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .bekmer-hero-notes div {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 13px;
+  }
+
+  .bekmer-hero-notes strong {
+    font-size: 25px;
+  }
+
+  .bekmer-hero-notes span {
+    font-size: 11px;
+  }
+
+  .bekmer-hero-visual {
+    padding-bottom: 20px;
+  }
+
+  .bekmer-logo-card {
+    width: min(310px, 86vw);
+    min-height: min(310px, 86vw);
+    padding: 22px;
+    box-shadow:
+      0 0 0 8px rgba(247, 240, 232, 0.04),
+      0 0 0 14px rgba(151, 14, 8, 0.22),
+      10px 10px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .bekmer-logo-small-text,
+  .bekmer-logo-year {
+    font-size: 9px;
+    letter-spacing: 2.7px;
+  }
+
+  .bekmer-sticker {
+    padding: 7px 11px;
+    font-size: 17px;
+    letter-spacing: 1.3px;
+    box-shadow: 3px 3px 0 var(--caramel);
+  }
+
+  .bekmer-sticker-top {
+    top: 32px;
+    right: -4px;
+  }
+
+  .bekmer-sticker-bottom {
+    bottom: 32px;
+    left: -3px;
+  }
+
+  .bekmer-marquee-track {
+    padding: 10px 0;
+    gap: 18px;
+    font-size: 10px;
+    letter-spacing: 1.3px;
+  }
+}
+
+/* ============================================
+   COMPACT MOBILE LAYOUT
+   Supaya tampilan HP lebih padat dan nyaman
+   ============================================ */
+
+@media (max-width: 600px) {
+  /* ---- Section keunggulan ---- */
+  .bekmer-values {
+    padding: 56px 16px;
+  }
+
+  .bekmer-values-header {
+    gap: 10px;
+  }
+
+  .bekmer-values-header h2 {
+    font-size: 60px;
+    line-height: 0.9;
+  }
+
+  .bekmer-values-header > p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .bekmer-values-grid {
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .bekmer-value-card {
+    min-height: auto;
+    padding: 18px 16px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 rgba(151, 14, 8, 0.78);
+  }
+
+  .bekmer-value-number {
+    top: 6px;
+    right: 10px;
+    font-size: 68px;
+  }
+
+  .bekmer-value-icon {
+    font-size: 28px;
+  }
+
+  .bekmer-value-label {
+    margin-top: 16px;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  .bekmer-value-card h3 {
+    max-width: 230px;
+    margin-top: 8px;
+    font-size: 30px;
+    line-height: 0.95;
+  }
+
+  .bekmer-value-card > p:last-child {
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* ---- About cards ---- */
+  .bekmer-about {
+    padding: 56px 16px;
+  }
+
+  .bekmer-about-header h2 {
+    font-size: 60px;
+  }
+
+  .bekmer-about-lead {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .bekmer-about-grid {
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .bekmer-story-card {
+    padding: 18px 16px;
+  }
+
+  .bekmer-story-card h3,
+  .bekmer-story-card-main h3 {
+    margin-top: 16px;
+    font-size: 35px;
+  }
+
+  .bekmer-story-card p:not(.bekmer-card-kicker) {
+    margin-top: 13px;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* ---- Best seller ---- */
+  .bekmer-best-seller {
+    padding: 56px 16px;
+  }
+
+  .bekmer-best-header h2 {
+    font-size: 60px;
+  }
+
+  .bekmer-best-header > p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .bekmer-best-grid {
+    margin-top: 28px;
+    gap: 13px;
+  }
+
+  .bekmer-product-image-wrap {
+    height: 210px;
+  }
+
+  .bekmer-product-body {
+    padding: 17px 15px;
+  }
+
+  .bekmer-product-body h3 {
+    font-size: 31px;
+  }
+
+  .bekmer-product-desc {
+    min-height: auto;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  /* ---- Menu poster ---- */
+  .bekmer-menu-poster {
+    padding: 56px 16px;
+  }
+
+  .bekmer-menu-poster-header h2 {
+    font-size: 60px;
+  }
+
+  .bekmer-menu-poster-intro p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* ---- Menu pemesanan ---- */
+  .bekmer-order-menu {
+    padding: 56px 16px;
+  }
+
+  .bekmer-order-head h2 {
+    font-size: 58px;
+  }
+
+  .bekmer-order-intro p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* ---- Kontak ---- */
+  .bekmer-contact {
+    padding: 56px 16px;
+  }
+
+  .bekmer-contact-header h2 {
+    font-size: 60px;
+  }
+
+  .bekmer-contact-header > p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .bekmer-contact-layout {
+    margin-top: 28px;
+  }
+
+  .bekmer-contact-card,
+  .bekmer-social-card {
+    padding: 17px 15px;
+  }
+
+  .bekmer-contact-card h3,
+  .bekmer-social-card h3 {
+    font-size: 31px;
+  }
+
+  .bekmer-contact-card-main h3 {
+    font-size: 39px;
+  }
+}
+
+/* ============================================
+   COMPACT GRID MENU MOBILE
+   ============================================ */
+
+@media (max-width: 600px) {
+  .bekmer-order-menu .menu-grid {
+    gap: 14px;
+  }
+
+  .bekmer-order-head {
+    margin-bottom: 28px;
+  }
+
+  .bekmer-order-info {
+    margin-top: 12px;
+    gap: 7px;
+    font-size: 9px;
+  }
+}
+
+.bekmer-hero-copy h1 > span {
+  display: block;
+  color: var(--caramel);
+}
+
+.bekmer-hero-copy h1 > .bekmer-title-first-line {
+  color: var(--cream);
+}
+
+/* ============================================
+   SETTINGS DINAMIS LANDING PAGE
+   ============================================ */
+
+.bekmer-hero-copy h1 > span,
+.bekmer-about-header h2 > span {
+  display: block;
+}
+
+.bekmer-hero-copy h1 > .bekmer-accent-line {
+  color: var(--caramel);
+}
+
+.bekmer-about-header h2 > .bekmer-accent-line {
+  color: var(--red-bekmer);
+}
+
+/* ---- Statistik brand ---- */
+
+.bekmer-stat-strip {
+  display: grid;
+  padding: 20px 60px;
+  color: var(--cream);
+  border-top: 4px solid var(--red-bekmer);
+  border-bottom: 4px solid var(--red-bekmer);
+  background: var(--espresso);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.bekmer-stat-strip div {
+  display: flex;
+  min-height: 86px;
+  padding: 13px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(244, 178, 110, 0.28);
+  border-radius: 7px;
+  background: rgba(255, 250, 245, 0.05);
+  text-align: center;
+}
+
+.bekmer-stat-strip strong {
+  color: var(--caramel);
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.bekmer-stat-strip span {
+  margin-top: 7px;
+  color: rgba(247, 240, 232, 0.78);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+/* ---- Gambar cerita kami ---- */
+
+.bekmer-story-image-wrap {
+  width: 100%;
+  height: 135px;
+  margin-top: 17px;
+  overflow: hidden;
+  border: 2px solid rgba(247, 240, 232, 0.18);
+  border-radius: 7px;
+  background: var(--caramel);
+}
+
+.bekmer-story-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bekmer-story-image-wrap img[src*="logo-bekmer"] {
+  padding: 17px;
+  object-fit: contain;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 600px) {
+  .bekmer-stat-strip {
+    padding: 14px 16px;
+    gap: 8px;
+  }
+
+  .bekmer-stat-strip div {
+    min-height: 66px;
+    padding: 9px 5px;
+  }
+
+  .bekmer-stat-strip strong {
+    font-size: 30px;
+  }
+
+  .bekmer-stat-strip span {
+    margin-top: 5px;
+    font-size: 7px;
+    letter-spacing: 0.8px;
+  }
+
+  .bekmer-story-image-wrap {
+    height: 112px;
+  }
+}

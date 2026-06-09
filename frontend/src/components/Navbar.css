@@ -433,4 +433,185 @@
   }
 }
 
+/* ============================================
+   OVERRIDE TEMA NAVBAR KOPI BEKMER 70
+   ============================================ */
 
+.navbar {
+  min-height: var(--nav-height);
+  height: auto;
+  padding: 0 56px;
+  background: rgba(33, 11, 8, 0.98);
+  border-bottom: 4px solid var(--red-bekmer);
+}
+
+.navbar::after {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  left: 0;
+  height: 6px;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      var(--red-bekmer) 0 32px,
+      var(--cream) 32px 64px
+    );
+  background-size: 64px 100%;
+}
+
+.navbar--scrolled {
+  background: rgba(33, 11, 8, 0.94);
+  border-bottom-color: var(--red-bekmer);
+  box-shadow: 0 8px 24px rgba(33, 11, 8, 0.2);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cream);
+}
+
+.navbar-logo {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+.navbar-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.navbar-brand-text strong {
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.navbar-brand-text span {
+  margin-top: 4px;
+  color: var(--latte);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+}
+
+.nav-links a,
+.nav-links .nav-link-btn {
+  color: var(--cream);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  gap: 19px;
+}
+
+.nav-links a:hover,
+.nav-links .nav-link-btn:hover {
+  color: var(--latte);
+}
+
+.nav-links .nav-admin-link {
+  padding: 10px 20px;
+  color: var(--cream);
+  background: var(--red-bekmer);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--caramel);
+  letter-spacing: 1px;
+}
+
+.nav-links .nav-admin-link:hover {
+  color: var(--cream);
+  background: var(--maroon);
+  box-shadow: 2px 2px 0 var(--caramel);
+  transform: translate(2px, 2px);
+}
+
+@media (max-width: 860px) {
+  .navbar {
+    padding: 0 18px;
+  }
+
+  .navbar-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .navbar-brand-text strong {
+    font-size: 21px;
+  }
+
+  .navbar-brand-text span {
+    font-size: 8px;
+    letter-spacing: 1.2px;
+  }
+}
+
+/* ============================================
+   RAPihin NAVBAR MOBILE
+   ============================================ */
+
+@media (max-width: 860px) {
+  .navbar {
+    min-height: 70px;
+    padding: 0 15px;
+  }
+
+  .navbar-logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .navbar-brand {
+    gap: 9px;
+  }
+
+  .navbar-brand-text strong {
+    font-size: 19px;
+    letter-spacing: 1.4px;
+  }
+
+  .navbar-brand-text span {
+    margin-top: 3px;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .nav-mobile-drawer {
+    background: rgba(33, 11, 8, 0.99);
+    border-top: 1px solid rgba(244, 178, 110, 0.22);
+    border-bottom: 4px solid var(--red-bekmer);
+  }
+
+  .mobile-nav-link {
+    color: var(--cream);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+
+  .hamburger-bar {
+    background: var(--cream);
+  }
+}

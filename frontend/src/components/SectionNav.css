@@ -1,79 +1,96 @@
 /* ============================================
    SectionNav.css
-   → Style sidebar navigasi cepat landing editor
+   Sidebar editor landing page Bekmer 70
    ============================================ */
 
 .landing-section-nav {
   position: sticky;
-  top: calc(var(--nav-height) + 62px);
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(192, 125, 62, 0.18);
-  border-radius: 16px;
-  padding: 18px 14px;
+  top: 102px;
+  padding: 14px;
+  border: 2px solid rgba(151, 14, 8, 0.18);
+  border-radius: 9px;
+  background: rgba(255, 250, 245, 0.9);
+  box-shadow: 4px 4px 0 rgba(151, 14, 8, 0.12);
 }
 
 .section-nav-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(245, 234, 216, 0.35);
-  margin-bottom: 12px;
-  padding: 0 4px;
+  padding-bottom: 10px;
+  margin-bottom: 9px;
+  color: var(--red-bekmer);
+  border-bottom: 1px solid rgba(151, 14, 8, 0.14);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.section-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .section-nav-link {
   display: flex;
+  padding: 8px 8px;
+  gap: 8px;
   align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
-  border-radius: 10px;
-  color: rgba(245, 234, 216, 0.6);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s;
-  margin-bottom: 3px;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  transition: 0.2s ease;
 }
 
 .section-nav-link:hover {
-  background: rgba(192, 125, 62, 0.12);
-  color: var(--latte);
+  color: var(--red-bekmer);
+  border-color: rgba(151, 14, 8, 0.17);
+  background: rgba(236, 152, 82, 0.13);
 }
 
 .section-nav-num {
   display: inline-flex;
+  width: 27px;
+  height: 23px;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(192, 125, 62, 0.18);
-  color: var(--caramel);
-  font-size: 11px;
-  font-weight: 800;
-  flex-shrink: 0;
+  color: var(--cream);
+  border-radius: 4px;
+  background: var(--red-bekmer);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
 }
 
-/* ── Responsive ── */
+.section-nav-label {
+  line-height: 1.25;
+}
+
 @media (max-width: 1100px) {
   .landing-section-nav {
     position: static;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 14px;
   }
 
-  .section-nav-title {
-    width: 100%;
-    margin-bottom: 6px;
+  .section-nav-links {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
   }
 
   .section-nav-link {
-    margin-bottom: 0;
-    flex: 1;
-    min-width: 120px;
     justify-content: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .section-nav-links {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .section-nav-link {
+    justify-content: flex-start;
   }
 }

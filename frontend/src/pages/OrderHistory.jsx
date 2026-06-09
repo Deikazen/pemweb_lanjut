@@ -220,9 +220,17 @@ function OrderHistory() {
             ← Kembali
           </button>
           <div className="order-history-title">
-            <p className="section-label">Riwayat Pesanan</p>
-            <h1>📋 Pesanan Anda</h1>
-            <p className="order-subtitle">Semua transaksi pembelian kopi Anda tercatat di sini.</p>
+            <p className="section-label">RIWAYAT PESANAN</p>
+
+            <h1>
+              CERITA PESANAN
+              <span>KAMU.</span>
+            </h1>
+
+            <p className="order-subtitle">
+              Semua pesanan Kopi Bekmer 70 tercatat di sini. Pantau status,
+              lanjutkan pembayaran, atau konfirmasi pesanan yang sudah diterima.
+            </p>
           </div>
         </div>
 
@@ -244,11 +252,20 @@ function OrderHistory() {
         {/* ── Empty ── */}
         {!loading && localOrders.length === 0 && (
           <div className="order-empty">
-            <span className="order-empty-icon">📭</span>
-            <h3>Belum Ada Pesanan</h3>
-            <p>Anda belum pernah melakukan pemesanan. Jelajahi menu kami!</p>
+            <img
+              src="/assets/logo/logo-bekmer.png"
+              alt="Logo Kopi Bekmer 70"
+              className="order-empty-logo"
+            />
+
+            <h3>BELUM ADA CERITA PESANAN.</h3>
+
+            <p>
+              Pilih seduhan favoritmu dan mulai cerita baru bersama Kopi Bekmer 70.
+            </p>
+
             <button className="order-cta-btn" onClick={() => navigate("/")}>
-              ☕ Jelajahi Menu
+              JELAJAHI MENU →
             </button>
           </div>
         )}
@@ -288,9 +305,12 @@ function OrderHistory() {
                         <div className="order-item-row" key={orderItem.id || i}>
                           <div className="order-item-img">
                             <img
-                              src={imageUrl || "https://via.placeholder.com/50x50?text=☕"}
+                              src={imageUrl || "/assets/logo/logo-bekmer.png"}
                               alt={itemData.name || "Item"}
-                              onError={(e) => { e.target.src = "https://via.placeholder.com/50x50?text=☕"; }}
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = "/assets/logo/logo-bekmer.png";
+                              }}
                             />
                           </div>
                           <div className="order-item-detail">
@@ -325,7 +345,7 @@ function OrderHistory() {
                               disabled={isProcessing}
                               id={`repay-order-${order.id}`}
                             >
-                              {isProcessing ? "⏳..." : "💳 Bayar Sekarang"}
+                              {isProcessing ? "MEMPROSES..." : "BAYAR SEKARANG →"}
                             </button>
                             <button
                               className="order-cancel-btn"
@@ -333,7 +353,7 @@ function OrderHistory() {
                               disabled={isProcessing}
                               id={`cancel-order-${order.id}`}
                             >
-                              {isProcessing ? "⏳..." : "❌ Batalkan"}
+                              {isProcessing ? "MEMPROSES..." : "BATALKAN"}
                             </button>
                           </>
                         )}
@@ -346,7 +366,7 @@ function OrderHistory() {
                           disabled={isProcessing}
                           id={`complete-order-${order.id}`}
                         >
-                          {isProcessing ? "⏳ Memproses..." : "✅ Pesanan Selesai"}
+                          {isProcessing ? "MEMPROSES..." : "PESANAN SELESAI →"}
                         </button>
                       )}
                     </div>

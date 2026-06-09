@@ -1,78 +1,107 @@
 // ============================================
-// LandingEditor.jsx  (Editor Landing Page)
-// → Form CRUD semua section landing page
-// → Sections: Hero, Statistik, About, Keunggulan, Kontak
-// → Sidebar navigasi cepat (SectionNav)
-// → Sticky save bar di bawah
-// → Dipakai di: AdminPage → Tab Edit Landing Page
+// LandingEditor.jsx
+// Editor landing page Kopi Bekmer 70
 // ============================================
 
 import SectionNav from "./SectionNav";
 import ImageUpload from "./ImageUpload";
 import "./LandingEditor.css";
 
-function LandingEditor({ settingsForm, onFieldChange, onSubmit, loading }) {
-  // Helper untuk update satu field
+function LandingEditor({
+  settingsForm,
+  onFieldChange,
+  onSubmit,
+  loading,
+}) {
   const updateField = (field, value) => {
-    onFieldChange({ ...settingsForm, [field]: value });
+    onFieldChange({
+      ...settingsForm,
+      [field]: value,
+    });
   };
 
   return (
     <div className="tab-panel">
       <div className="landing-editor-header">
-        <h2>✨ Edit Komponen Landing Page</h2>
-        <p>Kelola tulisan, gambar, angka statistik, dan seluruh komponen landing page langsung dari database.</p>
+        <p className="admin-section-eyebrow">
+          PENGATURAN HALAMAN UTAMA
+        </p>
+
+        <h2>EDIT LANDING PAGE.</h2>
+
+        <p>
+          Perbarui tulisan, gambar, statistik, keunggulan, dan
+          informasi kontak yang tampil pada halaman utama Kopi
+          Bekmer 70.
+        </p>
       </div>
 
       <div className="landing-editor-layout">
-
-        {/* SIDEBAR NAVIGASI CEPAT */}
+        {/* ── Sidebar navigasi ─────────────── */}
         <SectionNav />
 
-        {/* FORM UTAMA */}
+        {/* ── Form utama ───────────────────── */}
         <form onSubmit={onSubmit} className="admin-settings-form">
-
           {/* ═══ SECTION 1: HERO ═══ */}
           <fieldset className="settings-fieldset" id="section-hero">
-            <legend><span className="fieldset-num">1</span>🚀 Section Hero (Tampilan Utama)</legend>
+            <legend>
+              <span className="fieldset-num">01</span>
+              HERO UTAMA
+            </legend>
 
             <div className="settings-grid-2">
-              <div className="field-group">
+              <div className="field-group field-group--span2">
                 <label>Badge Hero</label>
+
                 <input
                   type="text"
-                  value={settingsForm.hero_badge}
-                  onChange={(e) => updateField("hero_badge", e.target.value)}
+                  placeholder="Contoh: 100% ARABIKA · KABUPATEN BANDUNG"
+                  value={settingsForm.hero_badge || ""}
+                  onChange={(event) =>
+                    updateField("hero_badge", event.target.value)
+                  }
                 />
               </div>
 
               <div className="field-group field-group--span2">
-                <label>Judul Hero (Gunakan baris baru untuk memotong teks)</label>
+                <label>
+                  Judul Hero — Gunakan Enter untuk baris baru
+                </label>
+
                 <textarea
                   rows="3"
-                  value={settingsForm.hero_title}
-                  onChange={(e) => updateField("hero_title", e.target.value)}
+                  placeholder={"DARI BIJI\nLAHIR CERITA."}
+                  value={settingsForm.hero_title || ""}
+                  onChange={(event) =>
+                    updateField("hero_title", event.target.value)
+                  }
                 />
               </div>
 
               <div className="field-group field-group--span2">
                 <label>Deskripsi Hero</label>
+
                 <textarea
                   rows="4"
-                  value={settingsForm.hero_desc}
-                  onChange={(e) => updateField("hero_desc", e.target.value)}
+                  value={settingsForm.hero_desc || ""}
+                  onChange={(event) =>
+                    updateField("hero_desc", event.target.value)
+                  }
                 />
               </div>
             </div>
 
             <div className="field-group">
-              <label>Gambar Utama Hero</label>
+              <label>Gambar atau Logo Hero</label>
+
               <ImageUpload
                 id="hero-file-upload"
-                value={settingsForm.hero_image}
-                onChange={(val) => updateField("hero_image", val)}
+                value={settingsForm.hero_image || ""}
+                onChange={(value) =>
+                  updateField("hero_image", value)
+                }
                 showPreview={true}
-                previewAlt="Hero preview"
+                previewAlt="Preview hero"
                 onClear={() => updateField("hero_image", "")}
               />
             </div>
@@ -80,42 +109,66 @@ function LandingEditor({ settingsForm, onFieldChange, onSubmit, loading }) {
 
           {/* ═══ SECTION 2: STATISTIK ═══ */}
           <fieldset className="settings-fieldset" id="section-stats">
-            <legend><span className="fieldset-num">2</span>📊 Angka Statistik</legend>
+            <legend>
+              <span className="fieldset-num">02</span>
+              STATISTIK BRAND
+            </legend>
 
             <div className="stats-cards-grid">
               <div className="stat-input-card">
                 <span className="stat-input-card__emoji">☕</span>
+
                 <div className="field-group">
-                  <label>Varian Kopi</label>
+                  <label>Jumlah Varian Menu</label>
+
                   <input
                     type="number"
-                    value={settingsForm.stat_variankopi}
-                    onChange={(e) => updateField("stat_variankopi", e.target.value)}
+                    value={settingsForm.stat_variankopi || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "stat_variankopi",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
               </div>
 
               <div className="stat-input-card">
                 <span className="stat-input-card__emoji">🌿</span>
+
                 <div className="field-group">
-                  <label>Arabika Asli (%)</label>
+                  <label>Arabika Pilihan (%)</label>
+
                   <input
                     type="number"
-                    value={settingsForm.stat_arabikaasli}
-                    onChange={(e) => updateField("stat_arabikaasli", e.target.value)}
+                    value={settingsForm.stat_arabikaasli || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "stat_arabikaasli",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
               </div>
 
               <div className="stat-input-card">
                 <span className="stat-input-card__emoji">⭐</span>
+
                 <div className="field-group">
-                  <label>Rating Tamu (1–5)</label>
+                  <label>Rating Tamu</label>
+
                   <input
                     type="number"
                     step="0.1"
-                    value={settingsForm.stat_ratingtamu}
-                    onChange={(e) => updateField("stat_ratingtamu", e.target.value)}
+                    value={settingsForm.stat_ratingtamu || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "stat_ratingtamu",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
               </div>
@@ -124,86 +177,137 @@ function LandingEditor({ settingsForm, onFieldChange, onSubmit, loading }) {
 
           {/* ═══ SECTION 3: ABOUT ═══ */}
           <fieldset className="settings-fieldset" id="section-about">
-            <legend><span className="fieldset-num">3</span>🌱 Cerita & Tentang Kami</legend>
+            <legend>
+              <span className="fieldset-num">03</span>
+              CERITA KAMI
+            </legend>
 
             <div className="settings-grid-2">
               <div className="field-group">
-                <label>Badge (Tahun Berdiri)</label>
+                <label>Badge Tahun Berdiri</label>
+
                 <input
                   type="text"
-                  value={settingsForm.about_badge}
-                  onChange={(e) => updateField("about_badge", e.target.value)}
+                  placeholder="Contoh: EST. 2025"
+                  value={settingsForm.about_badge || ""}
+                  onChange={(event) =>
+                    updateField("about_badge", event.target.value)
+                  }
                 />
               </div>
 
               <div className="field-group">
-                <label>Judul About</label>
-                <input
-                  type="text"
-                  value={settingsForm.about_title}
-                  onChange={(e) => updateField("about_title", e.target.value)}
+                <label>
+                  Judul Cerita — Gunakan Enter untuk baris baru
+                </label>
+
+                <textarea
+                  rows="2"
+                  placeholder={"BERAWAL DARI\nMOTOR BEBEK MERAH."}
+                  value={settingsForm.about_title || ""}
+                  onChange={(event) =>
+                    updateField("about_title", event.target.value)
+                  }
                 />
               </div>
 
               <div className="field-group field-group--span2">
-                <label>Deskripsi About</label>
+                <label>Deskripsi Cerita Utama</label>
+
                 <textarea
                   rows="4"
-                  value={settingsForm.about_desc}
-                  onChange={(e) => updateField("about_desc", e.target.value)}
+                  value={settingsForm.about_desc || ""}
+                  onChange={(event) =>
+                    updateField("about_desc", event.target.value)
+                  }
                 />
               </div>
             </div>
 
             <div className="field-group">
-              <label>Gambar Section About</label>
+              <label>Gambar Cerita Kami</label>
+
               <ImageUpload
                 id="about-file-upload"
-                value={settingsForm.about_image}
-                onChange={(val) => updateField("about_image", val)}
+                value={settingsForm.about_image || ""}
+                onChange={(value) =>
+                  updateField("about_image", value)
+                }
                 showPreview={true}
-                previewAlt="About preview"
+                previewAlt="Preview cerita kami"
                 onClear={() => updateField("about_image", "")}
               />
             </div>
 
             <div className="about-cards-grid">
               <div className="about-card-editor">
-                <h4 className="about-card-editor__title">📌 Kartu Kiri — Kenapa Kami</h4>
+                <h4 className="about-card-editor__title">
+                  KARTU 01 — IKON BRAND
+                </h4>
+
                 <div className="field-group">
                   <label>Judul Kartu</label>
+
                   <input
                     type="text"
-                    value={settingsForm.about_card1_title}
-                    onChange={(e) => updateField("about_card1_title", e.target.value)}
+                    value={settingsForm.about_card1_title || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "about_card1_title",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
+
                 <div className="field-group">
                   <label>Deskripsi</label>
+
                   <textarea
-                    rows="3"
-                    value={settingsForm.about_card1_desc}
-                    onChange={(e) => updateField("about_card1_desc", e.target.value)}
+                    rows="4"
+                    value={settingsForm.about_card1_desc || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "about_card1_desc",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
               </div>
 
               <div className="about-card-editor">
-                <h4 className="about-card-editor__title">📌 Kartu Kanan — Tujuan</h4>
+                <h4 className="about-card-editor__title">
+                  KARTU 02 — BEANS PILIHAN
+                </h4>
+
                 <div className="field-group">
                   <label>Judul Kartu</label>
+
                   <input
                     type="text"
-                    value={settingsForm.about_card2_title}
-                    onChange={(e) => updateField("about_card2_title", e.target.value)}
+                    value={settingsForm.about_card2_title || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "about_card2_title",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
+
                 <div className="field-group">
                   <label>Deskripsi</label>
+
                   <textarea
-                    rows="3"
-                    value={settingsForm.about_card2_desc}
-                    onChange={(e) => updateField("about_card2_desc", e.target.value)}
+                    rows="4"
+                    value={settingsForm.about_card2_desc || ""}
+                    onChange={(event) =>
+                      updateField(
+                        "about_card2_desc",
+                        event.target.value
+                      )
+                    }
                   />
                 </div>
               </div>
@@ -211,37 +315,75 @@ function LandingEditor({ settingsForm, onFieldChange, onSubmit, loading }) {
           </fieldset>
 
           {/* ═══ SECTION 4: FEATURES ═══ */}
-          <fieldset className="settings-fieldset" id="section-features">
-            <legend><span className="fieldset-num">4</span>🛋️ Keunggulan (3 Poin Utama)</legend>
+          <fieldset
+            className="settings-fieldset"
+            id="section-features"
+          >
+            <legend>
+              <span className="fieldset-num">04</span>
+              KEUNGGULAN BRAND
+            </legend>
 
             <div className="features-cards-grid">
-              {[1, 2, 3].map((n) => (
-                <div className="feature-card-editor" key={n}>
+              {[1, 2, 3].map((number) => (
+                <div className="feature-card-editor" key={number}>
                   <div className="feature-card-editor__header">
-                    <span className="feature-card-editor__num">Keunggulan {n}</span>
+                    <span className="feature-card-editor__num">
+                      KEUNGGULAN {number}
+                    </span>
+
                     <div className="field-group field-group--icon">
                       <label>Icon</label>
+
                       <input
                         type="text"
-                        value={settingsForm[`feature${n}_icon`]}
-                        onChange={(e) => updateField(`feature${n}_icon`, e.target.value)}
+                        value={
+                          settingsForm[`feature${number}_icon`] ||
+                          ""
+                        }
+                        onChange={(event) =>
+                          updateField(
+                            `feature${number}_icon`,
+                            event.target.value
+                          )
+                        }
                       />
                     </div>
                   </div>
+
                   <div className="field-group">
                     <label>Judul</label>
+
                     <input
                       type="text"
-                      value={settingsForm[`feature${n}_title`]}
-                      onChange={(e) => updateField(`feature${n}_title`, e.target.value)}
+                      value={
+                        settingsForm[`feature${number}_title`] ||
+                        ""
+                      }
+                      onChange={(event) =>
+                        updateField(
+                          `feature${number}_title`,
+                          event.target.value
+                        )
+                      }
                     />
                   </div>
+
                   <div className="field-group">
                     <label>Deskripsi</label>
+
                     <textarea
-                      rows="3"
-                      value={settingsForm[`feature${n}_desc`]}
-                      onChange={(e) => updateField(`feature${n}_desc`, e.target.value)}
+                      rows="4"
+                      value={
+                        settingsForm[`feature${number}_desc`] ||
+                        ""
+                      }
+                      onChange={(event) =>
+                        updateField(
+                          `feature${number}_desc`,
+                          event.target.value
+                        )
+                      }
                     />
                   </div>
                 </div>
@@ -249,59 +391,191 @@ function LandingEditor({ settingsForm, onFieldChange, onSubmit, loading }) {
             </div>
           </fieldset>
 
-          {/* ═══ SECTION 5: KONTAK & FOOTER ═══ */}
-          <fieldset className="settings-fieldset" id="section-contact">
-            <legend><span className="fieldset-num">5</span>✉️ Kontak & Footer</legend>
+          {/* ═══ SECTION 5: KONTAK ═══ */}
+          <fieldset
+            className="settings-fieldset"
+            id="section-contact"
+          >
+            <legend>
+              <span className="fieldset-num">05</span>
+              KONTAK DAN FOOTER
+            </legend>
 
             <div className="settings-grid-2">
               <div className="field-group">
-                <label>📧 Email Kontak</label>
+                <label>Email Kontak</label>
+
                 <input
                   type="text"
-                  value={settingsForm.contact_email}
-                  onChange={(e) => updateField("contact_email", e.target.value)}
+                  placeholder="kopibekmer70@gmail.com"
+                  value={settingsForm.contact_email || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "contact_email",
+                      event.target.value
+                    )
+                  }
                 />
               </div>
 
               <div className="field-group">
-                <label>📸 Username Instagram</label>
+                <label>URL Instagram</label>
+
                 <input
                   type="text"
-                  value={settingsForm.contact_instagram}
-                  onChange={(e) => updateField("contact_instagram", e.target.value)}
+                  placeholder="https://www.instagram.com/..."
+                  value={settingsForm.contact_instagram || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "contact_instagram",
+                      event.target.value
+                    )
+                  }
                 />
               </div>
 
               <div className="field-group">
-                <label>📍 Lokasi / Kota</label>
+                <label>Lokasi Singkat</label>
+
                 <input
                   type="text"
-                  value={settingsForm.contact_location}
-                  onChange={(e) => updateField("contact_location", e.target.value)}
+                  placeholder="Contoh: Kabupaten Bandung"
+                  value={settingsForm.contact_location || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "contact_location",
+                      event.target.value
+                    )
+                  }
                 />
               </div>
 
               <div className="field-group">
-                <label>© Teks Hak Cipta Footer</label>
+                <label>Teks Footer</label>
+
                 <input
                   type="text"
-                  value={settingsForm.footer_text}
-                  onChange={(e) => updateField("footer_text", e.target.value)}
+                  placeholder="© 2026 KOPI BEKMER 70"
+                  value={settingsForm.footer_text || ""}
+                  onChange={(event) =>
+                    updateField("footer_text", event.target.value)
+                  }
+                />
+              </div>
+
+              <div className="field-group">
+                <label>Nomor WhatsApp</label>
+
+                <input
+                  type="text"
+                  placeholder="Contoh: 6281313523326"
+                  value={settingsForm.contact_whatsapp || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "contact_whatsapp",
+                      event.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="field-group">
+                <label>Jam Operasional</label>
+
+                <input
+                  type="text"
+                  placeholder="Contoh: 07.00–22.00"
+                  value={settingsForm.operational_hours || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "operational_hours",
+                      event.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="field-group">
+                <label>URL TikTok</label>
+
+                <input
+                  type="text"
+                  placeholder="https://www.tiktok.com/@..."
+                  value={settingsForm.contact_tiktok || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "contact_tiktok",
+                      event.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="field-group">
+                <label>URL Facebook</label>
+
+                <input
+                  type="text"
+                  placeholder="https://www.facebook.com/..."
+                  value={settingsForm.contact_facebook || ""}
+                  onChange={(event) =>
+                    updateField(
+                      "contact_facebook",
+                      event.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="field-group field-group--span2">
+                <label>Kata Kunci Google Maps</label>
+
+                <input
+                  type="text"
+                  placeholder="Contoh: Kopi Bekmer 70"
+                  value={settingsForm.maps_query || ""}
+                  onChange={(event) =>
+                    updateField("maps_query", event.target.value)
+                  }
                 />
               </div>
             </div>
+
+            <div className="field-group">
+              <label>Poster Menu Lengkap</label>
+
+              <ImageUpload
+                id="menu-poster-file-upload"
+                value={settingsForm.menu_poster_image || ""}
+                onChange={(value) =>
+                  updateField("menu_poster_image", value)
+                }
+                showPreview={true}
+                previewAlt="Preview poster menu"
+                onClear={() =>
+                  updateField("menu_poster_image", "")
+                }
+              />
+            </div>
           </fieldset>
 
-          {/* STICKY SAVE BAR */}
+          {/* ── Sticky save bar ─────────────── */}
           <div className="sticky-save-bar">
             <span className="sticky-save-bar__info">
-              Pastikan semua perubahan sudah benar sebelum menyimpan.
+              Periksa kembali seluruh informasi sebelum menyimpan
+              perubahan.
             </span>
-            <button type="submit" className="btn-save btn-save--lg" disabled={loading}>
-              {loading ? "⏳ Menyimpan Perubahan..." : "💾 Simpan Semua Perubahan"}
+
+            <button
+              type="submit"
+              className="btn-save btn-save--lg"
+              disabled={loading}
+            >
+              {loading
+                ? "MENYIMPAN PERUBAHAN..."
+                : "SIMPAN SEMUA PERUBAHAN →"}
             </button>
           </div>
-
         </form>
       </div>
     </div>

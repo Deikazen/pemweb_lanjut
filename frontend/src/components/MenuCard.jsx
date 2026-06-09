@@ -86,23 +86,26 @@ function MenuCard({ item }) {
         {/* ── Gambar dengan badge ── */}
         <div className="menu-card-img-wrap">
           <img
-            src={imageUrl || "https://via.placeholder.com/600x400?text=KopiNara"}
+            src={imageUrl || "/assets/logo/logo-bekmer.png"}
             alt={item.name}
             onError={(e) => {
-              e.target.src = "https://via.placeholder.com/600x400?text=KopiNara";
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/assets/logo/logo-bekmer.png";
             }}
           />
           {item.badge && <span className="menu-card-badge">{item.badge}</span>}
           <div className="menu-card-overlay">
-            <span className="overlay-text">Lihat Detail →</span>
+            <span className="overlay-text">LIHAT DETAIL MENU →</span>
           </div>
         </div>
 
         {/* ── Info menu ── */}
         <div className="menu-card-body">
           <h3>{item.name}</h3>
-          <h4 style={{ color: "#d2691e", marginTop: "5px" }}>
-            {item.price ? `Rp ${Number(item.price).toLocaleString('id-ID')}` : 'Harga tidak tersedia'}
+          <h4 className="menu-card-price">
+            {item.price
+              ? `Rp ${Number(item.price).toLocaleString("id-ID")}`
+              : "Harga tidak tersedia"}
           </h4>
           <p className="menu-card-short-desc">
             {item.description || "Diseduh dengan cinta dari biji pilihan — nikmat di setiap tegukan."}
@@ -163,20 +166,24 @@ function MenuCard({ item }) {
               {/* Sisi Kiri: Gambar */}
               <div className="menu-detail-img-box">
                 <img
-                  src={imageUrl || "https://via.placeholder.com/600x400?text=KopiNara"}
+                  src={imageUrl || "/assets/logo/logo-bekmer.png"}
                   alt={item.name}
                   onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/600x400?text=KopiNara";
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/assets/logo/logo-bekmer.png";
                   }}
                 />
               </div>
 
               {/* Sisi Kanan: Detail Info */}
               <div className="menu-detail-info-box">
-                {item.badge && (
-                  <span className="menu-detail-badge">⭐ {item.badge}</span>
-                )}
-                <h2>{item.name}</h2>
+              <p className="menu-detail-eyebrow">DETAIL MENU KOPI BEKMER 70</p>
+
+              {item.badge && (
+                <span className="menu-detail-badge">{item.badge}</span>
+              )}
+
+              <h2>{item.name}</h2>
                 <h3 className="menu-detail-price">
                   {item.price ? `Rp ${Number(item.price).toLocaleString('id-ID')}` : 'Harga tidak tersedia'}
                 </h3>
@@ -185,7 +192,8 @@ function MenuCard({ item }) {
 
                 <h4 className="menu-detail-section-title">Deskripsi Menu</h4>
                 <p className="menu-detail-desc text-scroll">
-                  {item.description || "Diseduh dengan cinta dari biji pilihan kopi arabika asli nusantara, dipanggang secara presisi oleh roaster profesional untuk menyajikan citarasa kopi yang kaya, nikmat, dan otentik di setiap tegukan."}
+                  {item.description ||
+                    "Diseduh dari beans pilihan Kabupaten Bandung dengan karakter yang smooth, ringan, dan nyaman dinikmati di setiap tegukan."}
                 </p>
 
                 {item.tags && item.tags.length > 0 && (
@@ -238,7 +246,7 @@ function MenuCard({ item }) {
                     }}
                     disabled={adding}
                   >
-                    {adding ? "⏳ Menambahkan..." : "🛒 Tambah ke Keranjang"}
+                    {adding ? "MENAMBAHKAN..." : "TAMBAHKAN KE KERANJANG →"}
                   </button>
                 )}
               </div>

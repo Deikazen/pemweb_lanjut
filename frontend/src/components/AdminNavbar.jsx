@@ -1,7 +1,6 @@
 // ============================================
-// AdminNavbar.jsx  (Navbar Dashboard Admin)
-// → Brand, tombol kembali ke landing, tombol logout
-// → Dipakai di: AdminPage (saat sudah login)
+// AdminNavbar.jsx
+// Navbar Dashboard Admin Kopi Bekmer 70
 // ============================================
 
 import { useNavigate } from "react-router-dom";
@@ -13,15 +12,25 @@ function AdminNavbar({ onLogout }) {
   return (
     <nav className="admin-navbar">
       <div className="admin-navbar-brand">
-        <h2> Dashboard Admin</h2>
+        <img
+          src="/assets/logo/logo-bekmer.png"
+          alt="Logo Kopi Bekmer 70"
+          className="admin-navbar-logo"
+        />
+
+        <div>
+          <h2>KOPI BEKMER 70</h2>
+          <span>DASHBOARD ADMINISTRATOR</span>
+        </div>
       </div>
 
       <div className="admin-navbar-actions">
         <button onClick={() => navigate("/")} className="btn-dark">
-          ← Landing Page
+          ← LANDING PAGE
         </button>
+
         <button onClick={onLogout} className="btn-danger">
-          Logout
+          LOGOUT
         </button>
       </div>
     </nav>

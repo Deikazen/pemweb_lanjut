@@ -199,7 +199,19 @@ function Cart({ isOpen, onClose }) {
       <div className={`cart-drawer ${isOpen ? "cart-drawer--open" : ""}`}>
         {/* ── Header ── */}
         <div className="cart-header">
-          <h2>🛒 Keranjang</h2>
+          <div className="cart-header-brand">
+            <img
+              src="/assets/logo/logo-bekmer.png"
+              alt="Logo Kopi Bekmer 70"
+              className="cart-header-logo"
+            />
+
+            <div>
+              <p>Pesanan Kamu</p>
+              <h2>KERANJANG BEKMER</h2>
+            </div>
+          </div>
+
           <button className="cart-close-btn" onClick={onClose} id="cart-close-btn">
             ✕
           </button>
@@ -226,8 +238,8 @@ function Cart({ isOpen, onClose }) {
           {!loading && localCart.length === 0 && !checkoutSuccess && (
             <div className="cart-empty">
               <span className="cart-empty-icon">🛒</span>
-              <h3>Keranjang Kosong</h3>
-              <p>Belum ada barang di keranjang Anda. Jelajahi menu dan tambahkan kopi favorit!</p>
+              <h3>KERANJANG MASIH KOSONG</h3>
+              <p>Pilih seduhan favoritmu dan tambahkan cerita baru hari ini.</p>
             </div>
           )}
 
@@ -257,10 +269,11 @@ function Cart({ isOpen, onClose }) {
                   <div className="cart-item" key={cartItem.id}>
                     <div className="cart-item-img">
                       <img
-                        src={imageUrl || "https://via.placeholder.com/80x80?text=☕"}
+                        src={imageUrl || "/assets/logo/logo-bekmer.png"}
                         alt={itemData.name || "Item"}
                         onError={(e) => {
-                          e.target.src = "https://via.placeholder.com/80x80?text=☕";
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/assets/logo/logo-bekmer.png";
                         }}
                       />
                     </div>
@@ -327,10 +340,10 @@ function Cart({ isOpen, onClose }) {
               disabled={loading}
               id="cart-checkout-btn"
             >
-              {loading ? "⏳ Memproses..." : "💳 Checkout Sekarang"}
+              {loading ? "MEMPROSES..." : "CHECKOUT SEKARANG →"}
             </button>
             <button className="cart-orders-link" onClick={goToOrders}>
-              📋 Lihat Riwayat Pesanan
+              LIHAT RIWAYAT PESANAN →
             </button>
           </div>
         )}

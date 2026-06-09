@@ -1,8 +1,6 @@
 // ============================================
-// ImageUpload.jsx  (Komponen Upload Gambar)
-// → Upload file gambar via Base64 + input URL manual
-// → Opsional: panel preview gambar + tombol hapus
-// → Dipakai di: MenuForm, LandingEditor (hero & about)
+// ImageUpload.jsx
+// Komponen upload foto Kopi Bekmer 70
 // ============================================
 
 import "./ImageUpload.css";
@@ -12,31 +10,36 @@ function ImageUpload({
   value,
   onChange,
   showPreview = false,
-  previewAlt = "Preview",
+  previewAlt = "Preview foto produk",
   onClear,
 }) {
-  // Apakah value berupa base64 data URI
   const isBase64 = value && value.startsWith("data:");
+  const hasImage = Boolean(value);
 
-  // Handler upload file → convert ke base64
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onChange(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      onChange(reader.result);
+    };
+
+    reader.readAsDataURL(file);
   };
 
-  // Handler input URL manual
-  const handleUrlChange = (e) => {
-    onChange(e.target.value);
+  const handleUrlChange = (event) => {
+    onChange(event.target.value);
   };
 
   return (
-    <div className={`image-upload-container ${showPreview ? "" : "image-upload-container--simple"}`}>
+    <div
+      className={`image-upload-container ${
+        showPreview ? "" : "image-upload-container--simple"
+      }`}
+    >
       <div className="image-upload-controls">
         <input
           type="file"
@@ -45,45 +48,61 @@ function ImageUpload({
           className="admin-file-input-hidden"
           id={id}
         />
+
         <label
           htmlFor={id}
-          className={`upload-zone ${isBase64 ? "upload-zone--filled" : ""}`}
+          className={`upload-zone ${hasImage ? "upload-zone--filled" : ""}`}
         >
           <span className="upload-zone__icon">
-            {isBase64 ? "✅" : "📂"}
+            {hasImage ? "✓" : "+"}
           </span>
+
           <span className="upload-zone__text">
-            {isBase64 ? "Gambar berhasil dipilih" : "Klik untuk pilih gambar"}
+            {hasImage ? "FOTO PRODUK SUDAH DIPILIH" : "PILIH FOTO PRODUK"}
           </span>
+
           <span className="upload-zone__hint">
-            {isBase64 ? "Klik untuk ganti gambar" : "JPG, PNG, WebP"}
+            {hasImage
+              ? "Klik area ini untuk mengganti gambar"
+              : "Gunakan format JPG, PNG, atau WebP"}
           </span>
         </label>
-        <span className="url-or-divider">atau masukkan URL gambar manual</span>
+
+        <div className="url-or-divider">
+          <span />
+          <p>ATAU GUNAKAN URL GAMBAR</p>
+          <span />
+        </div>
+
         <input
           type="text"
-          placeholder="https://..."
-          value={isBase64 ? "" : (value || "")}
+          className="image-url-input"
+          placeholder="https://alamat-gambar..."
+          value={isBase64 ? "" : value || ""}
           onChange={handleUrlChange}
         />
       </div>
 
-      {showPreview && value && (
+      {showPreview && hasImage && (
         <div className="image-preview-panel">
-          <span className="image-preview-label">Preview</span>
+          <p className="image-preview-label">PREVIEW GAMBAR</p>
+
           <img
             src={value}
             alt={previewAlt}
             className="image-preview-img"
-            onError={(e) => { e.target.style.display = "none"; }}
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
           />
+
           {onClear && (
             <button
               type="button"
               className="btn-clear-image"
               onClick={onClear}
             >
-              Hapus Gambar
+              HAPUS GAMBAR
             </button>
           )}
         </div>
