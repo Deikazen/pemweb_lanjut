@@ -1,8 +1,6 @@
 // ============================================
-// MenuList.jsx  (Daftar Item Menu)
-// → Grid kartu item menu + tombol refresh
-// → Empty state jika belum ada data
-// → Dipakai di: AdminPage → Tab Kelola Menu
+// MenuList.jsx
+// Daftar menu database Kopi Bekmer 70
 // ============================================
 
 import MenuItemCard from "./MenuItemCard";
@@ -11,25 +9,45 @@ import "./MenuList.css";
 function MenuList({ items, loading, error, onRefresh, onEdit, onDelete }) {
   return (
     <section className="admin-list-section">
-      <div className="section-row">
-        <h2>📋 Menu Terdaftar</h2>
-        <button onClick={onRefresh} className="btn-dark">
-          🔄 Refresh
-        </button>
+      <div className="admin-list-header">
+        <div>
+          <p className="admin-section-eyebrow">DATABASE PRODUK</p>
+
+          <h2>MENU TERDAFTAR.</h2>
+
+          <p>
+            Periksa menu yang tampil di halaman pelanggan. Gunakan tombol
+            edit untuk memperbarui informasi atau hapus untuk menghilangkan
+            produk dari database.
+          </p>
+        </div>
+
+        <div className="admin-list-actions">
+          <span>{items.length} MENU</span>
+
+          <button onClick={onRefresh} className="admin-refresh-btn">
+            REFRESH DATA ↻
+          </button>
+        </div>
       </div>
 
-      {loading && <p className="loading-text">Memuat data...</p>}
+      {loading && <p className="loading-text">MEMUAT DATA MENU...</p>}
+
       {error && (
-        <p className="error-text" style={{ color: "#ff4a4a", textAlign: "center", margin: "10px 0" }}>
-          ⚠️ Error: {error}
+        <p className="admin-error-text">
+          ⚠ TERJADI KESALAHAN: {error}
         </p>
       )}
 
       <div className="admin-grid">
         {items.length === 0 && !loading ? (
           <div className="empty-card">
-            <h3>Belum ada data menu</h3>
-            <p>Tambahkan item menu pertama lewat form di atas.</p>
+            <h3>BELUM ADA MENU.</h3>
+
+            <p>
+              Tambahkan produk pertama melalui form di atas agar menu
+              dapat tampil pada halaman pelanggan.
+            </p>
           </div>
         ) : (
           items.map((item) => (

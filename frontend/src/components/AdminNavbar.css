@@ -1,74 +1,137 @@
 /* ============================================
    AdminNavbar.css
-   → Style navbar dashboard admin
+   Navbar Dashboard Admin Kopi Bekmer 70
    ============================================ */
 
 .admin-navbar {
-  height: var(--nav-height);
-  background-color: var(--espresso);
-  border-bottom: 1px solid rgba(192,125,62,0.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 60px;
   position: sticky;
   top: 0;
   z-index: 100;
+  display: flex;
+  min-height: 76px;
+  padding: 0 54px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid var(--red-bekmer);
+  background: rgba(33, 11, 8, 0.98);
+  box-shadow: 0 7px 20px rgba(33, 11, 8, 0.16);
+}
+
+.admin-navbar::after {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  left: 0;
+  height: 6px;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      var(--red-bekmer) 0 28px,
+      var(--cream) 28px 56px
+    );
+  background-size: 56px 100%;
+}
+
+.admin-navbar-brand {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+}
+
+.admin-navbar-logo {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
 }
 
 .admin-navbar-brand h2 {
+  color: var(--cream);
   font-family: var(--font-display);
-  font-size: 22px;
-  color: var(--latte);
+  font-size: 27px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  line-height: 1;
 }
 
 .admin-navbar-brand span {
-  font-size: 13px;
-  color: rgba(245,234,216,0.45);
   display: block;
+  margin-top: 5px;
+  color: var(--latte);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
 }
 
 .admin-navbar-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+}
+
+.btn-dark,
+.btn-danger {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  transition: 0.2s ease;
 }
 
 .btn-dark {
-  background-color: rgba(255,255,255,0.08);
   color: var(--cream);
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 9px 18px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  border: 1px solid rgba(244, 178, 110, 0.4);
+  background: rgba(247, 240, 232, 0.06);
 }
 
 .btn-dark:hover {
-  background-color: rgba(255,255,255,0.14);
+  color: var(--espresso);
+  border-color: var(--caramel);
+  background: var(--caramel);
 }
 
 .btn-danger {
-  background-color: rgba(192, 57, 43, 0.8);
-  color: white;
-  border: none;
-  padding: 9px 18px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background-color 0.2s;
+  color: var(--cream);
+  border: 2px solid var(--red-bekmer);
+  background: var(--red-bekmer);
+  box-shadow: 3px 3px 0 var(--caramel);
 }
 
 .btn-danger:hover {
-  background-color: #c0392b;
+  background: var(--maroon);
+  box-shadow: 1px 1px 0 var(--caramel);
+  transform: translate(2px, 2px);
 }
 
-/* ── Responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 700px) {
   .admin-navbar {
-    padding: 16px 24px;
-    height: auto;
+    min-height: auto;
+    padding: 13px 15px;
+    gap: 11px;
     flex-wrap: wrap;
-    gap: 12px;
+  }
+
+  .admin-navbar-logo {
+    width: 43px;
+    height: 43px;
+  }
+
+  .admin-navbar-brand h2 {
+    font-size: 23px;
+  }
+
+  .admin-navbar-brand span {
+    font-size: 7px;
+  }
+
+  .admin-navbar-actions {
+    width: 100%;
+  }
+
+  .btn-dark,
+  .btn-danger {
+    flex: 1;
+    padding: 9px 8px;
+    font-size: 9px;
   }
 }

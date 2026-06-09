@@ -10,9 +10,8 @@
 
 /* ── ADMIN CONTAINER ──────────────────────── */
 .admin-container {
-  padding: 40px 60px;
-  background-color: var(--dark-roast);
   min-height: calc(100vh - var(--nav-height));
+  padding: 28px 54px 70px;
 }
 
 /* Alert di dalam dashboard */
@@ -24,5 +23,253 @@
 @media (max-width: 900px) {
   .admin-container {
     padding: 24px;
+  }
+}
+
+/* ============================================
+   AdminPage.css
+   Dashboard utama Kopi Bekmer 70
+   ============================================ */
+
+.admin-page {
+  min-height: 100vh;
+  color: var(--espresso);
+  background:
+    linear-gradient(rgba(247, 240, 232, 0.97), rgba(247, 240, 232, 0.97)),
+    repeating-linear-gradient(
+      135deg,
+      rgba(151, 14, 8, 0.08) 0 2px,
+      transparent 2px 20px
+    );
+}
+
+.admin-container {
+  min-height: calc(100vh - var(--nav-height));
+  padding: 38px 54px 80px;
+}
+
+/* ---- Hero dashboard ---- */
+
+.admin-hero {
+  display: flex;
+  max-width: 1420px;
+  padding: 24px 27px;
+  margin: 0 auto;
+  gap: 22px;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  border: 2px solid var(--red-bekmer);
+  border-radius: 11px;
+  background:
+    radial-gradient(circle at 88% 25%, rgba(236, 152, 82, 0.18), transparent 24%),
+    var(--espresso);
+  box-shadow: 6px 6px 0 var(--caramel);
+}
+
+.admin-eyebrow {
+  color: var(--latte);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.admin-hero h1 {
+  margin-top: 8px;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: clamp(54px, 5vw, 78px);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 1.5px;
+}
+
+.admin-hero h1 span {
+  display: block;
+  color: var(--caramel);
+}
+
+.admin-hero-desc {
+  max-width: 620px;
+  margin-top: 12px;
+  color: rgba(247, 240, 232, 0.72);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.admin-hero-brand {
+  display: flex;
+  min-width: 250px;
+  padding: 12px 14px;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid rgba(244, 178, 110, 0.32);
+  border-radius: 8px;
+  background: rgba(247, 240, 232, 0.06);
+}
+
+.admin-hero-brand img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.admin-hero-brand strong,
+.admin-hero-brand span {
+  display: block;
+}
+
+.admin-hero-brand strong {
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: 1.1px;
+}
+
+.admin-hero-brand span {
+  margin-top: 5px;
+  color: var(--latte);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* ---- Summary cards ---- */
+
+.admin-summary-grid {
+  display: grid;
+  max-width: 1420px;
+  margin: 20px auto 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.admin-summary-card {
+  padding: 14px 16px;
+  border: 1px solid rgba(151, 14, 8, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 250, 245, 0.88);
+  box-shadow: 3px 3px 0 rgba(151, 14, 8, 0.12);
+}
+
+.admin-summary-card p {
+  color: var(--red-bekmer);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.admin-summary-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--espresso);
+  font-family: var(--font-display);
+  font-size: 39px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.admin-summary-card span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.admin-summary-card--accent {
+  border-color: var(--red-bekmer);
+  background: var(--caramel);
+  box-shadow: 5px 5px 0 var(--red-bekmer);
+}
+
+.admin-summary-card--accent p,
+.admin-summary-card--accent strong,
+.admin-summary-card--accent span {
+  color: var(--espresso);
+}
+
+/* ---- Isi panel ---- */
+
+.admin-container .alert {
+  max-width: 1420px;
+  margin: 0 auto 20px;
+}
+
+.tab-panel {
+  max-width: 1420px;
+  margin: 0 auto;
+}
+
+/* ---- Tablet ---- */
+
+@media (max-width: 900px) {
+  .admin-container {
+    padding: 27px 22px 65px;
+  }
+
+  .admin-hero {
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-hero-brand {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .admin-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 560px) {
+  .admin-container {
+    padding: 19px 14px 52px;
+  }
+
+  .admin-hero {
+    padding: 18px 16px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0 var(--caramel);
+  }
+
+  .admin-hero h1 {
+    font-size: 62px;
+  }
+
+  .admin-hero-desc {
+    font-size: 12px;
+  }
+
+  .admin-hero-brand {
+    padding: 11px;
+  }
+
+  .admin-hero-brand img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .admin-hero-brand strong {
+    font-size: 23px;
+  }
+
+  .admin-summary-grid {
+    margin-top: 19px;
+    margin-bottom: 23px;
+  }
+
+  .admin-summary-card {
+    padding: 14px 15px;
+  }
+
+  .admin-summary-card strong {
+    font-size: 40px;
   }
 }

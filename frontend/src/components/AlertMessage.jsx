@@ -1,7 +1,6 @@
 // ============================================
-// AlertMessage.jsx  (Komponen Alert / Toast)
-// → Menampilkan pesan sukses atau error
-// → Dipakai di: AdminPage (login + dashboard)
+// AlertMessage.jsx
+// Notifikasi dashboard dan autentikasi
 // ============================================
 
 import "./AlertMessage.css";
@@ -9,9 +8,15 @@ import "./AlertMessage.css";
 function AlertMessage({ message, type }) {
   if (!message) return null;
 
+  const isSuccess = type === "success";
+
   return (
-    <div className={`alert ${type === "success" ? "alert-success" : ""}`}>
-      {message}
+    <div className={`alert ${isSuccess ? "alert-success" : "alert-error"}`}>
+      <span className="alert-icon">
+        {isSuccess ? "✓" : "!"}
+      </span>
+
+      <span>{message}</span>
     </div>
   );
 }

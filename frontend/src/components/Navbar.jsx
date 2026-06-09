@@ -105,22 +105,58 @@ function Navbar() {
   // PERUBAHAN: Tag <a> diubah menjadi <button> untuk mengatasi error ESLint jsx-a11y/anchor-is-valid
   const NavItems = ({ isMobile = false }) => (
     <>
-      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("home")}>Home</button>
-      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("about")}>About</button>
-      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("menu")}>Menu</button>
-      <button className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`} onClick={() => scrollToSection("contact")}>Contact</button>
+      <button
+        className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`}
+        onClick={() => scrollToSection("home")}
+      >
+        Home
+      </button>
+
+      <button
+        className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`}
+        onClick={() => scrollToSection("about")}
+      >
+        Cerita Kami
+      </button>
+
+      <button
+        className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`}
+        onClick={() => scrollToSection("best-seller")}
+      >
+        Best Seller
+      </button>
+
+      <button
+        className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`}
+        onClick={() => scrollToSection("menu-poster")}
+      >
+        Menu Lengkap
+      </button>
+
+      <button
+        className={`nav-link-btn ${isMobile ? "mobile-nav-link" : ""}`}
+        onClick={() => scrollToSection("contact")}
+      >
+        Kontak
+      </button>
 
       {role === "customer" && (
         <>
           <button
             className={`nav-cart-btn ${isMobile ? "mobile-cart-btn" : ""}`}
-            onClick={() => { closeMenu(); setCartOpen(true); }}
+            onClick={() => {
+              closeMenu();
+              setCartOpen(true);
+            }}
             title="Keranjang Belanja"
             id={isMobile ? "navbar-cart-btn-mobile" : "navbar-cart-btn"}
           >
             <span className="nav-cart-icon">🛒</span>
-            {cartCount > 0 && <span className="nav-cart-badge">{cartCount}</span>}
+            {cartCount > 0 && (
+              <span className="nav-cart-badge">{cartCount}</span>
+            )}
           </button>
+
           <Link
             to="/orders"
             className="nav-orders-link"
@@ -133,11 +169,25 @@ function Navbar() {
       )}
 
       {role === "admin" ? (
-        <Link to="/admin" className="nav-admin-link" onClick={closeMenu}>Dashboard Admin</Link>
+        <Link
+          to="/admin"
+          className="nav-admin-link"
+          onClick={closeMenu}
+        >
+          Dashboard Admin
+        </Link>
       ) : role === "customer" ? (
-        <button onClick={handleLogout} className="nav-logout-btn">Logout</button>
+        <button onClick={handleLogout} className="nav-logout-btn">
+          Logout
+        </button>
       ) : (
-        <Link to="/login" className="nav-admin-link" onClick={closeMenu}>Login</Link>
+        <Link
+          to="/login"
+          className="nav-admin-link"
+          onClick={closeMenu}
+        >
+          Login
+        </Link>
       )}
     </>
   );
@@ -146,9 +196,21 @@ function Navbar() {
     <>
       <nav ref={navRef} className={`navbar ${scrolled ? "navbar--scrolled" : ""} ${menuOpen ? "navbar--menu-open" : ""}`}>
         {/* ── Logo / Brand ── */}
-        <div className="navbar-brand" onClick={() => scrollToSection("home")} style={{ cursor: "pointer" }}>
-          <span className="brand-icon">☕</span>
-          Kopi<span>Bekmer</span>
+        <div
+          className="navbar-brand"
+          onClick={() => scrollToSection("home")}
+          style={{ cursor: "pointer" }}
+        >
+          <img
+            src="/assets/logo/logo-bekmer.png"
+            alt="Logo Kopi Bekmer 70"
+            className="navbar-logo"
+          />
+
+          <div className="navbar-brand-text">
+            <strong>KOPI BEKMER</strong>
+            <span>Dari biji lahir cerita.</span>
+          </div>
         </div>
 
         {/* ── Desktop: link horizontal ── */}

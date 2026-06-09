@@ -106,142 +106,245 @@ function LoginPage() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ← Kembali ke Landing Page
-        </button>
+      <div className="auth-pattern" />
 
-        {/* ── Brand Header ── */}
-        <div className="auth-brand">
-          <span className="auth-brand-icon">☕</span>
-          <h1>Kopi<span>Nara</span></h1>
-        </div>
-
-        {/* ── Auth Mode Tabs ── */}
-        <div className="auth-tabs">
-          <button
-            className={`auth-tab ${authMode === "login" ? "auth-tab--active" : ""}`}
-            onClick={switchToLogin}
-            type="button"
-          >
-            Masuk
-          </button>
-          <button
-            className={`auth-tab ${authMode === "register" ? "auth-tab--active" : ""}`}
-            onClick={switchToRegister}
-            type="button"
-          >
-            Daftar Baru
-          </button>
-        </div>
-
-        <AlertMessage message={message} type={msgType} />
-
-        {/* ═══ LOGIN FORM ═══ */}
-        {authMode === "login" && (
-          <form onSubmit={handleLogin} className="auth-form">
-            <p className="auth-subtitle">Masuk ke akun Anda untuk melanjutkan.</p>
-
-            <div className="field-group">
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder="email@contoh.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="field-group">
-              <label>Password</label>
-              <input
-                type="password"
-                placeholder="Masukkan password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? "Memproses..." : "Masuk"}
+      <div className="auth-shell">
+        {/* ── Panel branding ── */}
+        <section className="auth-visual">
+          <div className="auth-visual-content">
+            <button className="auth-back-link" onClick={() => navigate("/")}>
+              ← KEMBALI KE BERANDA
             </button>
 
-            <p className="auth-switch-text">
-              Belum punya akun?{" "}
-              <button type="button" className="auth-switch-link" onClick={switchToRegister}>
-                Daftar sekarang
-              </button>
+            <div className="auth-logo-wrap">
+              <img
+                src="/assets/logo/logo-bekmer.png"
+                alt="Logo Kopi Bekmer 70"
+                className="auth-logo"
+              />
+            </div>
+
+            <p className="auth-eyebrow">KOPI LOKAL KABUPATEN BANDUNG</p>
+
+            <h1>
+              DARI BIJI
+              <span>LAHIR CERITA.</span>
+            </h1>
+
+            <p className="auth-visual-desc">
+              Masuk untuk memesan seduhan favoritmu. Kopi Bekmer 70 membawa
+              karakter arabika lokal yang lebih smooth, ringan, dan nyaman
+              dinikmati.
             </p>
-          </form>
-        )}
 
-        {/* ═══ REGISTER FORM ═══ */}
-        {authMode === "register" && (
-          <form onSubmit={handleRegister} className="auth-form">
-            <p className="auth-subtitle">Buat akun baru untuk memesan kopi favorit Anda.</p>
-
-            <div className="field-group">
-              <label>Nama Lengkap</label>
-              <input
-                type="text"
-                placeholder="Masukkan nama lengkap"
-                value={regName}
-                onChange={(e) => setRegName(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="field-group">
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder="email@contoh.com"
-                value={regEmail}
-                onChange={(e) => setRegEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="auth-form-row">
-              <div className="field-group">
-                <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="Min. 6 karakter"
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  minLength={6}
-                  required
-                />
+            <div className="auth-highlights">
+              <div>
+                <strong>EST. 2025</strong>
+                <span>Berawal dari motor bebek merah</span>
               </div>
 
-              <div className="field-group">
-                <label>Konfirmasi Password</label>
-                <input
-                  type="password"
-                  placeholder="Ulangi password"
-                  value={regConfirmPassword}
-                  onChange={(e) => setRegConfirmPassword(e.target.value)}
-                  minLength={6}
-                  required
-                />
+              <div>
+                <strong>07.00–22.00</strong>
+                <span>Buka setiap hari</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="auth-visual-footer">
+            <span>KOPI BEKMER 70</span>
+            <span>✦</span>
+            <span>ARABIKA LOKAL BANDUNG</span>
+          </div>
+        </section>
+
+        {/* ── Panel form ── */}
+        <section className="auth-form-panel">
+          <div className="auth-card">
+            <button className="back-btn" onClick={() => navigate("/")}>
+              ← Kembali ke Beranda
+            </button>
+
+            <div className="auth-brand">
+              <img
+                src="/assets/logo/logo-bekmer.png"
+                alt="Logo Kopi Bekmer 70"
+                className="auth-brand-logo"
+              />
+
+              <div>
+                <h2>KOPI BEKMER 70</h2>
+                <p>DARI BIJI LAHIR CERITA.</p>
               </div>
             </div>
 
-            <button type="submit" className="btn-submit btn-submit--register" disabled={loading}>
-              {loading ? "Mendaftarkan..." : "Daftar Akun"}
-            </button>
+            <div className="auth-heading">
+              <p className="auth-heading-label">
+                {authMode === "login" ? "SELAMAT DATANG KEMBALI" : "BUAT AKUN BARU"}
+              </p>
 
-            <p className="auth-switch-text">
-              Sudah punya akun?{" "}
-              <button type="button" className="auth-switch-link" onClick={switchToLogin}>
-                Masuk di sini
+              <h3>
+                {authMode === "login"
+                  ? "MASUK UNTUK MEMESAN."
+                  : "MULAI CERITAMU."}
+              </h3>
+            </div>
+
+            {/* ── Tabs ── */}
+            <div className="auth-tabs">
+              <button
+                className={`auth-tab ${
+                  authMode === "login" ? "auth-tab--active" : ""
+                }`}
+                onClick={switchToLogin}
+                type="button"
+              >
+                MASUK
               </button>
-            </p>
-          </form>
-        )}
+
+              <button
+                className={`auth-tab ${
+                  authMode === "register" ? "auth-tab--active" : ""
+                }`}
+                onClick={switchToRegister}
+                type="button"
+              >
+                DAFTAR BARU
+              </button>
+            </div>
+
+            <AlertMessage message={message} type={msgType} />
+
+            {/* ═══ LOGIN FORM ═══ */}
+            {authMode === "login" && (
+              <form onSubmit={handleLogin} className="auth-form">
+                <p className="auth-subtitle">
+                  Masuk ke akunmu untuk menambahkan menu favorit ke keranjang.
+                </p>
+
+                <div className="field-group">
+                  <label>Email</label>
+
+                  <input
+                    type="email"
+                    placeholder="email@contoh.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="field-group">
+                  <label>Password</label>
+
+                  <input
+                    type="password"
+                    placeholder="Masukkan password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="btn-submit" disabled={loading}>
+                  {loading ? "MEMPROSES..." : "MASUK SEKARANG →"}
+                </button>
+
+                <p className="auth-switch-text">
+                  Belum punya akun?{" "}
+
+                  <button
+                    type="button"
+                    className="auth-switch-link"
+                    onClick={switchToRegister}
+                  >
+                    Daftar sekarang
+                  </button>
+                </p>
+              </form>
+            )}
+
+            {/* ═══ REGISTER FORM ═══ */}
+            {authMode === "register" && (
+              <form onSubmit={handleRegister} className="auth-form">
+                <p className="auth-subtitle">
+                  Daftar untuk mulai memesan menu Kopi Bekmer 70 favoritmu.
+                </p>
+
+                <div className="field-group">
+                  <label>Nama Lengkap</label>
+
+                  <input
+                    type="text"
+                    placeholder="Masukkan nama lengkap"
+                    value={regName}
+                    onChange={(e) => setRegName(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="field-group">
+                  <label>Email</label>
+
+                  <input
+                    type="email"
+                    placeholder="email@contoh.com"
+                    value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="auth-form-row">
+                  <div className="field-group">
+                    <label>Password</label>
+
+                    <input
+                      type="password"
+                      placeholder="Min. 6 karakter"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      minLength={6}
+                      required
+                    />
+                  </div>
+
+                  <div className="field-group">
+                    <label>Konfirmasi Password</label>
+
+                    <input
+                      type="password"
+                      placeholder="Ulangi password"
+                      value={regConfirmPassword}
+                      onChange={(e) => setRegConfirmPassword(e.target.value)}
+                      minLength={6}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn-submit btn-submit--register"
+                  disabled={loading}
+                >
+                  {loading ? "MENDAFTARKAN..." : "DAFTAR AKUN →"}
+                </button>
+
+                <p className="auth-switch-text">
+                  Sudah punya akun?{" "}
+
+                  <button
+                    type="button"
+                    className="auth-switch-link"
+                    onClick={switchToLogin}
+                  >
+                    Masuk di sini
+                  </button>
+                </p>
+              </form>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );

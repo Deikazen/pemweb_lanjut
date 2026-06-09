@@ -491,3 +491,464 @@
   }
 }
 
+/* ============================================
+   OVERRIDE CARD MENU RETRO KOPI BEKMER 70
+   ============================================ */
+
+.menu-card {
+  overflow: hidden;
+  border: 2px solid rgba(101, 16, 11, 0.2);
+  border-radius: 13px;
+  background: var(--cream);
+  box-shadow: 7px 7px 0 rgba(151, 14, 8, 0.9);
+  transition: 0.22s ease;
+}
+
+.menu-card:hover {
+  box-shadow: 3px 3px 0 rgba(151, 14, 8, 0.95);
+  transform: translate(4px, 4px);
+}
+
+.menu-card-img-wrap {
+  height: 255px;
+  background: var(--caramel);
+  border-bottom: 3px solid var(--red-bekmer);
+}
+
+.menu-card-img-wrap img {
+  object-fit: cover;
+}
+
+.menu-card-img-wrap img[src*="logo-bekmer"] {
+  padding: 42px;
+  object-fit: contain;
+  background: var(--caramel);
+}
+
+.menu-card-overlay {
+  padding-bottom: 18px;
+  background: linear-gradient(
+    to top,
+    rgba(33, 11, 8, 0.88) 0%,
+    rgba(33, 11, 8, 0.15) 65%,
+    transparent 100%
+  );
+}
+
+.overlay-text {
+  color: var(--cream);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.menu-card-badge {
+  padding: 7px 10px;
+  color: var(--cream);
+  border-radius: 5px;
+  background: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.menu-card-body {
+  padding: 21px 20px 20px;
+}
+
+.menu-card-body h3 {
+  margin-bottom: 5px;
+  color: var(--espresso);
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.5px;
+}
+
+.menu-card-price {
+  margin-top: 8px;
+  color: var(--red-bekmer);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.menu-card-short-desc {
+  height: 48px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.menu-card-footer {
+  min-height: 25px;
+  margin-bottom: 15px;
+}
+
+.menu-tag {
+  padding: 5px 9px;
+  color: var(--red-bekmer);
+  border: 1px solid rgba(151, 14, 8, 0.16);
+  border-radius: 5px;
+  background: rgba(236, 152, 82, 0.16);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.menu-card-cart-btn {
+  padding: 13px 16px;
+  color: var(--cream);
+  border: 2px solid var(--red-bekmer);
+  border-radius: 6px;
+  background: var(--red-bekmer);
+  box-shadow: 4px 4px 0 var(--caramel);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  transition: 0.2s ease;
+}
+
+.menu-card-cart-btn::before {
+  display: none;
+}
+
+.menu-card-cart-btn:hover {
+  box-shadow: 2px 2px 0 var(--caramel);
+  transform: translate(2px, 2px);
+}
+
+.menu-card-cart-btn:hover .cart-icon {
+  transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .menu-card-img-wrap {
+    height: 235px;
+  }
+}
+
+/* ============================================
+   COMPACT MENU CARD MOBILE
+   ============================================ */
+
+@media (max-width: 600px) {
+  .menu-card {
+    border-radius: 9px;
+    box-shadow: 4px 4px 0 rgba(151, 14, 8, 0.9);
+  }
+
+  .menu-card:hover {
+    box-shadow: 2px 2px 0 rgba(151, 14, 8, 0.95);
+    transform: translate(2px, 2px);
+  }
+
+  .menu-card-img-wrap {
+    height: 150px;
+  }
+
+  .menu-card-img-wrap img[src*="logo-bekmer"] {
+    padding: 28px;
+  }
+
+  .menu-card-overlay {
+    padding-bottom: 12px;
+  }
+
+  .overlay-text {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+  }
+
+  .menu-card-body {
+    padding: 14px 13px 14px;
+  }
+
+  .menu-card-body h3 {
+    margin-bottom: 3px;
+    font-size: 28px;
+    line-height: 0.95;
+  }
+
+  .menu-card-price {
+    margin-top: 5px;
+    font-size: 15px;
+  }
+
+  .menu-card-short-desc {
+    height: auto;
+    margin-top: 9px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .menu-card-footer {
+    min-height: 0;
+    margin-bottom: 11px;
+  }
+
+  .menu-tag {
+    padding: 4px 7px;
+    font-size: 8px;
+  }
+
+  .menu-card-cart-btn {
+    padding: 10px 12px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0 var(--caramel);
+    font-size: 10px;
+    letter-spacing: 0.8px;
+  }
+
+  .cart-icon {
+    font-size: 13px;
+  }
+}
+
+/* ============================================
+   DETAIL MODAL KOPI BEKMER 70
+   Retro · compact · responsive
+   ============================================ */
+
+.menu-detail-backdrop {
+  padding: 18px;
+  background: rgba(33, 11, 8, 0.78);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.menu-detail-modal {
+  width: min(790px, 100%);
+  padding: 0;
+  overflow: hidden;
+  border: 3px solid var(--red-bekmer);
+  border-radius: 14px;
+  background:
+    linear-gradient(rgba(247, 240, 232, 0.98), rgba(247, 240, 232, 0.98)),
+    repeating-linear-gradient(
+      135deg,
+      rgba(151, 14, 8, 0.1) 0 2px,
+      transparent 2px 18px
+    );
+  box-shadow:
+    9px 9px 0 var(--caramel),
+    17px 17px 0 rgba(151, 14, 8, 0.35);
+}
+
+.menu-detail-close {
+  top: 13px;
+  right: 14px;
+  display: flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  border: 1px solid rgba(244, 178, 110, 0.55);
+  border-radius: 6px;
+  background: var(--red-bekmer);
+  font-size: 25px;
+  line-height: 1;
+}
+
+.menu-detail-close:hover {
+  color: var(--espresso);
+  background: var(--caramel);
+  transform: rotate(90deg);
+}
+
+.menu-detail-flex {
+  gap: 0;
+  align-items: stretch;
+}
+
+.menu-detail-img-box {
+  width: 43%;
+  height: auto;
+  min-height: 430px;
+  border: 0;
+  border-right: 4px solid var(--red-bekmer);
+  border-radius: 0;
+  background: var(--caramel);
+}
+
+.menu-detail-img-box img {
+  object-fit: cover;
+}
+
+.menu-detail-img-box img[src*="logo-bekmer"] {
+  padding: 48px;
+  object-fit: contain;
+}
+
+.menu-detail-info-box {
+  width: 57%;
+  padding: 28px 28px 26px;
+  color: var(--espresso);
+  background: transparent;
+}
+
+.menu-detail-eyebrow {
+  color: var(--red-bekmer);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.9px;
+}
+
+.menu-detail-badge {
+  align-self: flex-start;
+  padding: 6px 9px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  color: var(--cream);
+  border: 0;
+  border-radius: 5px;
+  background: var(--red-bekmer);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.menu-detail-info-box h2 {
+  max-width: 330px;
+  margin-top: 11px;
+  margin-bottom: 7px;
+  color: var(--espresso);
+  font-family: var(--font-display);
+  font-size: 43px;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  line-height: 0.95;
+}
+
+.menu-detail-price {
+  margin-bottom: 14px;
+  color: var(--red-bekmer);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.menu-detail-divider {
+  height: 2px;
+  margin-bottom: 15px;
+  background: rgba(151, 14, 8, 0.17);
+}
+
+.menu-detail-section-title {
+  margin-bottom: 7px;
+  color: var(--red-bekmer);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.menu-detail-desc {
+  max-height: 92px;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.menu-detail-meta-grid {
+  margin-bottom: 19px;
+  gap: 8px;
+}
+
+.meta-item {
+  padding: 9px 10px;
+  gap: 8px;
+  border: 1px solid rgba(151, 14, 8, 0.17);
+  border-radius: 7px;
+  background: rgba(236, 152, 82, 0.13);
+}
+
+.meta-icon {
+  font-size: 17px;
+}
+
+.meta-text strong {
+  color: var(--red-bekmer);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.menu-detail-cart-btn {
+  padding: 12px 14px;
+  color: var(--cream);
+  border: 2px solid var(--red-bekmer);
+  border-radius: 6px;
+  background: var(--red-bekmer);
+  box-shadow: 4px 4px 0 var(--caramel);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.menu-detail-cart-btn:hover {
+  box-shadow: 2px 2px 0 var(--caramel);
+  transform: translate(2px, 2px);
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 700px) {
+  .menu-detail-backdrop {
+    padding: 13px;
+  }
+
+  .menu-detail-modal {
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow:
+      6px 6px 0 var(--caramel),
+      11px 11px 0 rgba(151, 14, 8, 0.3);
+  }
+
+  .menu-detail-flex {
+    flex-direction: column;
+  }
+
+  .menu-detail-img-box {
+    width: 100%;
+    min-height: 0;
+    height: 190px;
+    border-right: 0;
+    border-bottom: 3px solid var(--red-bekmer);
+  }
+
+  .menu-detail-info-box {
+    width: 100%;
+    padding: 18px 16px 17px;
+  }
+
+  .menu-detail-info-box h2 {
+    padding-right: 30px;
+    font-size: 34px;
+  }
+
+  .menu-detail-price {
+    font-size: 17px;
+  }
+
+  .menu-detail-desc {
+    max-height: 80px;
+    font-size: 12px;
+  }
+
+  .menu-detail-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .menu-detail-close {
+    top: 9px;
+    right: 9px;
+    width: 31px;
+    height: 31px;
+  }
+}

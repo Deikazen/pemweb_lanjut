@@ -1,123 +1,198 @@
 /* ============================================
    MenuForm.css
-   → Style form tambah / edit item menu
+   Form CRUD menu Kopi Bekmer 70
    ============================================ */
 
-/* Form fields (shared login + admin form) */
-.field-group {
-  margin-bottom: 18px;
+.admin-form-section {
+  padding: 24px 25px;
+  margin-bottom: 22px;
+  border: 2px solid rgba(151, 14, 8, 0.19);
+  border-radius: 11px;
+  background: rgba(255, 250, 245, 0.88);
+  box-shadow: 5px 5px 0 rgba(151, 14, 8, 0.14);
 }
 
-.field-group > label:not(.upload-zone) {
-  display: block;
+.admin-section-heading {
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.admin-section-eyebrow {
+  color: var(--red-bekmer);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.9px;
+}
+
+.admin-section-heading h2 {
+  margin-top: 7px;
+  color: var(--espresso);
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  line-height: 0.95;
+}
+
+.admin-section-number {
+  color: rgba(151, 14, 8, 0.11);
+  font-family: var(--font-display);
+  font-size: 68px;
+  line-height: 0.8;
+}
+
+.admin-section-desc {
+  max-width: 720px;
+  margin-top: 11px;
+  color: var(--muted);
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: rgba(245,234,216,0.7);
-  margin-bottom: 8px;
-  text-transform: uppercase;
+  line-height: 1.65;
 }
 
-.field-group input {
-  width: 100%;
-  background-color: rgba(255,255,255,0.06);
-  border: 1px solid rgba(192,125,62,0.25);
-  color: var(--cream);
-  padding: 13px 16px;
-  border-radius: 12px;
-  font-size: 15px;
-  transition: border-color 0.2s, background-color 0.2s;
+.admin-form {
+  display: grid;
+  margin-top: 22px;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 17px;
 }
 
-.field-group input:focus {
-  outline: none;
-  border-color: var(--caramel);
-  background-color: rgba(255,255,255,0.09);
+.admin-form-full {
+  grid-column: 1 / -1;
 }
 
-.field-group input::placeholder {
-  color: rgba(245,234,216,0.3);
-}
-
-.field-group input[type="number"]::-webkit-inner-spin-button,
-.field-group input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
+.admin-form-section .field-group {
   margin: 0;
 }
 
-.field-group input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
+.admin-form-section .field-group > label:not(.upload-zone) {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--espresso);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
 }
 
-/* ── FORM SECTION ─────────────────────────── */
-.admin-form-section {
-  background-color: rgba(255,255,255,0.04);
-  border: 1px solid rgba(192,125,62,0.18);
-  border-radius: var(--card-radius);
-  padding: 32px;
-  margin-bottom: 28px;
+.admin-form-section .field-group input,
+.admin-textarea {
+  width: 100%;
+  padding: 11px 12px;
+  color: var(--espresso);
+  border: 1px solid rgba(151, 14, 8, 0.2);
+  border-radius: 6px;
+  outline: none;
+  background: rgba(255, 250, 245, 0.94);
+  font-family: inherit;
+  font-size: 12px;
+  transition: 0.2s ease;
 }
 
-.admin-form-section h2 {
-  font-family: var(--font-display);
-  font-size: 24px;
-  color: var(--latte);
-  margin-bottom: 24px;
+.admin-form-section .field-group input:focus,
+.admin-textarea:focus {
+  border-color: var(--red-bekmer);
+  box-shadow: 0 0 0 3px rgba(151, 14, 8, 0.09);
 }
 
-/* Form grid: 2 kolom */
-.admin-form {
+.admin-form-section .field-group input::placeholder,
+.admin-textarea::placeholder {
+  color: rgba(117, 95, 85, 0.6);
+}
+
+.admin-textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.admin-tag-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.field-helper {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
 }
 
 .form-actions {
-  grid-column: span 2;
   display: flex;
-  gap: 12px;
+  grid-column: 1 / -1;
+  gap: 10px;
+  padding-top: 5px;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 11px 15px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  transition: 0.2s ease;
 }
 
 .btn-save {
-  background-color: var(--caramel);
-  color: var(--espresso);
-  border: none;
-  padding: 12px 28px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 14px;
-  transition: background-color 0.2s, transform 0.2s;
+  color: var(--cream);
+  border: 2px solid var(--red-bekmer);
+  background: var(--red-bekmer);
+  box-shadow: 4px 4px 0 var(--caramel);
 }
 
 .btn-save:hover:not(:disabled) {
-  background-color: var(--latte);
-  transform: translateY(-1px);
+  box-shadow: 2px 2px 0 var(--caramel);
+  transform: translate(2px, 2px);
 }
 
 .btn-save:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .btn-cancel {
-  background-color: rgba(255,255,255,0.08);
-  color: var(--cream);
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 12px 22px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
+  color: var(--red-bekmer);
+  border: 1px solid rgba(151, 14, 8, 0.3);
+  background: rgba(151, 14, 8, 0.07);
 }
 
-/* ── Responsive ── */
-@media (max-width: 900px) {
+.btn-cancel:hover {
+  background: rgba(151, 14, 8, 0.14);
+}
+
+@media (max-width: 760px) {
   .admin-form {
     grid-template-columns: 1fr;
   }
 
+  .admin-form-full {
+    grid-column: auto;
+  }
+
+  .admin-tag-inputs {
+    grid-template-columns: 1fr;
+  }
+
   .form-actions {
-    grid-column: span 1;
+    grid-column: auto;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .admin-form-section {
+    padding: 18px 15px;
+  }
+
+  .admin-section-heading h2 {
+    font-size: 34px;
+  }
+
+  .admin-section-number {
+    font-size: 54px;
   }
 }

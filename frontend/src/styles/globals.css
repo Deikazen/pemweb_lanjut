@@ -1,11 +1,10 @@
 /* ============================================
    globals.css
-   → Reset, CSS variables, base typography
-   → Tema: Cafe Kopi Modern & Cozy
-   → Dipakai di: semua komponen & halaman
+   Tema utama Kopi Bekmer 70
+   Retro coffee bar · klasik · lokal Bandung
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap");
 
 * {
   margin: 0;
@@ -18,42 +17,51 @@ html {
 }
 
 :root {
-  /* ── Palet warna utama (Cafe Kopi) ── */
-  --espresso:    #1a0e08;      /* background gelap utama */
-  --dark-roast:  #2c1a0e;      /* section gelap */
-  --medium-roast:#4a2c1a;      /* elemen medium */
-  --caramel:     #c07d3e;      /* aksen utama (orange hangat) */
-  --latte:       #d4a96a;      /* aksen terang */
-  --cream:       #f5ead8;      /* teks di atas gelap */
-  --milk-foam:   #fdf6ec;      /* background section terang */
-  --chalk:       #f0e8d6;      /* background section abu-krem */
+  /* Warna utama sesuai poster menu Kopi Bekmer 70 */
+  --espresso: #210b08;
+  --dark-roast: #3a100c;
+  --medium-roast: #65100b;
+  --maroon: #850d08;
+  --red-bekmer: #970e08;
 
-  /* ── Warna pendukung ── */
-  --sage:        #7a9e7e;      /* aksen hijau natural */
-  --blush:       #d4856a;      /* aksen hangat sekunder */
-  --error:       #c0392b;      /* pesan error */
-  --success:     #27ae60;      /* pesan sukses */
+  --caramel: #ec9852;
+  --latte: #f4b26e;
+  --orange-soft: #f7c18c;
 
-  /* ── Tipografi ── */
-  --font-display: 'Cormorant Garamond', Georgia, serif; /* judul elegan */
-  --font-body:    'Outfit', system-ui, sans-serif;       /* teks biasa */
+  --cream: #f7f0e8;
+  --milk-foam: #f6f0e9;
+  --chalk: #fffaf5;
 
-  /* ── Spacing & Layout ── */
-  --section-pad: 80px 60px;   /* padding tiap section */
-  --card-radius:  20px;        /* border-radius kartu */
-  --nav-height:   72px;        /* tinggi navbar */
+  --ink: #211713;
+  --muted: #755f55;
+
+  --sage: #7a9e7e;
+  --blush: #d4856a;
+  --error: #c0392b;
+  --success: #278a51;
+
+  /* Font */
+  --font-display: "Bebas Neue", Impact, sans-serif;
+  --font-body: "Outfit", Arial, sans-serif;
+
+  /* Layout */
+  --section-pad: 90px 60px;
+  --card-radius: 18px;
+  --nav-height: 78px;
 }
 
-/* ── Base styles ── */
 body {
   font-family: var(--font-body);
   background-color: var(--milk-foam);
-  color: var(--espresso);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-display);
+  letter-spacing: 1px;
 }
 
 a {
@@ -71,16 +79,23 @@ img {
   max-width: 100%;
 }
 
-input, textarea {
+input,
+textarea {
   font-family: var(--font-body);
 }
 
-/* ── Utility class ── */
 .section-label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--caramel);
   margin-bottom: 12px;
+  color: var(--red-bekmer);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-pad: 64px 20px;
+    --nav-height: 70px;
+  }
 }

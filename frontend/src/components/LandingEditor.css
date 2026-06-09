@@ -1,122 +1,163 @@
 /* ============================================
    LandingEditor.css
-   → Style editor landing page di admin dashboard
-   → Includes: header, layout, fieldsets, settings grids,
-   →           stat cards, about cards, feature cards, sticky bar
+   Editor landing page Kopi Bekmer 70
+   Retro · compact · responsive
    ============================================ */
 
-/* ── LANDING EDITOR LAYOUT ────────────────── */
+/* ---- Header utama ---- */
+
 .landing-editor-header {
-  margin-bottom: 28px;
+  padding: 23px 25px;
+  margin-bottom: 19px;
+  border: 2px solid rgba(151, 14, 8, 0.19);
+  border-radius: 10px;
+  background: rgba(255, 250, 245, 0.9);
+  box-shadow: 5px 5px 0 rgba(151, 14, 8, 0.13);
 }
 
 .landing-editor-header h2 {
+  margin-top: 7px;
+  color: var(--espresso);
   font-family: var(--font-display);
-  font-size: 26px;
-  color: var(--latte);
-  margin-bottom: 6px;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  line-height: 0.95;
 }
 
-.landing-editor-header p {
-  font-size: 14px;
-  color: rgba(245, 234, 216, 0.55);
+.landing-editor-header p:last-child {
+  max-width: 760px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
 }
+
+/* ---- Layout sidebar + form ---- */
 
 .landing-editor-layout {
   display: grid;
   grid-template-columns: 210px 1fr;
-  gap: 28px;
+  gap: 17px;
   align-items: start;
 }
 
-/* ── FIELDSET ─────────────────────────────── */
+/* ---- Fieldset section ---- */
+
 .settings-fieldset {
-  border: 1px solid rgba(192, 125, 62, 0.2);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 30px;
-  background-color: rgba(0, 0, 0, 0.15);
-  scroll-margin-top: 130px;
+  padding: 20px 20px 18px;
+  margin-bottom: 16px;
+  scroll-margin-top: 120px;
+  border: 2px solid rgba(151, 14, 8, 0.17);
+  border-radius: 9px;
+  background: rgba(255, 250, 245, 0.9);
+  box-shadow: 4px 4px 0 rgba(151, 14, 8, 0.11);
 }
 
 .settings-fieldset legend {
+  padding: 0 8px;
+  color: var(--espresso);
   font-family: var(--font-display);
-  font-size: 18px;
-  color: var(--latte);
-  padding: 0 12px;
-  font-weight: 600;
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0.9px;
 }
 
 .fieldset-num {
   display: inline-flex;
+  width: 31px;
+  height: 25px;
+  margin-right: 7px;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: var(--caramel);
-  color: var(--espresso);
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 800;
-  margin-right: 8px;
+  color: var(--cream);
+  border-radius: 4px;
+  background: var(--red-bekmer);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1;
   vertical-align: middle;
 }
 
-/* ── SETTINGS FORM TEXTAREA ──────────────── */
+/* ---- Input shared ---- */
+
+.admin-settings-form .field-group {
+  margin-bottom: 0;
+}
+
+.admin-settings-form .field-group > label:not(.upload-zone) {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--espresso);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.admin-settings-form input,
 .admin-settings-form textarea {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(192, 125, 62, 0.25);
-  color: var(--cream);
-  padding: 13px 16px;
-  border-radius: 12px;
-  font-size: 15px;
+  padding: 11px 12px;
+  color: var(--espresso);
+  border: 1px solid rgba(151, 14, 8, 0.2);
+  border-radius: 6px;
+  outline: none;
+  background: rgba(255, 250, 245, 0.96);
   font-family: inherit;
-  transition: border-color 0.2s, background-color 0.2s;
+  font-size: 12px;
+  transition: 0.2s ease;
+}
+
+.admin-settings-form input:focus,
+.admin-settings-form textarea:focus {
+  border-color: var(--red-bekmer);
+  box-shadow: 0 0 0 3px rgba(151, 14, 8, 0.09);
+}
+
+.admin-settings-form textarea {
   resize: vertical;
 }
 
-.admin-settings-form textarea:focus {
-  outline: none;
-  border-color: var(--caramel);
-  background-color: rgba(255, 255, 255, 0.09);
+.admin-settings-form input::placeholder,
+.admin-settings-form textarea::placeholder {
+  color: rgba(117, 95, 85, 0.58);
 }
 
-/* ── SETTINGS GRID 2 COL ──────────────────── */
+/* ---- Grid dua kolom ---- */
+
 .settings-grid-2 {
   display: grid;
+  margin-bottom: 14px;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 13px;
 }
 
 .field-group--span2 {
   grid-column: span 2;
 }
 
-/* ── STATS CARDS ──────────────────────────── */
+/* ---- Statistik ---- */
+
 .stats-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 11px;
 }
 
 .stat-input-card {
-  background: rgba(192, 125, 62, 0.06);
-  border: 1px solid rgba(192, 125, 62, 0.22);
-  border-radius: 14px;
-  padding: 22px 16px 18px;
+  padding: 15px 13px;
   text-align: center;
+  border: 1px solid rgba(151, 14, 8, 0.18);
+  border-radius: 7px;
+  background: rgba(236, 152, 82, 0.12);
 }
 
 .stat-input-card__emoji {
-  font-size: 30px;
   display: block;
-  margin-bottom: 12px;
-}
-
-.stat-input-card .field-group {
-  margin-bottom: 0;
+  margin-bottom: 8px;
+  font-size: 24px;
 }
 
 .stat-input-card .field-group > label:not(.upload-zone) {
@@ -124,134 +165,151 @@
 }
 
 .stat-input-card .field-group input {
+  padding: 9px;
+  color: var(--red-bekmer);
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 400;
   text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--caramel);
-  padding: 12px 8px;
 }
 
-/* ── ABOUT CARDS GRID ─────────────────────── */
+/* ---- Card about ---- */
+
 .about-cards-grid {
   display: grid;
+  margin-top: 15px;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 11px;
 }
 
 .about-card-editor {
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(192, 125, 62, 0.15);
-  border-radius: 14px;
-  padding: 20px;
+  padding: 15px;
+  border: 1px solid rgba(151, 14, 8, 0.17);
+  border-radius: 7px;
+  background: rgba(236, 152, 82, 0.09);
 }
 
 .about-card-editor__title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--latte);
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 9px;
+  margin-bottom: 11px;
+  color: var(--red-bekmer);
+  border-bottom: 1px solid rgba(151, 14, 8, 0.14);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
 }
 
-/* ── FEATURE CARDS GRID ───────────────────── */
+/* ---- Keunggulan ---- */
+
 .features-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 11px;
 }
 
 .feature-card-editor {
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(192, 125, 62, 0.15);
-  border-radius: 14px;
-  padding: 20px;
+  padding: 14px;
+  border: 1px solid rgba(151, 14, 8, 0.17);
+  border-radius: 7px;
+  background: rgba(236, 152, 82, 0.09);
 }
 
 .feature-card-editor__header {
   display: flex;
-  align-items: center;
+  padding-bottom: 9px;
+  margin-bottom: 11px;
+  gap: 8px;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  align-items: center;
+  border-bottom: 1px solid rgba(151, 14, 8, 0.14);
 }
 
 .feature-card-editor__num {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--caramel);
+  color: var(--red-bekmer);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
   white-space: nowrap;
 }
 
 .field-group--icon {
-  width: 68px;
-  margin-bottom: 0;
+  width: 62px;
 }
 
-.feature-card-editor__header .field-group {
-  margin-bottom: 0;
-}
+/* ---- Sticky save bar ---- */
 
-/* ── STICKY SAVE BAR ──────────────────────── */
 .sticky-save-bar {
   position: sticky;
   bottom: 0;
   z-index: 20;
-  background: var(--espresso);
-  border-top: 1px solid rgba(192, 125, 62, 0.25);
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
-  padding: 16px 24px;
   display: flex;
-  align-items: center;
+  padding: 13px 15px;
+  margin-top: 10px;
+  gap: 13px;
   justify-content: space-between;
-  gap: 16px;
-  margin-top: 12px;
-  border-radius: 0 0 16px 16px;
+  align-items: center;
+  border: 2px solid var(--red-bekmer);
+  border-radius: 7px;
+  background: var(--espresso);
+  box-shadow: 0 -7px 18px rgba(33, 11, 8, 0.18);
 }
 
 .sticky-save-bar__info {
-  font-size: 13px;
-  color: rgba(245, 234, 216, 0.45);
-  font-style: italic;
+  color: rgba(247, 240, 232, 0.68);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.45;
 }
 
 .btn-save--lg {
-  padding: 14px 36px;
-  font-size: 15px;
-  border-radius: 12px;
+  padding: 11px 14px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  font-size: 9px;
+  letter-spacing: 1.1px;
   white-space: nowrap;
 }
 
-/* ── Responsive ── */
+/* ---- Tablet ---- */
+
 @media (max-width: 1100px) {
   .landing-editor-layout {
     grid-template-columns: 1fr;
   }
 }
 
+/* ---- Mobile ---- */
+
 @media (max-width: 768px) {
+  .landing-editor-header {
+    padding: 18px 15px;
+  }
+
+  .landing-editor-header h2 {
+    font-size: 35px;
+  }
+
+  .settings-fieldset {
+    padding: 16px 14px 14px;
+  }
+
+  .settings-grid-2,
   .stats-cards-grid,
-  .features-cards-grid,
   .about-cards-grid,
-  .settings-grid-2 {
+  .features-cards-grid {
     grid-template-columns: 1fr;
   }
 
   .field-group--span2 {
-    grid-column: span 1;
+    grid-column: auto;
   }
 
   .sticky-save-bar {
     flex-direction: column;
     align-items: stretch;
-    text-align: center;
-    border-radius: 0;
   }
 
   .sticky-save-bar__info {
-    display: none;
+    text-align: center;
   }
 }
