@@ -11,7 +11,7 @@
 
 import { useState, useCallback } from "react";
 
-const API_URL = "https://kopi-bekmer-70.vercel.app/";
+const API_URL = "https://kopi-bekmer-70.vercel.app";
 
 function useApi() {
   const [items, setItems] = useState([]);
