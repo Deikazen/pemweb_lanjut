@@ -23,6 +23,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const allowedOrigins = [
+  "https://kopi-bekmer-70.vercel.app/",
   "http://localhost:3000",
   "http://localhost:5000",
   "http://localhost:5173",
